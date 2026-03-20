@@ -1,0 +1,67 @@
+<%= turbo_stream_from "user_#{Current.user.id}_content" %>
+
+<div class="space-y-6">
+  <div class="flex items-center justify-between">
+    <h1 class="text-2xl font-bold text-gray-900">Content</h1>
+    <%= link_to new_content_piece_path, class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700" do %>
+      <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+      Create Content
+    <% end %>
+  </div>
+
+  <!-- Generation Status (updated via Turbo Streams) -->
+  <div id="content_generation_status"></div>
+
+  <!-- Platform Filters -->
+  <div class="flex flex-wrap items-center gap-2">
+    <span class="text-xs font-medium text-gray-500 uppercase tracking-wide mr-1">Platform:</span>
+    <%= link_to "All", content_pieces_path(status: params[:status]),
+        class: "px-3 py-1 rounded-full text-sm font-medium #{params[:platform].blank? ? 'bg-indigo-100 text-indigo-700' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}" %>
+    <%= link_to "LinkedIn", content_pieces_path(platform: :linkedin, status: params[:status]),
+        class: "px-3 py-1 rounded-full text-sm font-medium #{params[:platform] == 'linkedin' ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}" %>
+    <%= link_to "Twitter", content_pieces_path(platform: :twitter, status: params[:status]),
+        class: "px-3 py-1 rounded-full text-sm font-medium #{params[:platform] == 'twitter' ? 'bg-sky-100 text-sky-700' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}" %>
+    <%= link_to "YouTube Script", content_pieces_path(platform: :youtube_script, status: params[:status]),
+        class: "px-3 py-1 rounded-full text-sm font-medium #{params[:platform] == 'youtube_script' ? 'bg-red-100 text-red-700' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}" %>
+    <%= link_to "Blog", content_pieces_path(platform: :blog, status: params[:status]),
+        class: "px-3 py-1 rounded-full text-sm font-medium #{params[:platform] == 'blog' ? 'bg-purple-100 text-purple-700' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}" %>
+    <%= link_to "Newsletter", content_pieces_path(platform: :newsletter, status: params[:status]),
+        class: "px-3 py-1 rounded-full text-sm font-medium #{params[:platform] == 'newsletter' ? 'bg-amber-100 text-amber-700' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}" %>
+  </div>
+
+  <!-- Status Filters -->
+  <div class="flex flex-wrap items-center gap-2">
+    <span class="text-xs font-medium text-gray-500 uppercase tracking-wide mr-1">Status:</span>
+    <%= link_to "All", content_pieces_path(platform: params[:platform]),
+        class: "px-3 py-1 rounded-full text-sm font-medium #{params[:status].blank? ? 'bg-indigo-100 text-indigo-700' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}" %>
+    <%= link_to "Draft", content_pieces_path(platform: params[:platform], status: :draft),
+        class: "px-3 py-1 rounded-full text-sm font-medium #{params[:status] == 'draft' ? 'bg-gray-200 text-gray-800' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}" %>
+    <%= link_to "Review", content_pieces_path(platform: params[:platform], status: :review),
+        class: "px-3 py-1 rounded-full text-sm font-medium #{params[:status] == 'review' ? 'bg-yellow-100 text-yellow-700' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}" %>
+    <%= link_to "Published", content_pieces_path(platform: params[:platform], status: :published),
+        class: "px-3 py-1 rounded-full text-sm font-medium #{params[:status] == 'published' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}" %>
+  </div>
+
+  <% if @content_pieces.any? %>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <% @content_pieces.each do |content_piece| %>
+        <%= render "content_pieces/card", content_piece: content_piece %>
+      <% end %>
+    </div>
+
+    <div class="mt-6">
+      <%== pagy_nav(@pagy) if @pagy.pages > 1 %>
+    </div>
+  <% else %>
+    <div class="text-center py-12 bg-white rounded-lg border border-gray-200">
+      <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+      </svg>
+      <h3 class="mt-2 text-sm font-medium text-gray-900">No content pieces yet</h3>
+      <p class="mt-1 text-sm text-gray-500">Generate AI-powered content from your video learnings.</p>
+      <div class="mt-6">
+        <%= link_to "Create your first content", new_content_piece_path, class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700" %>
+      </div>
+    </div>
+  <% end %>
+</div>

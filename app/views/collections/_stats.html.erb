@@ -1,0 +1,14 @@
+<div class="mt-4 flex items-center space-x-6">
+  <div class="flex items-center text-sm text-gray-500">
+    <svg class="w-4 h-4 mr-1.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+    <span><%= collection.video_count %> <%= "video".pluralize(collection.video_count) %></span>
+  </div>
+  <div class="flex items-center text-sm text-gray-500">
+    <svg class="w-4 h-4 mr-1.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+    <span><%= collection.completed_video_count %> completed</span>
+  </div>
+  <div class="flex items-center text-sm text-gray-500">
+    <svg class="w-4 h-4 mr-1.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+    <span><%= collection.content_pieces.count %> content <%= "piece".pluralize(collection.content_pieces.count) %></span>
+  </div>
+</div>

@@ -1,0 +1,95 @@
+services:
+  db:
+    image: pgvector/pgvector:pg17
+    environment:
+      POSTGRES_USER: youtube_learn
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: youtube_learn_development
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U youtube_learn"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    command: bin/rails server -b 0.0.0.0 -p 3001
+    ports:
+      - "3001:3001"
+    volumes:
+      - .:/rails
+      - bundle_cache:/usr/local/bundle
+      - node_modules:/rails/node_modules
+      - storage:/rails/storage
+    environment:
+      DATABASE_URL: postgres://youtube_learn:password@db:5432/youtube_learn_development
+      REDIS_URL: redis://redis:6379/0
+      OLLAMA_URL: http://host.docker.internal:11434
+      RAILS_ENV: development
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    tty: true
+    stdin_open: true
+
+  css:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    command: bin/rails tailwindcss:watch
+    volumes:
+      - .:/rails
+      - bundle_cache:/usr/local/bundle
+    environment:
+      RAILS_ENV: development
+
+  jobs:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    command: bin/jobs
+    volumes:
+      - .:/rails
+      - bundle_cache:/usr/local/bundle
+      - storage:/rails/storage
+    environment:
+      DATABASE_URL: postgres://youtube_learn:password@db:5432/youtube_learn_development
+      REDIS_URL: redis://redis:6379/0
+      OLLAMA_URL: http://host.docker.internal:11434
+      RAILS_ENV: development
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
+  redis_data:
+  bundle_cache:
+  node_modules:
+  storage:

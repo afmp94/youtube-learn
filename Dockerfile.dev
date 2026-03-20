@@ -1,0 +1,32 @@
+FROM docker.io/library/ruby:3.4.7-slim
+
+WORKDIR /rails
+
+# Install system dependencies including yt-dlp and ffmpeg
+RUN apt-get update -qq && \
+    apt-get install --no-install-recommends -y \
+      build-essential \
+      curl \
+      git \
+      libpq-dev \
+      libyaml-dev \
+      libvips \
+      pkg-config \
+      ffmpeg \
+      python3 \
+      python3-pip \
+      pipx && \
+    pipx install yt-dlp && \
+    ln -s /root/.local/bin/yt-dlp /usr/local/bin/yt-dlp && \
+    rm -rf /var/lib/apt/lists /var/cache/apt/archives
+
+ENV PATH="/root/.local/bin:${PATH}"
+
+# Install gems
+COPY Gemfile Gemfile.lock ./
+RUN bundle install
+
+COPY . .
+
+EXPOSE 3000
+CMD ["bin/rails", "server", "-b", "0.0.0.0"]

@@ -1,0 +1,17 @@
+<%= form_with url: ask_conversation_path(conversation), method: :post, id: "chat_form", data: { chat_target: "form", action: "submit->chat#submit" } do |f| %>
+  <div class="flex items-end space-x-3">
+    <div class="flex-1 relative">
+      <%= f.text_area :message,
+        placeholder: "Ask a question about your videos...",
+        rows: 1,
+        autofocus: true,
+        class: "block w-full resize-none border border-gray-300 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-shadow",
+        data: { chat_target: "input", action: "keydown->chat#keydown input->chat#autoResize" },
+        style: "max-height: 120px;" %>
+    </div>
+    <button type="submit" data-chat-target="sendButton"
+      class="inline-flex items-center justify-center w-10 h-10 rounded-xl text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed shrink-0">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+    </button>
+  </div>
+<% end %>

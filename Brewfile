@@ -1,0 +1,5 @@
+brew "postgresql@17"
+brew "yt-dlp"
+brew "ffmpeg"
+brew "redis"
+brew "vips"

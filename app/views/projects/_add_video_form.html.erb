@@ -1,0 +1,30 @@
+<% if available_videos.any? %>
+  <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6" data-controller="project-video">
+    <h3 class="text-sm font-semibold text-gray-900 mb-3">Add Videos</h3>
+    <%= form_with url: add_video_project_path(project), method: :post, class: "flex items-end space-x-3", data: { project_video_target: "form", action: "turbo:submit-end->project-video#reset" } do %>
+      <div class="flex-1">
+        <label for="video_learning_id" class="block text-sm font-medium text-gray-700">Select a video</label>
+        <select name="video_learning_id" id="video_learning_id" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" data-project-video-target="select">
+          <option value="">Choose a video...</option>
+          <% available_videos.each do |vl| %>
+            <option value="<%= vl.id %>"><%= vl.title %> — <%= vl.channel_name %></option>
+          <% end %>
+        </select>
+      </div>
+      <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+        Add
+      </button>
+    <% end %>
+  </div>
+<% else %>
+  <div class="bg-gray-50 rounded-lg border border-gray-200 p-4 text-center">
+    <p class="text-sm text-gray-500">
+      <% if project.video_learnings.any? %>
+        All your completed videos are already in this project.
+      <% else %>
+        No completed videos available. <%= link_to "Submit a video", new_video_learning_path, class: "text-indigo-600 hover:text-indigo-500" %> to get started.
+      <% end %>
+    </p>
+  </div>
+<% end %>

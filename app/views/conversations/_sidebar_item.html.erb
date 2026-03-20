@@ -1,0 +1,20 @@
+<div id="conversation_<%= conversation.id %>_sidebar">
+  <%= link_to conversation_path(conversation), class: "block px-4 py-3 rounded-lg transition-all #{active ? 'bg-indigo-50 border border-indigo-200 shadow-sm' : 'bg-white border border-gray-200 hover:border-gray-300 hover:shadow-sm'}" do %>
+    <div class="flex items-start justify-between">
+      <div class="min-w-0 flex-1">
+        <p class="text-sm font-semibold <%= active ? 'text-indigo-900' : 'text-gray-900' %> truncate"><%= conversation.title %></p>
+        <% if conversation.last_message %>
+          <p class="text-xs text-gray-400 truncate mt-1"><%= conversation.last_message.content.truncate(60) %></p>
+        <% end %>
+      </div>
+      <div class="ml-3 shrink-0 flex flex-col items-end space-y-1">
+        <span class="text-xs text-gray-400"><%= time_ago_in_words(conversation.updated_at) %></span>
+        <% if conversation.message_count > 0 %>
+          <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium <%= active ? 'bg-indigo-100 text-indigo-700' : 'bg-gray-100 text-gray-500' %>">
+            <%= conversation.message_count %>
+          </span>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>

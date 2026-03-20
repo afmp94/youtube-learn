@@ -1,0 +1,28 @@
+<div class="space-y-6">
+  <div class="flex items-center justify-between">
+    <h1 class="text-2xl font-bold text-gray-900">Projects</h1>
+    <%= link_to new_project_path, class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700" do %>
+      <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+      New Project
+    <% end %>
+  </div>
+
+  <% if @projects.any? %>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <% @projects.each do |project| %>
+        <%= render "projects/card", project: project %>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="text-center py-12 bg-white rounded-lg border border-gray-200">
+      <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
+      </svg>
+      <h3 class="mt-2 text-sm font-medium text-gray-900">No projects yet</h3>
+      <p class="mt-1 text-sm text-gray-500">Create a project to organize your knowledge, videos, and content.</p>
+      <div class="mt-6">
+        <%= link_to "Create your first project", new_project_path, class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700" %>
+      </div>
+    </div>
+  <% end %>
+</div>

@@ -1,0 +1,11 @@
+<%
+  badge_class = case content_piece.status
+                when "draft" then "bg-gray-100 text-gray-700"
+                when "review" then "bg-yellow-100 text-yellow-700"
+                when "published" then "bg-green-100 text-green-700"
+                else "bg-gray-100 text-gray-700"
+                end
+%>
+<span id="content_piece_status_<%= content_piece.id %>" class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium <%= badge_class %>">
+  <%= content_piece.status.capitalize %>
+</span>

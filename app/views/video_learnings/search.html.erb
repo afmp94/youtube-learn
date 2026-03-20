@@ -1,0 +1,32 @@
+<div class="space-y-6">
+  <h1 class="text-2xl font-bold text-gray-900">Search Videos</h1>
+
+  <div data-controller="search">
+    <%= form_with url: search_video_learnings_path, method: :get, data: { turbo_frame: "search_results" }, class: "max-w-xl" do |f| %>
+      <div class="relative">
+        <svg class="absolute left-3 top-2.5 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        <%= f.search_field :q, value: params[:q], autofocus: true, placeholder: "Search titles, summaries, notes, transcripts...",
+            data: { search_target: "input", action: "input->search#perform" },
+            class: "block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+      </div>
+    <% end %>
+  </div>
+
+  <%= turbo_frame_tag "search_results" do %>
+    <% if params[:q].present? && @video_learnings.present? %>
+      <p class="text-sm text-gray-500"><%= @pagy.count %> result<%= @pagy.count == 1 ? '' : 's' %> for "<%= params[:q] %>"</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
+        <% @video_learnings.each do |vl| %>
+          <%= render "video_learnings/card", video_learning: vl %>
+        <% end %>
+      </div>
+      <div class="mt-6">
+        <%== pagy_nav(@pagy) if @pagy.pages > 1 %>
+      </div>
+    <% elsif params[:q].present? %>
+      <div class="text-center py-12 text-gray-500">
+        <p class="text-sm">No results found for "<%= params[:q] %>"</p>
+      </div>
+    <% end %>
+  <% end %>
+</div>

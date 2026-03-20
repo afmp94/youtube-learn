@@ -1,0 +1,32 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  max_connections: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
+development:
+  <<: *default
+  database: youtube_learn_development
+  url: <%= ENV["DATABASE_URL"] %>
+
+test:
+  <<: *default
+  database: youtube_learn_test
+
+production:
+  primary: &primary_production
+    <<: *default
+    database: youtube_learn_production
+    username: youtube_learn
+    password: <%= ENV["YOUTUBE_LEARN_DATABASE_PASSWORD"] %>
+  cache:
+    <<: *primary_production
+    database: youtube_learn_production_cache
+    migrations_paths: db/cache_migrate
+  queue:
+    <<: *primary_production
+    database: youtube_learn_production_queue
+    migrations_paths: db/queue_migrate
+  cable:
+    <<: *primary_production
+    database: youtube_learn_production_cable
+    migrations_paths: db/cable_migrate

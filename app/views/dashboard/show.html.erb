@@ -1,0 +1,320 @@
+<div class="space-y-8">
+  <!-- Header -->
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-2xl font-bold text-gray-900">Dashboard</h1>
+      <p class="mt-1 text-sm text-gray-500">Your knowledge command center</p>
+    </div>
+    <%= link_to new_video_learning_path, class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 shadow-sm" do %>
+      <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+      New Video
+    <% end %>
+  </div>
+
+  <!-- Knowledge Overview Stats -->
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+    <!-- Total Videos -->
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-5">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm font-medium text-gray-500">Total Videos</p>
+          <p class="mt-1 text-3xl font-bold text-gray-900"><%= @total_count %></p>
+        </div>
+        <div class="p-3 bg-indigo-50 rounded-lg">
+          <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+        </div>
+      </div>
+      <% if @total_count > 0 %>
+        <p class="mt-2 text-xs text-gray-400"><%= @completed_count %> completed</p>
+      <% end %>
+    </div>
+
+    <!-- Completed -->
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-5">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm font-medium text-gray-500">Completed</p>
+          <p class="mt-1 text-3xl font-bold text-green-600"><%= @completed_count %></p>
+        </div>
+        <div class="p-3 bg-green-50 rounded-lg">
+          <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+      </div>
+      <% if @total_count > 0 %>
+        <p class="mt-2 text-xs text-gray-400"><%= @total_count - @completed_count %> processing</p>
+      <% end %>
+    </div>
+
+    <!-- Content Pieces -->
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-5">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm font-medium text-gray-500">Content Pieces</p>
+          <p class="mt-1 text-3xl font-bold text-purple-600"><%= @content_count %></p>
+        </div>
+        <div class="p-3 bg-purple-50 rounded-lg">
+          <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+        </div>
+      </div>
+      <% if @content_count > 0 %>
+        <p class="mt-2 text-xs text-gray-400"><%= @draft_count %> drafts, <%= @published_count %> published</p>
+      <% end %>
+    </div>
+
+    <!-- Experts -->
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-5">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm font-medium text-gray-500">Experts</p>
+          <p class="mt-1 text-3xl font-bold text-amber-600"><%= @channel_count %></p>
+        </div>
+        <div class="p-3 bg-amber-50 rounded-lg">
+          <svg class="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        </div>
+      </div>
+      <% if @channel_count > 0 %>
+        <p class="mt-2 text-xs text-gray-400">from <%= @channel_count %> channels</p>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Quick Actions Bar -->
+  <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <%= link_to new_video_learning_path, class: "flex items-center p-3 rounded-lg border border-gray-100 hover:border-indigo-200 hover:bg-indigo-50 transition-all group" do %>
+        <div class="p-2 bg-indigo-100 rounded-lg group-hover:bg-indigo-200 transition-colors">
+          <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+        </div>
+        <div class="ml-3">
+          <p class="text-sm font-medium text-gray-900">Add Video</p>
+          <p class="text-xs text-gray-500">Analyze a new video</p>
+        </div>
+      <% end %>
+
+      <%= link_to new_bulk_import_path, class: "flex items-center p-3 rounded-lg border border-gray-100 hover:border-blue-200 hover:bg-blue-50 transition-all group" do %>
+        <div class="p-2 bg-blue-100 rounded-lg group-hover:bg-blue-200 transition-colors">
+          <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+        </div>
+        <div class="ml-3">
+          <p class="text-sm font-medium text-gray-900">Import Playlist</p>
+          <p class="text-xs text-gray-500">Bulk import videos</p>
+        </div>
+      <% end %>
+
+      <%= link_to new_content_piece_path, class: "flex items-center p-3 rounded-lg border border-gray-100 hover:border-purple-200 hover:bg-purple-50 transition-all group" do %>
+        <div class="p-2 bg-purple-100 rounded-lg group-hover:bg-purple-200 transition-colors">
+          <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+        </div>
+        <div class="ml-3">
+          <p class="text-sm font-medium text-gray-900">Create Content</p>
+          <p class="text-xs text-gray-500">Generate from videos</p>
+        </div>
+      <% end %>
+
+      <%= link_to conversations_path, class: "flex items-center p-3 rounded-lg border border-gray-100 hover:border-emerald-200 hover:bg-emerald-50 transition-all group" do %>
+        <div class="p-2 bg-emerald-100 rounded-lg group-hover:bg-emerald-200 transition-colors">
+          <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+        </div>
+        <div class="ml-3">
+          <p class="text-sm font-medium text-gray-900">Ask Knowledge Base</p>
+          <p class="text-xs text-gray-500">Chat with your videos</p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Two-column layout for middle sections -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <!-- Left column: 2/3 width -->
+    <div class="lg:col-span-2 space-y-6">
+
+      <!-- Knowledge by Expert -->
+      <% if @top_channels.any? %>
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+          <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+            <h2 class="text-lg font-semibold text-gray-900">Top Experts</h2>
+            <%= link_to "View All", channels_path, class: "text-sm text-indigo-600 hover:text-indigo-500 font-medium" %>
+          </div>
+          <div class="p-4">
+            <div class="flex space-x-4 overflow-x-auto pb-2">
+              <% @top_channels.each do |channel| %>
+                <%= link_to channel_path(channel), class: "flex-shrink-0 w-40 p-4 rounded-lg border border-gray-100 hover:border-indigo-200 hover:shadow-sm transition-all text-center group" do %>
+                  <div class="mx-auto w-12 h-12 rounded-full bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center text-white font-bold text-lg shadow-sm">
+                    <%= channel.name.first.upcase %>
+                  </div>
+                  <p class="mt-2 text-sm font-medium text-gray-900 truncate group-hover:text-indigo-600"><%= channel.name %></p>
+                  <p class="text-xs text-gray-500"><%= channel.video_count %> <%= "video".pluralize(channel.video_count) %></p>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
+      <!-- Recent Videos -->
+      <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+        <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+          <h2 class="text-lg font-semibold text-gray-900">Recent Videos</h2>
+          <% if @total_count > 6 %>
+            <%= link_to "View All", video_learnings_path, class: "text-sm text-indigo-600 hover:text-indigo-500 font-medium" %>
+          <% end %>
+        </div>
+
+        <% if @recent_videos.any? %>
+          <div class="p-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <% @recent_videos.each do |vl| %>
+                <%= render "video_learnings/card", video_learning: vl %>
+              <% end %>
+            </div>
+          </div>
+        <% else %>
+          <div class="text-center py-12 px-6">
+            <svg class="mx-auto h-12 w-12 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+            <h3 class="mt-3 text-sm font-medium text-gray-900">No videos yet</h3>
+            <p class="mt-1 text-sm text-gray-500">Get started by submitting a YouTube video for analysis.</p>
+            <div class="mt-4">
+              <%= link_to "Submit your first video", new_video_learning_path, class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700" %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Right column: 1/3 width -->
+    <div class="space-y-6">
+
+      <!-- Recent Content -->
+      <% if @recent_content.present? && @recent_content.any? %>
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+          <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+            <h2 class="text-lg font-semibold text-gray-900">Recent Content</h2>
+            <%= link_to "View All", content_pieces_path, class: "text-sm text-indigo-600 hover:text-indigo-500 font-medium" %>
+          </div>
+          <div class="divide-y divide-gray-100">
+            <% @recent_content.each do |piece| %>
+              <%= link_to content_piece_path(piece), class: "block px-6 py-4 hover:bg-gray-50 transition-colors" do %>
+                <div class="flex items-start space-x-3">
+                  <div class="flex-shrink-0 mt-0.5">
+                    <% case piece.platform %>
+                    <% when "linkedin" %>
+                      <span class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-blue-100">
+                        <svg class="w-4 h-4 text-blue-700" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                      </span>
+                    <% when "twitter" %>
+                      <span class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-sky-100">
+                        <svg class="w-4 h-4 text-sky-700" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                      </span>
+                    <% when "blog" %>
+                      <span class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-orange-100">
+                        <svg class="w-4 h-4 text-orange-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
+                      </span>
+                    <% when "newsletter" %>
+                      <span class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-pink-100">
+                        <svg class="w-4 h-4 text-pink-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                      </span>
+                    <% else %>
+                      <span class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-red-100">
+                        <svg class="w-4 h-4 text-red-700" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814z"/><path fill="white" d="M9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                      </span>
+                    <% end %>
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-gray-900 truncate"><%= piece.title.presence || "#{piece.platform_label} #{piece.content_format}" %></p>
+                    <p class="mt-1 text-xs text-gray-500 line-clamp-2"><%= truncate(strip_tags(piece.body), length: 100) %></p>
+                    <div class="mt-2 flex items-center space-x-2">
+                      <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-<%= piece.status_color %>-100 text-<%= piece.status_color %>-800"><%= piece.status.capitalize %></span>
+                      <span class="text-xs text-gray-400"><%= piece.platform_label %></span>
+                    </div>
+                  </div>
+                </div>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+
+      <!-- Top Tags -->
+      <% if @tags.any? %>
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+          <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+            <h2 class="text-lg font-semibold text-gray-900">Top Tags</h2>
+            <%= link_to "View All", tags_path, class: "text-sm text-indigo-600 hover:text-indigo-500 font-medium" %>
+          </div>
+          <div class="px-6 py-4">
+            <div class="flex flex-wrap gap-2">
+              <% @tags.each do |tag| %>
+                <%= link_to tag_path(tag.name), class: "inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-medium bg-indigo-50 text-indigo-700 hover:bg-indigo-100 transition-colors" do %>
+                  <%= tag.name %>
+                  <span class="ml-1.5 bg-indigo-200 text-indigo-800 px-1.5 py-0.5 rounded-full text-xs"><%= tag.count %></span>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
+      <!-- Featured Quote -->
+      <% if @recent_quotes.present? && @recent_quotes.any? %>
+        <div class="bg-gradient-to-br from-indigo-600 to-purple-700 rounded-lg shadow-sm overflow-hidden">
+          <div class="px-6 py-5">
+            <div class="flex items-center justify-between mb-4">
+              <h2 class="text-lg font-semibold text-white">Featured Quote</h2>
+              <%= link_to "View All", quotes_path, class: "text-sm text-indigo-200 hover:text-white font-medium" %>
+            </div>
+            <% quote = @recent_quotes.first %>
+            <div class="relative">
+              <svg class="absolute -top-1 -left-1 w-10 h-10 text-indigo-400 opacity-40" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983z"/>
+              </svg>
+              <p class="text-white text-base leading-relaxed font-serif italic pl-6 relative z-10"><%= truncate(quote.text, length: 200) %></p>
+              <div class="mt-3 pl-6 flex items-center text-indigo-200 text-sm">
+                <span class="font-medium text-white">&mdash; <%= quote.speaker || "Unknown" %></span>
+                <% if quote.video_learning.present? %>
+                  <span class="mx-2 opacity-50">&middot;</span>
+                  <span class="truncate max-w-[150px]"><%= quote.video_learning.title %></span>
+                <% end %>
+              </div>
+            </div>
+
+            <% if @recent_quotes.size > 1 %>
+              <div class="mt-4 pt-4 border-t border-indigo-500 border-opacity-40 space-y-3">
+                <% @recent_quotes[1..].each do |q| %>
+                  <p class="text-indigo-100 text-sm italic truncate pl-3 border-l-2 border-indigo-400 border-opacity-40">
+                    "<%= truncate(q.text, length: 80) %>"
+                  </p>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Knowledge Stats Summary (bottom) -->
+  <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+    <div class="grid grid-cols-2 md:grid-cols-5 divide-x divide-gray-100">
+      <div class="p-5 text-center">
+        <p class="text-2xl font-bold text-gray-900"><%= @total_hours %></p>
+        <p class="mt-1 text-xs text-gray-500">Hours of Video</p>
+      </div>
+      <div class="p-5 text-center">
+        <p class="text-2xl font-bold text-gray-900"><%= @quote_count %></p>
+        <p class="mt-1 text-xs text-gray-500">Quotes Extracted</p>
+      </div>
+      <div class="p-5 text-center">
+        <p class="text-2xl font-bold text-gray-900"><%= @content_count %></p>
+        <p class="mt-1 text-xs text-gray-500">Content Pieces</p>
+      </div>
+      <div class="p-5 text-center">
+        <p class="text-2xl font-bold text-gray-900"><%= @collection_count %></p>
+        <p class="mt-1 text-xs text-gray-500">Collections</p>
+      </div>
+      <div class="p-5 text-center">
+        <p class="text-2xl font-bold text-gray-900"><%= @conversation_count %></p>
+        <p class="mt-1 text-xs text-gray-500">Conversations</p>
+      </div>
+    </div>
+  </div>
+</div>

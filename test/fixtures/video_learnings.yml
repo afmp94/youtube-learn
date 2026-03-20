@@ -1,0 +1,45 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  youtube_video_id: MyString
+  youtube_url: MyString
+  title: MyString
+  channel_name: MyString
+  description: MyText
+  duration_seconds: 1
+  thumbnail_url: MyString
+  published_at: 2026-02-23 01:17:32
+  transcript_text: MyText
+  transcript_data: 
+  status: 1
+  processing_progress: 1
+  error_message: MyText
+  summary: MyText
+  key_takeaways: 
+  concepts: 
+  detailed_notes: MyText
+  difficulty_level: MyString
+  estimated_read_time: 1
+
+two:
+  user: two
+  youtube_video_id: MyString
+  youtube_url: MyString
+  title: MyString
+  channel_name: MyString
+  description: MyText
+  duration_seconds: 1
+  thumbnail_url: MyString
+  published_at: 2026-02-23 01:17:32
+  transcript_text: MyText
+  transcript_data: 
+  status: 1
+  processing_progress: 1
+  error_message: MyText
+  summary: MyText
+  key_takeaways: 
+  concepts: 
+  detailed_notes: MyText
+  difficulty_level: MyString
+  estimated_read_time: 1

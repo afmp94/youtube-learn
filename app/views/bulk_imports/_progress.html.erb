@@ -1,0 +1,83 @@
+<% if bulk_import.pending? %>
+  <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+    <div class="flex items-center">
+      <svg class="animate-spin h-5 w-5 text-gray-400 mr-3" fill="none" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+      </svg>
+      <p class="text-sm text-gray-600">Waiting to start...</p>
+    </div>
+  </div>
+
+<% elsif bulk_import.extracting_urls? %>
+  <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+    <div class="flex items-center mb-4">
+      <svg class="animate-spin h-5 w-5 text-indigo-600 mr-3" fill="none" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+      </svg>
+      <p class="text-sm font-medium text-indigo-700">Discovering videos in playlist...</p>
+    </div>
+    <div class="w-full bg-gray-200 rounded-full h-2">
+      <div class="bg-indigo-600 h-2 rounded-full animate-pulse" style="width: 30%"></div>
+    </div>
+  </div>
+
+<% elsif bulk_import.processing? %>
+  <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+    <div class="flex items-center justify-between mb-2">
+      <div class="flex items-center">
+        <svg class="animate-spin h-5 w-5 text-indigo-600 mr-3" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <p class="text-sm font-medium text-gray-700">
+          Processing video <%= bulk_import.processed_count + 1 %> of <%= bulk_import.total_count %>...
+        </p>
+      </div>
+      <span class="text-sm font-medium text-indigo-600"><%= bulk_import.progress_percentage %>%</span>
+    </div>
+    <div class="w-full bg-gray-200 rounded-full h-2">
+      <div class="bg-indigo-600 h-2 rounded-full transition-all duration-500" style="width: <%= bulk_import.progress_percentage %>%"></div>
+    </div>
+    <p class="mt-2 text-xs text-gray-500">
+      <%= bulk_import.processed_count %> of <%= bulk_import.total_count %> videos queued for processing
+    </p>
+  </div>
+
+<% elsif bulk_import.completed? %>
+  <div class="bg-green-50 rounded-lg border border-green-200 p-6">
+    <div class="flex items-center">
+      <svg class="w-5 h-5 text-green-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+      </svg>
+      <div>
+        <p class="text-sm font-medium text-green-800">All videos imported!</p>
+        <p class="text-xs text-green-600 mt-0.5">
+          <%= bulk_import.processed_count %> of <%= bulk_import.total_count %> videos were queued for analysis.
+          Individual videos are now being processed in the background.
+        </p>
+      </div>
+    </div>
+    <div class="mt-3 w-full bg-green-200 rounded-full h-2">
+      <div class="bg-green-500 h-2 rounded-full" style="width: 100%"></div>
+    </div>
+  </div>
+
+<% elsif bulk_import.failed? %>
+  <div class="bg-red-50 rounded-lg border border-red-200 p-6">
+    <div class="flex items-start">
+      <svg class="w-5 h-5 text-red-400 mr-3 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+      </svg>
+      <div>
+        <p class="text-sm font-medium text-red-800">Import failed</p>
+        <p class="text-sm text-red-600 mt-1"><%= bulk_import.error_message %></p>
+        <p class="text-xs text-red-500 mt-2">
+          You can try again by
+          <%= link_to "creating a new import", new_bulk_import_path, class: "underline font-medium hover:text-red-700" %>.
+        </p>
+      </div>
+    </div>
+  </div>
+<% end %>

@@ -1,0 +1,157 @@
+<%
+  color_classes = {
+    "indigo"  => "border-indigo-400",
+    "emerald" => "border-emerald-400",
+    "amber"   => "border-amber-400",
+    "rose"    => "border-rose-400",
+    "sky"     => "border-sky-400",
+    "purple"  => "border-purple-400",
+    "orange"  => "border-orange-400"
+  }
+  accent_class = color_classes[@project.color] || "border-indigo-400"
+%>
+<div class="space-y-8">
+  <!-- Breadcrumb -->
+  <div class="flex items-center space-x-3">
+    <%= link_to "Projects", projects_path, class: "text-sm text-gray-500 hover:text-gray-700" %>
+    <span class="text-gray-400">/</span>
+    <span class="text-sm text-gray-900 font-medium"><%= @project.name %></span>
+  </div>
+
+  <!-- Header -->
+  <div class="bg-white rounded-lg shadow-sm border border-gray-200 border-l-4 <%= accent_class %> p-6">
+    <div class="flex items-start justify-between">
+      <div class="flex-1 min-w-0">
+        <h1 class="text-2xl font-bold text-gray-900"><%= @project.name %></h1>
+        <% if @project.description.present? %>
+          <p class="mt-2 text-sm text-gray-600"><%= @project.description %></p>
+        <% end %>
+        <% if @project.brief.present? %>
+          <blockquote class="mt-3 pl-4 border-l-2 border-gray-200 text-sm text-gray-500 italic">
+            <%= @project.brief %>
+          </blockquote>
+        <% end %>
+      </div>
+      <div class="flex items-center space-x-2 ml-4 shrink-0">
+        <%= link_to edit_project_path(@project), class: "inline-flex items-center px-3 py-2 border border-gray-200 text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition-colors" do %>
+          <svg class="w-4 h-4 mr-1.5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
+          Edit
+        <% end %>
+        <%= button_to archive_project_path(@project), method: :patch, class: "inline-flex items-center px-3 py-2 border border-gray-200 text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition-colors" do %>
+          <svg class="w-4 h-4 mr-1.5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg>
+          Archive
+        <% end %>
+        <%= button_to project_path(@project), method: :delete, data: { turbo_confirm: "Are you sure you want to delete this project?" }, class: "inline-flex items-center px-3 py-2 border border-red-200 text-sm font-medium rounded-lg text-red-700 bg-white hover:bg-red-50 transition-colors" do %>
+          <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+          Delete
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div id="project_stats">
+      <%= render "projects/stats", project: @project %>
+    </div>
+  </div>
+
+  <!-- Knowledge Base Section -->
+  <div>
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-lg font-semibold text-gray-900">Knowledge Base</h2>
+      <div class="flex items-center space-x-3">
+        <span class="text-sm text-gray-500"><%= @knowledge_entries.size %> <%= "entry".pluralize(@knowledge_entries.size) %></span>
+        <%= link_to new_project_knowledge_entry_path(@project), class: "inline-flex items-center px-3 py-1.5 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700" do %>
+          <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+          Add Knowledge
+        <% end %>
+      </div>
+    </div>
+
+    <% if @knowledge_entries.any? %>
+      <div class="space-y-3">
+        <% @knowledge_entries.each do |entry| %>
+          <%= render "projects/knowledge_entry_card", knowledge_entry: entry, project: @project %>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="text-center py-8 bg-white rounded-lg border border-gray-200">
+        <svg class="mx-auto h-10 w-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+        </svg>
+        <h3 class="mt-2 text-sm font-medium text-gray-900">No knowledge entries yet</h3>
+        <p class="mt-1 text-sm text-gray-500">Add notes, articles, links, or ideas to build your project's knowledge base.</p>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Videos Section -->
+  <div>
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-lg font-semibold text-gray-900">Videos</h2>
+      <span class="text-sm text-gray-500"><%= @video_learnings.size %> <%= "video".pluralize(@video_learnings.size) %></span>
+    </div>
+
+    <%= render "projects/video_grid", video_learnings: @video_learnings, project: @project %>
+  </div>
+
+  <!-- Add Videos Section -->
+  <div id="add_video_form">
+    <%= render "projects/add_video_form", project: @project, available_videos: @available_videos %>
+  </div>
+
+  <!-- Content Pieces Section -->
+  <div>
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-lg font-semibold text-gray-900">Content</h2>
+      <div class="flex items-center space-x-3">
+        <span class="text-sm text-gray-500"><%= @content_pieces.size %> <%= "piece".pluralize(@content_pieces.size) %></span>
+        <%= link_to new_content_piece_path(project_id: @project.id), class: "inline-flex items-center px-3 py-1.5 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700" do %>
+          <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+          Create Content
+        <% end %>
+      </div>
+    </div>
+
+    <% if @content_pieces.any? %>
+      <div class="space-y-3">
+        <% @content_pieces.each do |piece| %>
+          <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 hover:shadow-md transition-shadow">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center space-x-3">
+                <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-medium bg-indigo-100 text-indigo-700">
+                  <%= piece.platform_label %>
+                </span>
+                <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-medium bg-gray-100 text-gray-700">
+                  <%= piece.content_format.humanize %>
+                </span>
+                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium
+                  <%= case piece.status_color
+                      when 'gray' then 'bg-gray-100 text-gray-800'
+                      when 'yellow' then 'bg-yellow-100 text-yellow-800'
+                      when 'green' then 'bg-green-100 text-green-800'
+                      end %>">
+                  <%= piece.status.capitalize %>
+                </span>
+              </div>
+              <div class="flex items-center space-x-3">
+                <span class="text-xs text-gray-500"><%= piece.word_count %> words</span>
+                <%= link_to "View", content_piece_path(piece), class: "text-sm text-indigo-600 hover:text-indigo-500" %>
+              </div>
+            </div>
+            <% if piece.body.present? %>
+              <p class="mt-2 text-sm text-gray-600 line-clamp-2"><%= truncate(piece.body, length: 200) %></p>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="text-center py-8 bg-white rounded-lg border border-gray-200">
+        <svg class="mx-auto h-10 w-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+        </svg>
+        <h3 class="mt-2 text-sm font-medium text-gray-900">No content yet</h3>
+        <p class="mt-1 text-sm text-gray-500">Generate content from your project's videos and knowledge.</p>
+      </div>
+    <% end %>
+  </div>
+</div>

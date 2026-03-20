@@ -1,0 +1,68 @@
+<%= link_to channel_path(channel), class: "block bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-all duration-200 group" do %>
+  <!-- Expert Header -->
+  <div class="bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 px-5 pt-5 pb-4">
+    <div class="flex items-start space-x-4">
+      <!-- Avatar -->
+      <% if channel.thumbnail_url.present? %>
+        <div class="flex-shrink-0">
+          <img src="<%= channel.thumbnail_url %>" alt="<%= channel.name %>"
+               class="w-12 h-12 rounded-full object-cover ring-2 ring-white shadow-sm">
+        </div>
+      <% else %>
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center ring-2 ring-white shadow-sm">
+          <span class="text-white font-bold text-sm"><%= channel.name.first(2).upcase %></span>
+        </div>
+      <% end %>
+
+      <div class="min-w-0 flex-1">
+        <h3 class="text-base font-bold text-gray-900 truncate group-hover:text-indigo-700 transition-colors">
+          <%= channel.name %>
+        </h3>
+        <div class="mt-1 flex items-center space-x-2">
+          <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-white/80 text-indigo-700 shadow-sm">
+            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+            <%= channel.video_count %> <%= "video".pluralize(channel.video_count) %>
+          </span>
+          <% completed = channel.completed_video_count %>
+          <% if completed > 0 && completed < channel.video_count %>
+            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-white/80 text-green-700 shadow-sm">
+              <%= completed %> completed
+            </span>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Body -->
+  <div class="px-5 py-4">
+    <% if channel.description.present? %>
+      <p class="text-sm text-gray-600 line-clamp-2 mb-3"><%= channel.description %></p>
+    <% end %>
+
+    <!-- Top Concepts -->
+    <% concepts = channel.top_concepts(3) %>
+    <% if concepts.any? %>
+      <div class="flex flex-wrap gap-1.5">
+        <% concepts.each do |concept| %>
+          <span class="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-gray-100 text-gray-700">
+            <%= concept[:name] %>
+          </span>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Footer -->
+  <div class="px-5 py-3 bg-gray-50/50 border-t border-gray-100">
+    <div class="flex items-center justify-between">
+      <span class="text-xs text-gray-400">
+        Added <%= time_ago_in_words(channel.created_at) %> ago
+      </span>
+      <span class="text-xs font-medium text-indigo-600 group-hover:text-indigo-700 transition-colors flex items-center">
+        View profile
+        <svg class="w-3.5 h-3.5 ml-1 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+      </span>
+    </div>
+  </div>
+<% end %>

@@ -1,0 +1,61 @@
+<%
+  platform_colors = {
+    "linkedin" => "bg-blue-50 text-blue-700 border-blue-200",
+    "twitter" => "bg-sky-50 text-sky-700 border-sky-200",
+    "youtube_script" => "bg-red-50 text-red-700 border-red-200",
+    "blog" => "bg-purple-50 text-purple-700 border-purple-200",
+    "newsletter" => "bg-amber-50 text-amber-700 border-amber-200"
+  }
+
+  status_colors = {
+    "draft" => "bg-gray-100 text-gray-700",
+    "review" => "bg-yellow-100 text-yellow-700",
+    "published" => "bg-green-100 text-green-700"
+  }
+
+  format_labels = {
+    "post" => "Post",
+    "thread" => "Thread",
+    "script" => "Script",
+    "carousel_outline" => "Carousel",
+    "article" => "Article",
+    "hooks_list" => "Hooks"
+  }
+%>
+
+<%= link_to content_piece_path(content_piece), class: "block bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow" do %>
+  <div class="p-5">
+    <!-- Platform Badge -->
+    <div class="flex items-center justify-between mb-3">
+      <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <%= platform_colors[content_piece.platform] %>">
+        <%= content_piece.platform_label %>
+      </span>
+      <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-50 text-gray-500 border border-gray-100">
+        <%= format_labels[content_piece.content_format] || content_piece.content_format.titleize %>
+      </span>
+    </div>
+
+    <!-- Title -->
+    <h3 class="text-sm font-semibold text-gray-900 line-clamp-2 mb-2">
+      <%= content_piece.title.presence || truncate(content_piece.body, length: 60) %>
+    </h3>
+
+    <!-- Body Preview -->
+    <p class="text-sm text-gray-500 line-clamp-3 mb-4">
+      <%= truncate(content_piece.body.to_s.gsub(/[#*_~`>\-]/, "").squish, length: 120) %>
+    </p>
+
+    <!-- Footer -->
+    <div class="flex items-center justify-between pt-3 border-t border-gray-100">
+      <div class="flex items-center gap-2">
+        <%= render "content_pieces/status_badge", content_piece: content_piece %>
+        <% if content_piece.video_learnings.any? %>
+          <span class="text-xs text-gray-400">
+            From <%= pluralize(content_piece.video_learnings.size, "video") %>
+          </span>
+        <% end %>
+      </div>
+      <span class="text-xs text-gray-400"><%= content_piece.word_count %> words</span>
+    </div>
+  </div>
+<% end %>

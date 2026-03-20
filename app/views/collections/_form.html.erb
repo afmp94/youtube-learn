@@ -1,0 +1,35 @@
+<%= form_with model: collection, class: "space-y-6" do |f| %>
+  <% if collection.errors.any? %>
+    <div class="rounded-md bg-red-50 p-4">
+      <ul class="text-sm text-red-700 list-disc list-inside">
+        <% collection.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= f.label :name, class: "block text-sm font-medium text-gray-700" %>
+    <%= f.text_field :name, required: true, autofocus: true,
+        placeholder: "e.g., AI Marketing, Leadership, Naval's Ideas",
+        class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-3 py-2 border" %>
+  </div>
+
+  <div>
+    <%= f.label :description, class: "block text-sm font-medium text-gray-700" %>
+    <%= f.text_area :description, rows: 3,
+        placeholder: "Describe what this collection is about...",
+        class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-3 py-2 border" %>
+  </div>
+
+  <div class="flex items-center justify-end space-x-3">
+    <% if collection.persisted? %>
+      <%= link_to "Cancel", collection_path(collection), class: "inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50" %>
+    <% else %>
+      <%= link_to "Cancel", collections_path, class: "inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50" %>
+    <% end %>
+    <%= f.submit collection.persisted? ? "Update Collection" : "Create Collection",
+        class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 cursor-pointer" %>
+  </div>
+<% end %>

@@ -1,0 +1,32 @@
+<%= link_to video_learning_path(video_learning), class: "block bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow" do %>
+  <% if video_learning.thumbnail_url.present? %>
+    <div class="aspect-video bg-gray-100">
+      <img src="<%= video_learning.thumbnail_url %>" alt="<%= video_learning.title %>" class="w-full h-full object-cover" loading="lazy">
+    </div>
+  <% else %>
+    <div class="aspect-video bg-gray-100 flex items-center justify-center">
+      <svg class="w-12 h-12 text-gray-300" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814z"/><path fill="white" d="M9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+    </div>
+  <% end %>
+  <div class="p-4">
+    <h3 class="text-sm font-semibold text-gray-900 line-clamp-2"><%= video_learning.title || "Processing..." %></h3>
+    <% if video_learning.channel_name.present? %>
+      <p class="mt-1 text-xs text-gray-500"><%= video_learning.channel_name %></p>
+    <% end %>
+    <div class="mt-2 flex items-center justify-between">
+      <% case video_learning.status %>
+      <% when "completed" %>
+        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">Completed</span>
+      <% when "failed" %>
+        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800">Failed</span>
+      <% when "pending" %>
+        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800">Pending</span>
+      <% else %>
+        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800">Processing</span>
+      <% end %>
+      <% if video_learning.formatted_duration %>
+        <span class="text-xs text-gray-500"><%= video_learning.formatted_duration %></span>
+      <% end %>
+    </div>
+  </div>
+<% end %>

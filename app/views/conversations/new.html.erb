@@ -1,0 +1,72 @@
+<% content_for(:title) { "New Chat - YouTube Learn" } %>
+
+<div class="max-w-3xl mx-auto">
+  <div class="text-center mb-12 pt-8">
+    <div class="mx-auto w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg">
+      <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+    </div>
+    <h1 class="text-3xl font-bold text-gray-900 mb-2">Ask your knowledge base</h1>
+    <p class="text-gray-500 text-lg">Get AI-powered answers from everything you've learned.</p>
+  </div>
+
+  <!-- Main Input -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-1 mb-8" data-controller="chat">
+    <%= form_with url: conversations_path, method: :post, class: "flex items-end", data: { chat_target: "form" } do |f| %>
+      <div class="flex-1 relative">
+        <%= f.text_area :message,
+          placeholder: "Ask anything about your knowledge base...",
+          rows: 2,
+          autofocus: true,
+          class: "block w-full resize-none border-0 bg-transparent px-4 py-3 text-gray-900 placeholder:text-gray-400 focus:ring-0 text-base",
+          data: { chat_target: "input", action: "keydown->chat#keydown" } %>
+      </div>
+      <div class="p-2">
+        <%= f.submit "Send",
+          class: "inline-flex items-center px-5 py-2.5 border border-transparent text-sm font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 shadow-sm transition-colors cursor-pointer" %>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Suggestions -->
+  <% if @suggestions.present? %>
+    <div class="mb-8">
+      <h2 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">Suggested questions</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <% @suggestions.each do |suggestion| %>
+          <%= form_with url: conversations_path, method: :post do |f| %>
+            <%= f.hidden_field :message, value: suggestion %>
+            <button type="submit" class="w-full text-left px-4 py-3 bg-white rounded-lg shadow-sm border border-gray-200 hover:border-indigo-300 hover:shadow-md transition-all text-sm text-gray-700 hover:text-indigo-600 group">
+              <div class="flex items-start space-x-3">
+                <svg class="w-5 h-5 text-gray-300 group-hover:text-indigo-400 mt-0.5 shrink-0 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <span><%= suggestion %></span>
+              </div>
+            </button>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <!-- Recent Chats -->
+  <% recent_chats = Current.user.conversations.recent.limit(5) %>
+  <% if recent_chats.any? %>
+    <div>
+      <h2 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">Recent chats</h2>
+      <div class="bg-white rounded-lg shadow-sm border border-gray-200 divide-y divide-gray-100">
+        <% recent_chats.each do |conversation| %>
+          <%= link_to conversation_path(conversation), class: "block px-4 py-3 hover:bg-gray-50 transition-colors first:rounded-t-lg last:rounded-b-lg" do %>
+            <div class="flex items-center justify-between">
+              <div class="min-w-0 flex-1">
+                <p class="text-sm font-medium text-gray-900 truncate"><%= conversation.title %></p>
+                <% if conversation.last_message %>
+                  <p class="text-xs text-gray-400 truncate mt-0.5"><%= conversation.last_message.content.truncate(80) %></p>
+                <% end %>
+              </div>
+              <span class="text-xs text-gray-400 ml-4 shrink-0"><%= time_ago_in_words(conversation.updated_at) %> ago</span>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>

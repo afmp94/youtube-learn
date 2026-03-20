@@ -1,0 +1,57 @@
+<%# Rendered via Turbo Stream broadcasts to "user_#{user.id}_content" targeting "content_generation_status" %>
+<%# Locals: status (string: "generating", "complete", "failed"), platform (string), content_format (string), content_piece (optional), error_message (optional) %>
+
+<% status ||= "generating" %>
+<% platform ||= nil %>
+<% content_format ||= nil %>
+<% content_piece ||= nil %>
+<% error_message ||= nil %>
+
+<% case status %>
+<% when "generating" %>
+  <div class="bg-indigo-50 rounded-xl border border-indigo-100 p-4 flex items-center gap-3">
+    <svg class="w-5 h-5 text-indigo-500 animate-spin flex-shrink-0" fill="none" viewBox="0 0 24 24">
+      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
+    </svg>
+    <div>
+      <p class="text-sm font-medium text-indigo-800">
+        Generating your
+        <% if platform.present? %><%= platform.to_s.titleize %><% end %>
+        <% if content_format.present? %><%= content_format.to_s.titleize %><% end %>...
+      </p>
+      <p class="text-xs text-indigo-600 mt-0.5">This usually takes 15-30 seconds.</p>
+    </div>
+  </div>
+
+<% when "complete" %>
+  <div class="bg-green-50 rounded-xl border border-green-100 p-4 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <svg class="w-5 h-5 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+      </svg>
+      <p class="text-sm font-medium text-green-800">Content generated successfully!</p>
+    </div>
+    <% if content_piece.present? %>
+      <%= link_to "View Content", content_piece_path(content_piece),
+          class: "inline-flex items-center px-3 py-1.5 border border-green-200 text-sm font-medium rounded-lg text-green-700 bg-white hover:bg-green-50 transition-colors" %>
+    <% end %>
+  </div>
+
+<% when "failed" %>
+  <div class="bg-red-50 rounded-xl border border-red-100 p-4 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <svg class="w-5 h-5 text-red-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+      </svg>
+      <div>
+        <p class="text-sm font-medium text-red-800">Content generation failed.</p>
+        <% if error_message.present? %>
+          <p class="text-xs text-red-600 mt-0.5"><%= error_message %></p>
+        <% end %>
+      </div>
+    </div>
+    <%= link_to "Try Again", new_content_piece_path,
+        class: "inline-flex items-center px-3 py-1.5 border border-red-200 text-sm font-medium rounded-lg text-red-700 bg-white hover:bg-red-50 transition-colors" %>
+  </div>
+<% end %>

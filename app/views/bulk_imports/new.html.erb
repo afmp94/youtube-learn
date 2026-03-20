@@ -1,0 +1,84 @@
+<div class="max-w-2xl mx-auto">
+  <div class="mb-6">
+    <%= link_to bulk_imports_path, class: "inline-flex items-center text-sm text-gray-500 hover:text-gray-700" do %>
+      <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+      Back to Imports
+    <% end %>
+  </div>
+
+  <h1 class="text-2xl font-bold text-gray-900 mb-6">Import Playlist</h1>
+
+  <div class="bg-white shadow-sm rounded-lg border border-gray-200 p-6">
+    <%= form_with model: @bulk_import, url: bulk_imports_path, class: "space-y-6" do |f| %>
+      <% if @bulk_import.errors.any? %>
+        <div class="rounded-md bg-red-50 p-4">
+          <ul class="text-sm text-red-700 list-disc list-inside">
+            <% @bulk_import.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div>
+        <%= f.label :source_url, "Playlist URL", class: "block text-sm font-medium text-gray-700" %>
+        <%= f.url_field :source_url, required: true, autofocus: true,
+            placeholder: "https://www.youtube.com/playlist?list=PLxxxxxxx",
+            class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-3 py-3 border text-base" %>
+        <p class="mt-2 text-sm text-gray-500">Paste a YouTube playlist URL to import all videos at once.</p>
+        <div class="mt-2 space-y-1">
+          <p class="text-xs text-gray-400">Examples:</p>
+          <p class="text-xs text-gray-400 font-mono">https://www.youtube.com/playlist?list=PLrAXtmErZgOeiKm4sgNOknGvNjby9efdf</p>
+          <p class="text-xs text-gray-400 font-mono">https://www.youtube.com/watch?v=dQw4w9&list=PLxxxxxxx</p>
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-3">Import Type</label>
+        <div class="grid grid-cols-2 gap-4">
+          <label class="relative flex cursor-pointer rounded-lg border border-gray-300 bg-white p-4 shadow-sm hover:border-indigo-400 focus-within:ring-2 focus-within:ring-indigo-500">
+            <%= f.radio_button :import_type, "playlist", checked: true, class: "sr-only" %>
+            <div class="flex items-center">
+              <svg class="w-6 h-6 text-indigo-600 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
+              </svg>
+              <div>
+                <span class="block text-sm font-medium text-gray-900">Playlist</span>
+                <span class="block text-xs text-gray-500 mt-0.5">Import from a playlist URL</span>
+              </div>
+            </div>
+            <div class="pointer-events-none absolute -inset-px rounded-lg border-2 border-transparent peer-checked:border-indigo-600" aria-hidden="true"></div>
+          </label>
+
+          <label class="relative flex cursor-pointer rounded-lg border border-gray-300 bg-white p-4 shadow-sm hover:border-indigo-400 focus-within:ring-2 focus-within:ring-indigo-500">
+            <%= f.radio_button :import_type, "channel_import", class: "sr-only" %>
+            <div class="flex items-center">
+              <svg class="w-6 h-6 text-blue-600 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+              </svg>
+              <div>
+                <span class="block text-sm font-medium text-gray-900">Channel</span>
+                <span class="block text-xs text-gray-500 mt-0.5">Import from a channel URL</span>
+              </div>
+            </div>
+            <div class="pointer-events-none absolute -inset-px rounded-lg border-2 border-transparent peer-checked:border-indigo-600" aria-hidden="true"></div>
+          </label>
+        </div>
+      </div>
+
+      <div class="bg-amber-50 border border-amber-200 rounded-md p-4">
+        <div class="flex">
+          <svg class="w-5 h-5 text-amber-400 mr-2 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+          </svg>
+          <div class="text-sm text-amber-700">
+            <p class="font-medium">Heads up</p>
+            <p class="mt-1">Each video will be processed individually. This may take a while for large playlists. You can track progress on the next page.</p>
+          </div>
+        </div>
+      </div>
+
+      <%= f.submit "Start Import", class: "w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer" %>
+    <% end %>
+  </div>
+</div>

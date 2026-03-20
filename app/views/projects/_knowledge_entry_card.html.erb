@@ -1,0 +1,35 @@
+<%
+  type_colors = {
+    "note"        => "bg-blue-100 text-blue-700",
+    "article"     => "bg-purple-100 text-purple-700",
+    "link"        => "bg-sky-100 text-sky-700",
+    "file_upload" => "bg-amber-100 text-amber-700",
+    "idea"        => "bg-emerald-100 text-emerald-700"
+  }
+  type_labels = {
+    "note"        => "Note",
+    "article"     => "Article",
+    "link"        => "Link",
+    "file_upload" => "File",
+    "idea"        => "Idea"
+  }
+  badge_class = type_colors[knowledge_entry.entry_type] || "bg-gray-100 text-gray-700"
+  badge_label = type_labels[knowledge_entry.entry_type] || knowledge_entry.entry_type.humanize
+%>
+<%= link_to project_knowledge_entry_path(project, knowledge_entry), class: "block bg-white rounded-lg shadow-sm border border-gray-200 p-4 hover:shadow-md transition-shadow" do %>
+  <div class="flex items-start justify-between">
+    <div class="flex-1 min-w-0">
+      <div class="flex items-center space-x-2 mb-1.5">
+        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium <%= badge_class %>">
+          <%= badge_label %>
+        </span>
+        <span class="text-xs text-gray-400"><%= knowledge_entry.created_at.strftime("%b %d, %Y") %></span>
+      </div>
+      <h4 class="text-sm font-semibold text-gray-900 line-clamp-1"><%= knowledge_entry.title %></h4>
+      <% if knowledge_entry.body.present? %>
+        <p class="mt-1 text-xs text-gray-500 line-clamp-2"><%= truncate(knowledge_entry.body, length: 180) %></p>
+      <% end %>
+    </div>
+    <svg class="w-4 h-4 text-gray-400 ml-3 mt-1 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+  </div>
+<% end %>

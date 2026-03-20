@@ -1,0 +1,95 @@
+<%= turbo_stream_from "bulk_import_#{@bulk_import.id}" %>
+
+<div class="space-y-6">
+  <!-- Breadcrumb -->
+  <nav class="flex items-center space-x-2 text-sm text-gray-500">
+    <%= link_to "Imports", bulk_imports_path, class: "hover:text-gray-700" %>
+    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg>
+    <span class="text-gray-900 font-medium"><%= @bulk_import.title.presence || "Playlist Import" %></span>
+  </nav>
+
+  <!-- Header -->
+  <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+    <div class="flex items-start justify-between">
+      <div>
+        <h1 class="text-2xl font-bold text-gray-900">
+          <%= @bulk_import.title.presence || "Playlist Import" %>
+        </h1>
+        <p class="mt-1 text-sm text-gray-500 break-all"><%= @bulk_import.source_url %></p>
+      </div>
+      <div class="flex items-center space-x-2 flex-shrink-0 ml-4">
+        <span class="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium
+          <%= @bulk_import.playlist? ? 'bg-purple-100 text-purple-700' : 'bg-blue-100 text-blue-700' %>">
+          <%= @bulk_import.playlist? ? 'Playlist' : 'Channel' %>
+        </span>
+        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+          <%= case @bulk_import.status
+              when 'pending' then 'bg-gray-100 text-gray-700'
+              when 'extracting_urls' then 'bg-yellow-100 text-yellow-700'
+              when 'processing' then 'bg-blue-100 text-blue-700'
+              when 'completed' then 'bg-green-100 text-green-700'
+              when 'failed' then 'bg-red-100 text-red-700'
+              end %>">
+          <%= case @bulk_import.status
+              when 'pending' then 'Pending'
+              when 'extracting_urls' then 'Discovering Videos'
+              when 'processing' then 'Processing'
+              when 'completed' then 'Completed'
+              when 'failed' then 'Failed'
+              end %>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Progress Section -->
+  <div id="import_progress">
+    <%= render "bulk_imports/progress", bulk_import: @bulk_import %>
+  </div>
+
+  <!-- Video List -->
+  <% if @video_learnings.any? %>
+    <div>
+      <h2 class="text-lg font-semibold text-gray-900 mb-4">Imported Videos (<%= @video_learnings.size %>)</h2>
+      <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden divide-y divide-gray-200">
+        <% @video_learnings.each do |vl| %>
+          <%= link_to video_learning_path(vl), class: "flex items-center p-4 hover:bg-gray-50 transition-colors" do %>
+            <% if vl.thumbnail_url.present? %>
+              <div class="w-20 h-12 rounded overflow-hidden bg-gray-100 flex-shrink-0 mr-4">
+                <img src="<%= vl.thumbnail_url %>" alt="" class="w-full h-full object-cover">
+              </div>
+            <% else %>
+              <div class="w-20 h-12 rounded bg-gray-100 flex-shrink-0 mr-4 flex items-center justify-center">
+                <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+              </div>
+            <% end %>
+
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-medium text-gray-900 truncate"><%= vl.title || "Processing..." %></p>
+              <% if vl.channel_name.present? %>
+                <p class="text-xs text-gray-500 mt-0.5"><%= vl.channel_name %></p>
+              <% end %>
+            </div>
+
+            <div class="flex-shrink-0 ml-4">
+              <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium
+                <%= case vl.status
+                    when 'pending' then 'bg-gray-100 text-gray-600'
+                    when 'extracting' then 'bg-yellow-100 text-yellow-700'
+                    when 'analyzing' then 'bg-blue-100 text-blue-700'
+                    when 'completed' then 'bg-green-100 text-green-700'
+                    when 'failed' then 'bg-red-100 text-red-700'
+                    end %>">
+                <%= vl.status.capitalize %>
+              </span>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  <% elsif @bulk_import.completed? && @video_learnings.empty? %>
+    <div class="text-center py-8 bg-white rounded-lg border border-gray-200">
+      <p class="text-sm text-gray-500">All videos in this playlist were already in your library.</p>
+    </div>
+  <% end %>
+</div>

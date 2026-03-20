@@ -1,0 +1,168 @@
+<div class="space-y-8">
+  <!-- Breadcrumb -->
+  <div class="flex items-center space-x-3">
+    <%= link_to "Experts", channels_path, class: "text-sm text-gray-500 hover:text-gray-700" %>
+    <span class="text-gray-400">/</span>
+    <span class="text-sm text-gray-900 font-medium"><%= @channel.name %></span>
+  </div>
+
+  <!-- Expert Profile Header -->
+  <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+    <div class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 h-24"></div>
+    <div class="px-6 pb-6">
+      <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between -mt-10">
+        <div class="flex items-end space-x-4">
+          <!-- Avatar -->
+          <% if @channel.thumbnail_url.present? %>
+            <div class="flex-shrink-0">
+              <img src="<%= @channel.thumbnail_url %>" alt="<%= @channel.name %>"
+                   class="w-20 h-20 rounded-full object-cover ring-4 ring-white shadow-lg">
+            </div>
+          <% else %>
+            <div class="flex-shrink-0 w-20 h-20 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center ring-4 ring-white shadow-lg">
+              <span class="text-white font-bold text-xl"><%= @channel.name.first(2).upcase %></span>
+            </div>
+          <% end %>
+
+          <div class="pb-1">
+            <h1 class="text-2xl font-bold text-gray-900"><%= @channel.name %></h1>
+            <% if @channel.description.present? %>
+              <p class="mt-1 text-sm text-gray-600"><%= @channel.description %></p>
+            <% end %>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="mt-4 sm:mt-0 flex flex-wrap items-center gap-2">
+          <% if @channel.video_learnings.completed.any? %>
+            <%= link_to new_content_piece_path(video_learning_ids: @channel.video_learnings.completed.pluck(:id)),
+                class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 transition-colors" do %>
+              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+              Generate Content
+            <% end %>
+          <% end %>
+          <%= link_to edit_channel_path(@channel),
+              class: "inline-flex items-center px-3 py-2 border border-gray-200 text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition-colors" do %>
+            <svg class="w-4 h-4 mr-1.5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
+            Edit
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats Row -->
+    <div class="border-t border-gray-200 bg-gray-50/50 px-6 py-4">
+      <div class="flex items-center space-x-8">
+        <div class="text-center">
+          <span class="block text-xl font-bold text-gray-900"><%= @channel.video_count %></span>
+          <span class="text-xs text-gray-500">Videos</span>
+        </div>
+        <div class="text-center">
+          <span class="block text-xl font-bold text-green-600"><%= @channel.completed_video_count %></span>
+          <span class="text-xs text-gray-500">Completed</span>
+        </div>
+        <div class="text-center">
+          <span class="block text-xl font-bold text-purple-600"><%= @top_concepts.size %></span>
+          <span class="text-xs text-gray-500">Concepts</span>
+        </div>
+        <div class="text-center">
+          <span class="block text-xl font-bold text-amber-600"><%= @key_takeaways.size %></span>
+          <span class="text-xs text-gray-500">Takeaways</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notes Section -->
+  <% if @channel.notes.present? %>
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+      <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center">
+          <div class="w-8 h-8 rounded-lg bg-amber-100 flex items-center justify-center mr-3">
+            <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+          </div>
+          <h2 class="text-lg font-bold text-gray-900">Your Notes</h2>
+        </div>
+        <%= link_to edit_channel_path(@channel), class: "text-sm text-indigo-600 hover:text-indigo-500" do %>
+          Edit notes
+        <% end %>
+      </div>
+      <div class="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap"><%= @channel.notes %></div>
+    </div>
+  <% end %>
+
+  <!-- Top Concepts -->
+  <% if @top_concepts.any? %>
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+      <div class="flex items-center mb-6">
+        <div class="w-8 h-8 rounded-lg bg-purple-100 flex items-center justify-center mr-3">
+          <svg class="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
+        </div>
+        <h2 class="text-lg font-bold text-gray-900">Top Concepts</h2>
+        <span class="ml-2 inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-600"><%= @top_concepts.size %></span>
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <% max_count = @top_concepts.map { |c| c[:count] }.max || 1 %>
+        <% @top_concepts.each do |concept| %>
+          <% intensity = (concept[:count].to_f / max_count * 100).round %>
+          <span class="inline-flex items-center px-3 py-1.5 rounded-lg text-sm font-medium transition-colors
+            <%= if intensity > 66
+                  'bg-purple-100 text-purple-800 border border-purple-200'
+                elsif intensity > 33
+                  'bg-indigo-50 text-indigo-700 border border-indigo-100'
+                else
+                  'bg-gray-100 text-gray-700 border border-gray-200'
+                end %>">
+            <%= concept[:name] %>
+            <span class="ml-1.5 inline-flex items-center justify-center w-5 h-5 rounded-full bg-white/60 text-xs font-bold">
+              <%= concept[:count] %>
+            </span>
+          </span>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <!-- Key Takeaways (aggregated) -->
+  <% if @key_takeaways.any? %>
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+      <div class="flex items-center mb-6">
+        <div class="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center mr-3">
+          <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+        </div>
+        <h2 class="text-lg font-bold text-gray-900">Key Takeaways</h2>
+        <span class="ml-2 inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-600"><%= @key_takeaways.size %></span>
+      </div>
+      <div class="space-y-3">
+        <% @key_takeaways.each_with_index do |takeaway, i| %>
+          <div class="flex items-start group">
+            <span class="flex-shrink-0 w-7 h-7 rounded-full bg-emerald-100 text-emerald-700 text-xs font-bold flex items-center justify-center mr-3 mt-0.5 group-hover:bg-emerald-200 transition-colors">
+              <%= i + 1 %>
+            </span>
+            <p class="text-sm text-gray-700 leading-relaxed"><%= takeaway %></p>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <!-- Videos from this Expert -->
+  <div>
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-lg font-semibold text-gray-900">Videos</h2>
+      <span class="text-sm text-gray-500"><%= @video_learnings.size %> <%= "video".pluralize(@video_learnings.size) %></span>
+    </div>
+
+    <% if @video_learnings.any? %>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <% @video_learnings.each do |vl| %>
+          <%= render "video_learnings/card", video_learning: vl %>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="text-center py-12 bg-white rounded-lg border border-gray-200">
+        <p class="text-sm text-gray-500">No videos from this expert yet.</p>
+      </div>
+    <% end %>
+  </div>
+</div>
