@@ -1,7 +1,7 @@
 class ProcessVideoJob < ApplicationJob
   queue_as :default
 
-  def perform(video_learning_id)
+  def perform(video_learning_id, skip_frames: false)
     vl = VideoLearning.find(video_learning_id)
 
     begin
@@ -13,9 +13,11 @@ class ProcessVideoJob < ApplicationJob
       Videos::TranscriptExtractor.new(vl).call
       update_progress(vl, :extracting, 30, "Transcript extracted")
 
-      update_progress(vl, :extracting, 35, "Downloading video and extracting frames...")
-      Videos::FrameExtractor.new(vl).call
-      update_progress(vl, :extracting, 60, "Frames extracted")
+      unless skip_frames
+        update_progress(vl, :extracting, 35, "Downloading video and extracting frames...")
+        Videos::FrameExtractor.new(vl).call
+        update_progress(vl, :extracting, 60, "Frames extracted")
+      end
 
       update_progress(vl, :analyzing, 70, "Analyzing with Claude AI...")
       Videos::ClaudeAnalyzer.new(vl).call
