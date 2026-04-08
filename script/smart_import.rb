@@ -1,15 +1,18 @@
 #!/usr/bin/env ruby
-# Smart cross-channel importer
-# Discovers videos from multiple channels, interleaves them (recent first),
-# and processes one at a time with delays to avoid YouTube rate limiting.
+# Smart cross-channel importer — Phase 1: Records + Transcripts
+# Creates VideoLearning records and extracts transcripts via youtube-transcript-rb.
+# NO yt-dlp needed (avoids YouTube bot detection).
+# Claude analysis handled separately by Claude Code agents.
 #
 # Usage: bin/rails runner script/smart_import.rb
 #
-# Set DELAY_SECONDS env var to control delay between videos (default: 15)
-# Set SKIP_DISCOVERY=1 to skip yt-dlp discovery and use cached video_urls from DB
+# ENV options:
+#   DELAY_SECONDS=5    Delay between videos (default 5)
+#   SKIP_DISCOVERY=1   Use cached video URLs only
+#   START_AT=100       Resume from video #100 in the queue
 
 CHANNELS = {
-  "My First Million"       => "https://www.youtube.com/@MyFirstMillion/videos",
+  "My First Million"       => "https://www.youtube.com/@MyFirstMillionPod/videos",
   "PBD Podcast"            => "https://www.youtube.com/@PBDPodcast/videos",
   "GaryVee"                => "https://www.youtube.com/@garyvee/videos",
   "Neil Patel"             => "https://www.youtube.com/@NeilPatel/videos",
@@ -20,65 +23,47 @@ CHANNELS = {
   "Matt Gray"              => "https://www.youtube.com/@realmattgray/videos"
 }.freeze
 
-DELAY_SECONDS = ENV.fetch("DELAY_SECONDS", 15).to_i
+DELAY_SECONDS = ENV.fetch("DELAY_SECONDS", 5).to_i
+START_AT = ENV.fetch("START_AT", 0).to_i
 user = User.first
 
-# ── Phase 1: Discover all video URLs from each channel ──
+# ── Load cached video lists ──
 puts "=" * 60
-puts "PHASE 1: Discovering videos from #{CHANNELS.size} channels"
+puts "Loading video lists from #{CHANNELS.size} channels"
 puts "=" * 60
 
 channel_videos = {}
 
 CHANNELS.each do |name, url|
-  puts "\n📡 #{name}: #{url}"
-
   cache_file = Rails.root.join("tmp", "import_cache_#{name.parameterize}.json")
 
-  if ENV["SKIP_DISCOVERY"] == "1" && File.exist?(cache_file)
+  if File.exist?(cache_file)
     videos = JSON.parse(File.read(cache_file))
-    puts "   Using cached #{videos.size} videos"
+    puts "  #{name}: #{videos.size} videos (cached)"
+    channel_videos[name] = videos
   else
-    begin
-      videos = Imports::PlaylistExtractor.new(url).call
-      # Cache the results
-      File.write(cache_file, videos.to_json)
-      puts "   Found #{videos.size} videos (cached to #{cache_file.basename})"
-    rescue => e
-      puts "   ❌ Failed: #{e.message}"
-      next
-    end
+    puts "  #{name}: NO CACHE — run discovery first"
   end
-
-  # yt-dlp returns most recent first by default, which is what we want
-  channel_videos[name] = videos
 end
 
-total_discovered = channel_videos.values.sum(&:size)
-puts "\n\nTotal discovered: #{total_discovered} videos across #{channel_videos.size} channels"
-
-# ── Phase 2: Filter out already-imported videos ──
-existing_ids = user.video_learnings.pluck(:youtube_video_id).to_set
-puts "Already imported: #{existing_ids.size} videos"
+# ── Filter already-imported ──
+existing_ids = user.video_learnings.pluck(:youtube_video_id).compact.to_set
 
 channel_videos.each do |name, videos|
   before = videos.size
   videos.reject! { |v| existing_ids.include?(v["id"]) }
-  skipped = before - videos.size
-  puts "  #{name}: #{videos.size} new (#{skipped} already imported)"
+  puts "  #{name}: #{videos.size} new" if before != videos.size
 end
 
 total_new = channel_videos.values.sum(&:size)
-puts "\nNew videos to import: #{total_new}"
+puts "\nNew videos to process: #{total_new}"
 
 if total_new == 0
   puts "Nothing to import!"
   exit
 end
 
-# ── Phase 3: Interleave round-robin (recent first per channel) ──
-# Each channel's list is already sorted recent-first from yt-dlp.
-# We round-robin across channels so we don't hammer one channel repeatedly.
+# ── Interleave round-robin (recent first per channel) ──
 queues = channel_videos.select { |_, v| v.any? }.map { |name, videos|
   videos.map { |v| v.merge("channel_hint" => name) }
 }
@@ -91,105 +76,94 @@ max_len.times do |i|
   end
 end
 
-puts "\nInterleaved queue: #{interleaved.size} videos"
-puts "Order preview (first 20):"
-interleaved.first(20).each_with_index do |v, i|
-  puts "  #{(i + 1).to_s.rjust(3)}. [#{v['channel_hint']}] #{v['title']&.truncate(60)}"
+# Support resuming
+if START_AT > 0
+  interleaved = interleaved[START_AT..]
+  puts "Resuming from position #{START_AT}"
 end
 
-# ── Phase 4: Process one at a time ──
-puts "\n#{'=' * 60}"
-puts "PHASE 4: Processing #{interleaved.size} videos (1 at a time, #{DELAY_SECONDS}s delay)"
-puts "=" * 60
+puts "Queue: #{interleaved.size} videos\n\n"
 
+# ── Process: create records + extract transcripts ──
 processed = 0
 failed = 0
 skipped = 0
+no_transcript = 0
+start_time = Time.current
 
 interleaved.each_with_index do |video_info, index|
   video_id = video_info["id"]
-  video_url = video_info["url"]
-  video_url = "https://www.youtube.com/watch?v=#{video_id}" if video_url.blank? || !video_url.start_with?("http")
   channel_hint = video_info["channel_hint"]
+  video_url = "https://www.youtube.com/watch?v=#{video_id}"
 
-  # Double-check for duplicates (in case another process imported it)
+  # Skip duplicates
   if user.video_learnings.exists?(youtube_video_id: video_id)
     skipped += 1
     next
   end
 
-  print "[#{index + 1}/#{interleaved.size}] [#{channel_hint}] #{video_info['title']&.truncate(50)}... "
+  print "[#{START_AT + index + 1}] [#{channel_hint}] #{video_info['title']&.truncate(50)}... "
 
   begin
+    # Create the record
     vl = user.video_learnings.create!(
       youtube_url: video_url,
       youtube_video_id: video_id,
-      title: video_info["title"]
+      title: video_info["title"],
+      channel_name: channel_hint,
+      status: :extracting
     )
 
-    # Process synchronously (not via job queue) — one at a time
+    # Extract transcript via gem (no yt-dlp)
     begin
-      Videos::MetadataExtractor.new(vl).call
-      Videos::TranscriptExtractor.new(vl).call
-      # Skip frame extraction — transcript-only for bulk import
-      Videos::ClaudeAnalyzer.new(vl).call
-
-      if vl.concepts.present?
-        suggested = vl.concepts.map { |c| c["name"] }.compact.first(5)
-        vl.tag_list = suggested if suggested.any?
+      transcript = YouTubeTranscript::Transcript.fetch(video_id)
+      segments = transcript.map do |seg|
+        { text: seg["text"], start: seg["start"], duration: seg["dur"] || seg["duration"] }
       end
-
-      Channels::AutoAssign.new(vl).call rescue nil
-
-      vl.update!(status: :completed, processing_progress: 100)
-
-      # Generate embedding inline
-      begin
-        text = Embeddings::VideoLearningEmbedder.new(vl).embeddable_text
-        embedding = Embeddings::Generator.new.generate(text)
-        vl.update_columns(embedding: embedding, embedding_generated_at: Time.current)
-      rescue => e
-        puts "(embedding failed: #{e.message})"
-      end
-
-      processed += 1
-      puts "✅"
-
-    rescue Videos::VideoUnavailableError => e
-      vl.update!(status: :failed, error_message: e.message)
-      failed += 1
-      puts "⏭️  unavailable"
-    rescue Videos::Error => e
-      vl.update!(status: :failed, error_message: e.message)
-      failed += 1
-      puts "❌ #{e.message.truncate(60)}"
+      vl.update!(
+        transcript_text: segments.map { |s| s[:text] }.join(" "),
+        transcript_data: segments,
+        processing_progress: 30
+      )
+      puts "ok (#{segments.size} segments)"
     rescue => e
-      vl.update!(status: :failed, error_message: "Unexpected: #{e.message}")
-      failed += 1
-      puts "❌ #{e.message.truncate(60)}"
+      vl.update!(processing_progress: 10)
+      no_transcript += 1
+      puts "ok (no transcript: #{e.message.truncate(40)})"
     end
 
-  rescue ActiveRecord::RecordInvalid => e
+    # Auto-assign channel
+    Channels::AutoAssign.new(vl).call rescue nil
+
+    processed += 1
+
+  rescue ActiveRecord::RecordInvalid
     skipped += 1
-    puts "⏭️  duplicate"
+    puts "duplicate"
+  rescue => e
+    failed += 1
+    puts "ERROR: #{e.message.truncate(60)}"
   end
 
-  # Delay between videos to avoid YouTube rate limiting
-  if index < interleaved.size - 1
-    sleep(DELAY_SECONDS + rand(5))
-  end
+  # Delay between videos
+  sleep(DELAY_SECONDS + rand(3)) if index < interleaved.size - 1
 
-  # Progress report every 50 videos
+  # Progress every 50
   if (index + 1) % 50 == 0
-    elapsed = Time.current
-    puts "\n--- Progress: #{processed} processed, #{failed} failed, #{skipped} skipped (#{index + 1}/#{interleaved.size}) ---\n"
+    elapsed = (Time.current - start_time).to_i
+    rate = processed > 0 ? (processed.to_f / elapsed * 3600).round(0) : 0
+    puts "\n--- #{processed} ok | #{failed} failed | #{no_transcript} no transcript | #{rate}/hr | #{(elapsed / 60.0).round(1)}min elapsed ---\n"
   end
 end
 
+elapsed = (Time.current - start_time).to_i
 puts "\n#{'=' * 60}"
-puts "COMPLETE!"
-puts "  Processed: #{processed}"
-puts "  Failed:    #{failed}"
-puts "  Skipped:   #{skipped}"
-puts "  Total:     #{interleaved.size}"
+puts "IMPORT COMPLETE (#{(elapsed / 60.0).round(1)} minutes)"
+puts "  Created with transcript: #{processed - no_transcript}"
+puts "  Created without transcript: #{no_transcript}"
+puts "  Failed:  #{failed}"
+puts "  Skipped: #{skipped}"
+puts ""
+awaiting = user.video_learnings.where(status: :extracting).count
+puts "Videos awaiting Claude analysis: #{awaiting}"
 puts "=" * 60
