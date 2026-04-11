@@ -1,0 +1,323 @@
+<% if status == :analyzing %>
+  <!-- Analyzing State -->
+  <div style="background: #0a0a0f; border: 1px solid #1e1e2e;" class="rounded-2xl p-8 flex flex-col items-center justify-center min-h-[520px]">
+    <div class="relative mb-8">
+      <div class="w-24 h-24 rounded-full animate-spin" style="border: 4px solid #1e1e2e; border-top-color: #818cf8;"></div>
+      <div class="absolute inset-0 flex items-center justify-center">
+        <svg class="w-10 h-10" style="color: #818cf8;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+        </svg>
+      </div>
+    </div>
+    <h3 class="text-lg font-bold mb-2" style="color: #e2e2ef;">Analyzing Virality Dimensions</h3>
+    <p class="text-sm" style="color: #6b6b80;">Scanning hook power, emotional resonance, shareability...</p>
+    <div class="flex space-x-1.5 mt-5">
+      <div class="w-2 h-2 rounded-full animate-bounce" style="background: #818cf8; animation-delay: 0ms"></div>
+      <div class="w-2 h-2 rounded-full animate-bounce" style="background: #818cf8; animation-delay: 150ms"></div>
+      <div class="w-2 h-2 rounded-full animate-bounce" style="background: #818cf8; animation-delay: 300ms"></div>
+    </div>
+  </div>
+
+<% elsif status == :completed %>
+  <!-- Completed State: Full TRIBE-inspired Visualization -->
+  <div style="background: linear-gradient(180deg, #08080f 0%, #0d0d18 100%); border: 1px solid #1a1a2e;"
+       class="rounded-2xl overflow-hidden"
+       data-controller="virality-radar"
+       data-virality-radar-scores-value='<%= analysis.dimension_scores.to_json %>'
+       data-virality-radar-overall-value="<%= analysis.overall_score %>">
+
+    <!-- Top bar -->
+    <div class="flex items-center justify-between px-6 py-4" style="border-bottom: 1px solid #1a1a2e;">
+      <div class="flex items-center space-x-3">
+        <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background: rgba(129,140,248,0.15);">
+          <svg class="w-4 h-4" style="color: #818cf8;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+          </svg>
+        </div>
+        <div>
+          <h3 class="text-sm font-bold" style="color: #e2e2ef;"><%= analysis.title&.truncate(45) %></h3>
+          <span class="text-xs" style="color: #6b6b80;"><%= analysis.input_type_label %><% if analysis.target_platform.present? %> &middot; <%= analysis.target_platform.titleize %><% end %></span>
+        </div>
+      </div>
+      <%= link_to virality_analysis_path(analysis), class: "text-xs font-medium px-3 py-1.5 rounded-lg transition-colors", style: "color: #818cf8; background: rgba(129,140,248,0.1);" do %>
+        Full Details &rarr;
+      <% end %>
+    </div>
+
+    <!-- Score + Radar Section -->
+    <div class="px-6 py-8">
+      <div class="flex flex-col items-center space-y-2">
+
+        <!-- Overall Score Ring -->
+        <div class="relative w-32 h-32 mb-2">
+          <div data-virality-radar-target="scoreRing"
+               class="w-32 h-32 rounded-full flex items-center justify-center"
+               style="background: conic-gradient(rgba(255,255,255,0.06) 0deg, rgba(255,255,255,0.06) 360deg);">
+            <div class="w-[116px] h-[116px] rounded-full flex items-center justify-center" style="background: #0a0a0f;">
+              <div class="text-center">
+                <span data-virality-radar-target="scoreNumber" class="text-4xl font-black tabular-nums" style="color: <%= analysis.overall_score >= 70 ? '#34d399' : analysis.overall_score >= 40 ? '#fbbf24' : '#f87171' %>;">0</span>
+                <div class="text-xs font-medium" style="color: #4a4a5c;">/100</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SVG Radar Chart -->
+        <svg data-virality-radar-target="radar" viewBox="0 0 400 400" class="w-72 h-72 md:w-80 md:h-80">
+          <defs>
+            <filter id="glow-<%= analysis.id %>">
+              <feGaussianBlur stdDeviation="6" result="blur"/>
+              <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+            </filter>
+            <linearGradient id="radarFill-<%= analysis.id %>" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#818cf8" stop-opacity="0.25"/>
+              <stop offset="100%" stop-color="#c084fc" stop-opacity="0.08"/>
+            </linearGradient>
+          </defs>
+
+          <!-- Grid rings -->
+          <% [50, 100, 150].each_with_index do |radius, ri| %>
+            <polygon points="<%= 8.times.map { |i| angle = i * Math::PI * 2 / 8 - Math::PI / 2; "#{200 + radius * Math.cos(angle)},#{200 + radius * Math.sin(angle)}" }.join(' ') %>"
+                     fill="none" stroke="#1e1e2e" stroke-width="<%= ri == 2 ? '1' : '0.5' %>"/>
+          <% end %>
+
+          <!-- Axis lines -->
+          <% 8.times do |i| %>
+            <% angle = i * Math::PI * 2 / 8 - Math::PI / 2 %>
+            <line x1="200" y1="200"
+                  x2="<%= 200 + 150 * Math.cos(angle) %>" y2="<%= 200 + 150 * Math.sin(angle) %>"
+                  stroke="#1e1e2e" stroke-width="0.5"/>
+          <% end %>
+
+          <!-- Data polygon -->
+          <polygon data-radar-polygon
+                   points="200,200 200,200 200,200 200,200 200,200 200,200 200,200 200,200"
+                   fill="url(#radarFill-<%= analysis.id %>)" stroke="#818cf8" stroke-width="2"
+                   filter="url(#glow-<%= analysis.id %>)"/>
+
+          <!-- Dimension dots -->
+          <% ViralityAnalysis::DIMENSIONS.each do |dim| %>
+            <circle data-dot="<%= dim %>" cx="200" cy="200" r="5"
+                    fill="<%= ViralityAnalysis::DIMENSION_HEX_COLORS[dim] %>" opacity="0"
+                    filter="url(#glow-<%= analysis.id %>)"/>
+          <% end %>
+
+          <!-- Dimension labels -->
+          <% ViralityAnalysis::DIMENSIONS.each_with_index do |dim, i| %>
+            <% angle = i * Math::PI * 2 / 8 - Math::PI / 2 %>
+            <% lx = 200 + 185 * Math.cos(angle) %>
+            <% ly = 200 + 185 * Math.sin(angle) %>
+            <text x="<%= lx %>" y="<%= ly %>"
+                  text-anchor="middle" dominant-baseline="middle"
+                  fill="#6b6b80" font-size="9" font-weight="600" font-family="system-ui, sans-serif">
+              <%= ViralityAnalysis::DIMENSION_LABELS[dim].upcase %>
+            </text>
+          <% end %>
+        </svg>
+      </div>
+
+      <!-- Overall Assessment -->
+      <% if analysis.overall_assessment.present? %>
+        <p class="text-sm text-center leading-relaxed max-w-lg mx-auto mt-4" style="color: #8b8ba0;">
+          <%= analysis.overall_assessment %>
+        </p>
+      <% end %>
+    </div>
+
+    <!-- Dimension Breakdown Grid -->
+    <div class="px-6 pb-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <% ViralityAnalysis::DIMENSIONS.each do |dim| %>
+          <% details = analysis.dimension_details[dim] || {} %>
+          <% score = details["score"] || analysis.dimension_scores[dim] || 0 %>
+          <% hex = ViralityAnalysis::DIMENSION_HEX_COLORS[dim] %>
+          <div class="rounded-xl p-4" style="background: #111119; border: 1px solid #1a1a2e;">
+            <!-- Header row: icon + label + score -->
+            <div class="flex items-center justify-between mb-3">
+              <div class="flex items-center space-x-2.5">
+                <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style="background: <%= hex %>15;">
+                  <svg class="w-4 h-4" style="color: <%= hex %>;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="<%= ViralityAnalysis::DIMENSION_ICONS[dim] %>"/>
+                  </svg>
+                </div>
+                <span class="text-sm font-bold" style="color: #c8c8d8;"><%= ViralityAnalysis::DIMENSION_LABELS[dim] %></span>
+              </div>
+              <span class="text-2xl font-black tabular-nums" style="color: <%= hex %>;"><%= score %></span>
+            </div>
+            <!-- Progress bar -->
+            <div class="h-1.5 rounded-full overflow-hidden mb-3" style="background: #1a1a2e;">
+              <div data-virality-radar-target="dimensionBar" data-dimension="<%= dim %>"
+                   class="h-full rounded-full transition-all duration-1000 ease-out"
+                   style="width: 0%; background: <%= hex %>;"></div>
+            </div>
+            <!-- Summary -->
+            <% if details["summary"].present? %>
+              <p class="text-sm leading-relaxed mb-2" style="color: #8b8ba0;"><%= details["summary"] %></p>
+            <% end %>
+            <!-- Suggestion -->
+            <% if details["suggestion"].present? %>
+              <div class="flex items-start space-x-2 mt-2 pt-2" style="border-top: 1px solid #1a1a2e;">
+                <svg class="w-3.5 h-3.5 mt-0.5 flex-shrink-0" style="color: <%= hex %>;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                </svg>
+                <p class="text-xs leading-relaxed" style="color: #6b6b80;"><%= details["suggestion"] %></p>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Strengths & Improvements -->
+    <div class="px-6 pb-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <% if analysis.strengths.present? %>
+          <div class="rounded-xl p-4" style="background: rgba(16, 185, 129, 0.06); border: 1px solid rgba(16, 185, 129, 0.15);">
+            <h4 class="text-xs font-bold uppercase tracking-wider mb-3 flex items-center" style="color: #34d399;">
+              <svg class="w-3.5 h-3.5 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+              </svg>
+              Strengths
+            </h4>
+            <ul class="space-y-2">
+              <% analysis.strengths.split("\n").each do |strength| %>
+                <li class="text-xs flex items-start" style="color: #8b8ba0;">
+                  <span style="color: #34d399;" class="mr-2 mt-0.5 flex-shrink-0">&bull;</span>
+                  <%= strength %>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        <% if analysis.improvements.present? %>
+          <div class="rounded-xl p-4" style="background: rgba(251, 191, 36, 0.06); border: 1px solid rgba(251, 191, 36, 0.12);">
+            <h4 class="text-xs font-bold uppercase tracking-wider mb-3 flex items-center" style="color: #fbbf24;">
+              <svg class="w-3.5 h-3.5 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+              </svg>
+              Improvements
+            </h4>
+            <ul class="space-y-2">
+              <% analysis.improvements.split("\n").each do |improvement| %>
+                <li class="text-xs flex items-start" style="color: #8b8ba0;">
+                  <span style="color: #fbbf24;" class="mr-2 mt-0.5 flex-shrink-0">&bull;</span>
+                  <%= improvement %>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Brain Insights Section (TRIBE v2) -->
+    <% if analysis.brain_available? %>
+      <div class="px-6 pb-6" data-controller="brain-viewer">
+        <div class="rounded-xl overflow-hidden" style="background: #0e0e1a; border: 1px solid #1a1a2e;">
+          <!-- Header -->
+          <div class="px-5 py-4 flex items-center justify-between" style="border-bottom: 1px solid #1a1a2e;">
+            <div class="flex items-center space-x-3">
+              <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background: rgba(168, 85, 247, 0.15);">
+                <svg class="w-4 h-4" style="color: #a855f7;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                </svg>
+              </div>
+              <div>
+                <h4 class="text-sm font-bold" style="color: #e2e2ef;">Neuroscience Insights</h4>
+                <span class="text-xs" style="color: #6b6b80;">Powered by TRIBE v2 &middot; Brain Encoding Model</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Brain Images -->
+          <% if analysis.brain_images.attached? %>
+            <div class="px-5 py-4" style="border-bottom: 1px solid #1a1a2e;">
+              <!-- View tabs -->
+              <div class="flex space-x-1 mb-3 p-0.5 rounded-lg" style="background: #151520;">
+                <% %w[left right medial dorsal].each_with_index do |view, i| %>
+                  <button data-brain-viewer-target="tab" data-action="click->brain-viewer#selectView"
+                          data-view="<%= view %>"
+                          class="flex-1 text-xs font-medium py-1.5 px-2 rounded-md transition-colors <%= i == 0 ? 'text-white' : '' %>"
+                          style="<%= i == 0 ? 'background: #1e1e2e; color: #e2e2ef;' : 'color: #6b6b80;' %>">
+                    <%= view.capitalize %>
+                  </button>
+                <% end %>
+              </div>
+              <!-- Image display -->
+              <div class="relative rounded-lg overflow-hidden" style="background: #0d0d18;">
+                <% analysis.brain_images.each do |image| %>
+                  <% view_name = image.filename.to_s.gsub("brain_", "").gsub(".png", "") %>
+                  <img data-brain-viewer-target="image" data-view="<%= view_name %>"
+                       src="<%= url_for(image) %>"
+                       class="w-full h-auto <%= view_name == 'left' ? '' : 'hidden' %>"
+                       alt="Brain activation - <%= view_name %> view">
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+
+          <!-- Region Cluster Cards -->
+          <div class="px-5 py-4">
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-2.5">
+              <% ViralityAnalysis::BRAIN_REGION_CLUSTERS.each do |cluster_id, cluster_info| %>
+                <% cluster_data = analysis.brain_region_clusters[cluster_id] || {} %>
+                <% brain_score = cluster_data["score"] || 0 %>
+                <% corr = analysis.brain_dimension_correlations[cluster_info[:dimension]] || {} %>
+                <div class="rounded-lg p-3" style="background: #111119; border: 1px solid #1a1a2e;">
+                  <div class="flex items-center space-x-2 mb-2">
+                    <svg class="w-3.5 h-3.5 flex-shrink-0" style="color: <%= cluster_info[:color] %>;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="<%= cluster_info[:icon] %>"/>
+                    </svg>
+                    <span class="text-xs font-semibold truncate" style="color: #c8c8d8;"><%= cluster_info[:label] %></span>
+                  </div>
+                  <!-- Score bar -->
+                  <div class="flex items-center space-x-2 mb-1.5">
+                    <div class="flex-1 h-1 rounded-full overflow-hidden" style="background: #1a1a2e;">
+                      <div data-brain-viewer-target="bar" class="h-full rounded-full transition-all duration-1000 ease-out"
+                           style="width: 0%; background: <%= cluster_info[:color] %>;"
+                           data-score="<%= brain_score %>"></div>
+                    </div>
+                    <span class="text-xs font-bold tabular-nums" style="color: <%= cluster_info[:color] %>;"><%= brain_score %></span>
+                  </div>
+                  <!-- Insight -->
+                  <% if corr["insight"].present? %>
+                    <p class="text-[10px] leading-tight" style="color: #6b6b80;"><%= corr["insight"] %></p>
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+
+          <!-- Top Active Regions -->
+          <% if analysis.brain_top_regions.any? %>
+            <div class="px-5 pb-4">
+              <div class="flex flex-wrap gap-1.5">
+                <span class="text-[10px] font-bold uppercase tracking-wider" style="color: #4a4a5c;">Top Regions:</span>
+                <% analysis.brain_top_regions.first(5).each do |region| %>
+                  <span class="text-[10px] px-2 py-0.5 rounded-full" style="background: rgba(168, 85, 247, 0.1); color: #a78bfa;"><%= region %></span>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+<% elsif status == :failed %>
+  <!-- Failed State -->
+  <div style="background: #0a0a0f; border: 1px solid #1e1e2e;" class="rounded-2xl p-8 flex flex-col items-center justify-center min-h-[500px]">
+    <div class="w-16 h-16 rounded-full flex items-center justify-center mb-4" style="background: rgba(248, 113, 113, 0.1);">
+      <svg class="w-8 h-8" style="color: #f87171;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"/>
+      </svg>
+    </div>
+    <h3 class="text-lg font-bold mb-2" style="color: #e2e2ef;">Analysis Failed</h3>
+    <p class="text-sm mb-6" style="color: #6b6b80;"><%= analysis.error_message %></p>
+    <%= link_to "Back to Lab", virality_analyses_path, class: "inline-flex items-center px-5 py-2.5 font-medium rounded-lg text-sm transition-colors", style: "color: #e2e2ef; background: #1e1e2e;" %>
+  </div>
+
+<% else %>
+  <%= render "virality_analyses/empty_state" %>
+<% end %>

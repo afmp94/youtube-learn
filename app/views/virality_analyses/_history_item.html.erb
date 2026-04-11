@@ -1,0 +1,38 @@
+<%= link_to virality_analysis_path(analysis), class: "flex items-center justify-between px-4 py-3 hover:bg-gray-50 transition-colors" do %>
+  <div class="flex items-center space-x-3 min-w-0">
+    <div class="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center flex-shrink-0">
+      <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="<%= analysis.input_type_icon %>"/>
+      </svg>
+    </div>
+    <div class="min-w-0">
+      <p class="text-sm font-medium text-gray-900 truncate"><%= analysis.title.presence || analysis.excerpt %></p>
+      <p class="text-xs text-gray-500">
+        <%= analysis.input_type_label %>
+        <% if analysis.target_platform.present? %>
+          &middot; <%= analysis.target_platform.titleize %>
+        <% end %>
+        &middot; <%= time_ago_in_words(analysis.created_at) %> ago
+      </p>
+    </div>
+  </div>
+  <div class="flex items-center space-x-2 flex-shrink-0 ml-3">
+    <% if analysis.completed? && analysis.overall_score %>
+      <span class="inline-flex items-center px-2.5 py-1 rounded-full text-sm font-bold <%= analysis.score_bg_color %> <%= analysis.score_color %>">
+        <%= analysis.overall_score %>
+      </span>
+    <% elsif analysis.analyzing? %>
+      <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-100 text-indigo-700">
+        Analyzing...
+      </span>
+    <% elsif analysis.failed? %>
+      <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-700">
+        Failed
+      </span>
+    <% else %>
+      <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-500">
+        Pending
+      </span>
+    <% end %>
+  </div>
+<% end %>

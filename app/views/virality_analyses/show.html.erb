@@ -1,0 +1,99 @@
+<%= turbo_stream_from "user_#{Current.user.id}_virality" %>
+
+<% content_for(:title) { "Virality Analysis - #{@analysis.title}" } %>
+
+<div class="space-y-6">
+  <!-- Breadcrumb -->
+  <nav class="flex items-center space-x-2 text-sm">
+    <%= link_to "Virality Lab", virality_analyses_path, class: "text-gray-500 hover:text-gray-700" %>
+    <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+    </svg>
+    <span class="text-gray-900 font-medium"><%= @analysis.title&.truncate(50) %></span>
+  </nav>
+
+  <!-- Analysis Result -->
+  <div id="virality_result">
+    <%= render "virality_analyses/result", analysis: @analysis, status: @analysis.status.to_sym %>
+  </div>
+
+  <!-- Analyzed Content -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 space-y-4">
+    <div class="flex items-center justify-between">
+      <h3 class="text-lg font-bold text-gray-900">Analyzed Content</h3>
+      <div class="flex items-center space-x-2">
+        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-600">
+          <%= @analysis.input_type_label %>
+        </span>
+        <% if @analysis.target_platform.present? %>
+          <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-100 text-indigo-600">
+            <%= @analysis.target_platform.titleize %>
+          </span>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="prose prose-sm max-w-none text-gray-700">
+      <pre class="whitespace-pre-wrap text-sm bg-gray-50 rounded-lg p-4 border border-gray-100 font-sans"><%= @analysis.input_text %></pre>
+    </div>
+
+    <% if @analysis.analyzable.present? %>
+      <div class="pt-2 border-t border-gray-100">
+        <p class="text-xs text-gray-500">
+          Source:
+          <% if @analysis.analyzable_type == "ContentPiece" %>
+            <%= link_to @analysis.analyzable.title.presence || "Content piece", content_piece_path(@analysis.analyzable), class: "text-indigo-600 hover:text-indigo-700" %>
+          <% elsif @analysis.analyzable_type == "VideoLearning" %>
+            <%= link_to @analysis.analyzable.title.presence || "Video learning", video_learning_path(@analysis.analyzable), class: "text-indigo-600 hover:text-indigo-700" %>
+          <% end %>
+        </p>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Dimension Details -->
+  <% if @analysis.completed? && @analysis.dimension_details.present? %>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 space-y-4">
+      <h3 class="text-lg font-bold text-gray-900">Dimension Details</h3>
+      <div class="space-y-4">
+        <% ViralityAnalysis::DIMENSIONS.each do |dim| %>
+          <% details = @analysis.dimension_details[dim] || {} %>
+          <% score = details["score"] || 0 %>
+          <% colors = ViralityAnalysis::DIMENSION_COLORS[dim] %>
+          <div class="border border-gray-100 rounded-lg p-4">
+            <div class="flex items-center justify-between mb-2">
+              <div class="flex items-center space-x-2">
+                <div class="w-7 h-7 rounded-md <%= colors[:bg] %> flex items-center justify-center">
+                  <svg class="w-4 h-4 <%= colors[:text] %>" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="<%= ViralityAnalysis::DIMENSION_ICONS[dim] %>"/>
+                  </svg>
+                </div>
+                <span class="text-sm font-semibold text-gray-900"><%= ViralityAnalysis::DIMENSION_LABELS[dim] %></span>
+              </div>
+              <span class="text-lg font-bold <%= colors[:text] %>"><%= score %></span>
+            </div>
+            <div class="w-full h-2 bg-gray-100 rounded-full overflow-hidden mb-3">
+              <div class="h-full rounded-full <%= colors[:bar] %>" style="width: <%= score %>%"></div>
+            </div>
+            <% if details["summary"].present? %>
+              <p class="text-sm text-gray-600 mb-1"><%= details["summary"] %></p>
+            <% end %>
+            <% if details["suggestion"].present? %>
+              <p class="text-sm text-gray-500 italic">
+                <span class="font-medium text-gray-600">Suggestion:</span> <%= details["suggestion"] %>
+              </p>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <!-- Actions -->
+  <div class="flex items-center justify-between">
+    <%= link_to "Back to Lab", virality_analyses_path, class: "text-sm text-gray-500 hover:text-gray-700" %>
+    <%= button_to "Delete Analysis", virality_analysis_path(@analysis), method: :delete,
+        data: { turbo_confirm: "Delete this analysis?" },
+        class: "text-sm text-red-500 hover:text-red-700" %>
+  </div>
+</div>

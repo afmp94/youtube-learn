@@ -10,6 +10,7 @@ class User < ApplicationRecord
   has_many :projects, dependent: :destroy
   has_many :knowledge_entries, dependent: :destroy
   has_many :api_keys, dependent: :destroy
+  has_many :virality_analyses, dependent: :destroy
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
 

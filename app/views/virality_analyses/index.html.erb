@@ -1,0 +1,205 @@
+<%= turbo_stream_from "user_#{Current.user.id}_virality" %>
+
+<% content_for(:title) { "Virality Lab" } %>
+
+<div class="space-y-8">
+  <!-- Header -->
+  <div class="flex items-center justify-between">
+    <div class="flex items-center space-x-3">
+      <div class="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center">
+        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+        </svg>
+      </div>
+      <div>
+        <h1 class="text-2xl font-bold text-gray-900">Virality Lab</h1>
+        <p class="text-sm text-gray-500">Predict viral potential across 8 dimensions</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main two-panel layout -->
+  <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+
+    <!-- LEFT PANEL: Input Area (2/5 width) -->
+    <div class="lg:col-span-2 space-y-4" data-controller="virality-tabs">
+
+      <!-- Tab navigation -->
+      <div class="flex rounded-lg bg-gray-100 p-1">
+        <button type="button" data-virality-tabs-target="tab" data-tab="free_text" data-action="click->virality-tabs#select"
+                class="flex-1 text-xs font-medium py-2 px-2 rounded-md text-center transition-all bg-white shadow-sm text-indigo-700">
+          Free Text
+        </button>
+        <button type="button" data-virality-tabs-target="tab" data-tab="content_piece" data-action="click->virality-tabs#select"
+                class="flex-1 text-xs font-medium py-2 px-2 rounded-md text-center transition-all text-gray-500">
+          Content
+        </button>
+        <button type="button" data-virality-tabs-target="tab" data-tab="video_learning" data-action="click->virality-tabs#select"
+                class="flex-1 text-xs font-medium py-2 px-2 rounded-md text-center transition-all text-gray-500">
+          Video
+        </button>
+        <button type="button" data-virality-tabs-target="tab" data-tab="strategy" data-action="click->virality-tabs#select"
+                class="flex-1 text-xs font-medium py-2 px-2 rounded-md text-center transition-all text-gray-500">
+          Strategy
+        </button>
+      </div>
+
+      <!-- Tab panels -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+
+        <!-- Free Text Panel -->
+        <div data-virality-tabs-target="panel" data-tab="free_text">
+          <%= form_with url: virality_analyses_path, method: :post, class: "space-y-4" do |f| %>
+            <input type="hidden" name="input_type" value="free_text" data-virality-tabs-target="inputType">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Paste any content, idea, or draft</label>
+              <textarea name="input_text" rows="8" required
+                        class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm"
+                        placeholder="Paste your LinkedIn post, tweet draft, blog intro, marketing copy, or any text you want to analyze..."></textarea>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Target Platform (optional)</label>
+              <select name="target_platform" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm">
+                <option value="">Any / General</option>
+                <option value="linkedin">LinkedIn</option>
+                <option value="twitter">Twitter / X</option>
+                <option value="youtube_script">YouTube</option>
+                <option value="blog">Blog</option>
+                <option value="newsletter">Newsletter</option>
+              </select>
+            </div>
+            <button type="submit" class="w-full inline-flex items-center justify-center px-4 py-2.5 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition-colors text-sm">
+              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+              </svg>
+              Analyze Virality
+            </button>
+          <% end %>
+        </div>
+
+        <!-- Content Piece Panel -->
+        <div data-virality-tabs-target="panel" data-tab="content_piece" class="hidden">
+          <%= form_with url: virality_analyses_path, method: :post, class: "space-y-4" do |f| %>
+            <input type="hidden" name="input_type" value="content_piece">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Select a content piece</label>
+              <% if @content_pieces.any? %>
+                <select name="content_piece_id" required class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm">
+                  <option value="">Choose content...</option>
+                  <% @content_pieces.each do |cp| %>
+                    <option value="<%= cp.id %>"><%= cp.title.presence || cp.body&.truncate(60) %> (<%= cp.platform_label %>)</option>
+                  <% end %>
+                </select>
+              <% else %>
+                <p class="text-sm text-gray-500 py-4 text-center">No content pieces yet. <%= link_to "Generate some first", new_content_piece_path, class: "text-indigo-600 hover:text-indigo-700" %>.</p>
+              <% end %>
+            </div>
+            <% if @content_pieces.any? %>
+              <button type="submit" class="w-full inline-flex items-center justify-center px-4 py-2.5 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition-colors text-sm">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                </svg>
+                Analyze Virality
+              </button>
+            <% end %>
+          <% end %>
+        </div>
+
+        <!-- Video Learning Panel -->
+        <div data-virality-tabs-target="panel" data-tab="video_learning" class="hidden">
+          <%= form_with url: virality_analyses_path, method: :post, class: "space-y-4" do |f| %>
+            <input type="hidden" name="input_type" value="video_learning">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Select a video learning</label>
+              <% if @video_learnings.any? %>
+                <select name="video_learning_id" required class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm">
+                  <option value="">Choose video...</option>
+                  <% @video_learnings.each do |vl| %>
+                    <option value="<%= vl.id %>"><%= vl.title&.truncate(60) %> (<%= vl.channel_name %>)</option>
+                  <% end %>
+                </select>
+              <% else %>
+                <p class="text-sm text-gray-500 py-4 text-center">No completed videos yet. <%= link_to "Add a video", new_video_learning_path, class: "text-indigo-600 hover:text-indigo-700" %>.</p>
+              <% end %>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Target Platform (optional)</label>
+              <select name="target_platform" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm">
+                <option value="">Any / General</option>
+                <option value="linkedin">LinkedIn</option>
+                <option value="twitter">Twitter / X</option>
+                <option value="youtube_script">YouTube</option>
+                <option value="blog">Blog</option>
+                <option value="newsletter">Newsletter</option>
+              </select>
+            </div>
+            <% if @video_learnings.any? %>
+              <button type="submit" class="w-full inline-flex items-center justify-center px-4 py-2.5 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition-colors text-sm">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                </svg>
+                Analyze Virality
+              </button>
+            <% end %>
+          <% end %>
+        </div>
+
+        <!-- Strategy Panel -->
+        <div data-virality-tabs-target="panel" data-tab="strategy" class="hidden">
+          <%= form_with url: virality_analyses_path, method: :post, class: "space-y-4" do |f| %>
+            <input type="hidden" name="input_type" value="strategy">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Describe your marketing strategy</label>
+              <textarea name="input_text" rows="8" required
+                        class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm"
+                        placeholder="Describe your launch plan, campaign idea, positioning strategy, or growth tactic. Include target audience, channels, messaging, and goals..."></textarea>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Primary Platform (optional)</label>
+              <select name="target_platform" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm">
+                <option value="">Any / Multi-channel</option>
+                <option value="linkedin">LinkedIn</option>
+                <option value="twitter">Twitter / X</option>
+                <option value="youtube_script">YouTube</option>
+                <option value="blog">Blog / SEO</option>
+                <option value="newsletter">Email / Newsletter</option>
+              </select>
+            </div>
+            <button type="submit" class="w-full inline-flex items-center justify-center px-4 py-2.5 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition-colors text-sm">
+              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+              </svg>
+              Analyze Strategy
+            </button>
+          <% end %>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL: Visualization Area (3/5 width) -->
+    <div class="lg:col-span-3">
+      <div id="virality_result">
+        <%= render "virality_analyses/empty_state" %>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Analysis History -->
+  <% if @recent_analyses.any? %>
+    <div class="space-y-4">
+      <h2 class="text-lg font-bold text-gray-900">Analysis History</h2>
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 divide-y divide-gray-100">
+        <% @recent_analyses.each do |analysis| %>
+          <%= render "virality_analyses/history_item", analysis: analysis %>
+        <% end %>
+      </div>
+      <% if @pagy.pages > 1 %>
+        <div class="flex justify-center">
+          <%== pagy_nav(@pagy) %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>

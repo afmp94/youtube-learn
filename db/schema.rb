@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_19_000005) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_11_000001) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "vector"
@@ -413,6 +413,33 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_19_000005) do
     t.index ["user_id"], name: "index_video_learnings_on_user_id"
   end
 
+  create_table "virality_analyses", force: :cascade do |t|
+    t.bigint "analyzable_id"
+    t.string "analyzable_type"
+    t.jsonb "brain_data", default: {}
+    t.text "brain_error_message"
+    t.integer "brain_status", default: 0
+    t.datetime "created_at", null: false
+    t.jsonb "dimension_details", default: {}
+    t.jsonb "dimension_scores", default: {}
+    t.text "error_message"
+    t.text "improvements"
+    t.text "input_text"
+    t.integer "input_type", default: 0, null: false
+    t.text "overall_assessment"
+    t.integer "overall_score"
+    t.integer "status", default: 0, null: false
+    t.text "strengths"
+    t.string "target_platform"
+    t.string "title"
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["analyzable_type", "analyzable_id"], name: "index_virality_analyses_on_analyzable_type_and_analyzable_id"
+    t.index ["user_id", "created_at"], name: "index_virality_analyses_on_user_id_and_created_at"
+    t.index ["user_id", "status"], name: "index_virality_analyses_on_user_id_and_status"
+    t.index ["user_id"], name: "index_virality_analyses_on_user_id"
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "api_keys", "users"
@@ -448,4 +475,5 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_19_000005) do
   add_foreign_key "video_learnings", "bulk_imports"
   add_foreign_key "video_learnings", "channels"
   add_foreign_key "video_learnings", "users"
+  add_foreign_key "virality_analyses", "users"
 end

@@ -1,0 +1,3 @@
+<%= turbo_stream.replace "virality_result" do %>
+  <%= render "virality_analyses/result", analysis: @analysis, status: :analyzing %>
+<% end %>

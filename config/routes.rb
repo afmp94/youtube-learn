@@ -54,6 +54,8 @@ Rails.application.routes.draw do
     resources :knowledge_entries, only: [:new, :create, :show, :edit, :update, :destroy]
   end
 
+  resources :virality_analyses, path: "lab", only: [:index, :show, :create, :destroy]
+
   resources :content_pieces, path: "content" do
     member do
       post :regenerate
