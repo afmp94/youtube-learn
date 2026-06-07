@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Performance Lab &mdash; Pangea + Amplifica Partner Pitch</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@300;400;500;600;700&family=Outfit:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --red:#ff3c00;--orange:#e8531a;--blue:#2d6ef5;--green:#16a34a;
+  --yellow:#facc15;--purple:#7c3aed;--teal:#0d9488;--pink:#ec4899;
+  --bg:#f5f4f0;--surface:#fff;--border:#e5e2dc;
+  --text:#111;--muted:#77776f;--r:12px;
+}
+body{font-family:'Space Grotesk',system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.6}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:rgba(10,10,10,.97);backdrop-filter:blur(20px);border-bottom:1px solid #1a1a1a;height:56px;display:flex;align-items:center;padding:0 40px;justify-content:space-between}
+.n-logo{font-family:'Bebas Neue',sans-serif;font-size:20px;color:#fff;letter-spacing:.06em}.n-logo span{color:var(--red)}
+.n-right{display:flex;gap:4px}
+.n-link{padding:6px 14px;border-radius:20px;font-size:11px;font-weight:500;color:rgba(255,255,255,.4);cursor:pointer;transition:all .2s;border:none;background:none;text-decoration:none;letter-spacing:.04em}
+.n-link:hover{color:#fff;background:rgba(255,255,255,.08)}
+.n-link.active{color:var(--red)}
+
+/* HERO */
+.hero{background:#0a0a0a;padding:100px 48px 80px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-120px;right:-120px;width:600px;height:600px;border-radius:50%;border:1px solid rgba(255,60,0,.06)}
+.hero::after{content:'';position:absolute;bottom:-200px;left:-100px;width:500px;height:500px;border-radius:50%;border:1px solid rgba(124,58,237,.04)}
+.hero-tag{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--red);margin-bottom:20px;display:flex;align-items:center;gap:8px}
+.hero-tag::before{content:'';width:24px;height:2px;background:var(--red)}
+.hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(56px,10vw,120px);color:#fff;letter-spacing:.04em;line-height:.88;margin-bottom:28px}
+.hero h1 span{color:var(--red)}
+.hero-statement{font-family:'Outfit',sans-serif;font-size:clamp(17px,2.2vw,22px);color:rgba(255,255,255,.45);max-width:680px;line-height:1.65;font-weight:300;font-style:italic;margin-bottom:48px}
+.hero-statement strong{color:rgba(255,255,255,.9);font-weight:500;font-style:normal}
+.hero-stats{display:flex;gap:48px;flex-wrap:wrap}
+.hero-stat{text-align:left}
+.hero-stat-num{font-family:'Bebas Neue',sans-serif;font-size:48px;color:#fff;letter-spacing:.04em;line-height:1}
+.hero-stat-label{font-size:11px;color:rgba(255,255,255,.3);letter-spacing:.1em;text-transform:uppercase;margin-top:4px}
+
+/* WRAP & SECTIONS */
+.wrap{max-width:1060px;margin:0 auto;padding:0 48px}
+.sec{padding:64px 0}
+.sec+.sec{border-top:1px solid var(--border)}
+.sec-tag{font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;display:flex;align-items:center;gap:10px}
+.sec-tag::after{content:'';flex:1;height:1px;background:var(--border)}
+.sec-h{font-family:'Bebas Neue',sans-serif;font-size:clamp(34px,4vw,52px);letter-spacing:.04em;line-height:.95;margin-bottom:10px}
+.sec-sub{font-size:15px;color:var(--muted);margin-bottom:36px;max-width:600px;line-height:1.6}
+
+/* THESIS */
+.thesis{background:#0a0a0a;border-radius:var(--r);padding:48px;margin-bottom:48px;position:relative;overflow:hidden}
+.thesis::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 30% 50%, rgba(255,60,0,.06) 0%, transparent 60%)}
+.thesis-text{font-family:'Outfit',sans-serif;font-size:clamp(20px,3vw,28px);color:rgba(255,255,255,.8);line-height:1.5;font-weight:300;max-width:700px;position:relative;z-index:1}
+.thesis-text strong{color:#fff;font-weight:600}
+.thesis-footer{font-size:11px;color:rgba(255,255,255,.2);margin-top:24px;letter-spacing:.1em;text-transform:uppercase;position:relative;z-index:1}
+
+/* STAT TABLE */
+.stat-table{width:100%;border-collapse:collapse;margin-bottom:32px;background:var(--surface);border-radius:var(--r);overflow:hidden;border:1px solid var(--border)}
+.stat-table th{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-align:left;padding:14px 16px;border-bottom:2px solid var(--border)}
+.stat-table td{font-size:13px;padding:12px 16px;border-bottom:1px solid var(--border);line-height:1.5}
+.stat-table tr:last-child td{border-bottom:none}
+.stat-table td:first-child{font-weight:600;color:var(--text)}
+.stat-table td:nth-child(2){color:var(--muted)}
+.stat-table td:nth-child(3){color:var(--green);font-weight:600}
+
+/* ECOSYSTEM / PRODUCT CARDS */
+.eco-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:16px}
+.eco-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;transition:transform .2s}
+.eco-card:hover{transform:translateY(-2px)}
+.eco-accent{height:3px}
+.eco-body{padding:20px}
+.eco-name{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:.04em;line-height:1;margin-bottom:6px}
+.eco-desc{font-size:13px;color:var(--muted);line-height:1.5;margin-bottom:12px}
+.eco-model{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:20px;display:inline-block}
+.eco-price{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:.04em;line-height:1;margin-bottom:4px}
+.eco-wide{grid-column:span 2}
+.eco-wide .eco-body{display:flex;align-items:center;gap:20px}
+.eco-wide .eco-desc{margin-bottom:0;flex:1}
+
+/* CONTENT MACHINE / DUAL MODEL */
+.machine{background:#0a0a0a;border-radius:var(--r);padding:48px;margin-bottom:48px;position:relative;overflow:hidden}
+.machine::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 70% 30%, rgba(124,58,237,.05) 0%, transparent 50%)}
+.m-title{font-family:'Bebas Neue',sans-serif;font-size:36px;color:#fff;letter-spacing:.04em;line-height:1;margin-bottom:6px;position:relative;z-index:1}
+.m-sub{font-size:13px;color:rgba(255,255,255,.35);margin-bottom:32px;position:relative;z-index:1}
+.m-flow{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-bottom:32px;position:relative;z-index:1}
+.m-step{text-align:center}
+.m-step-dot{width:40px;height:40px;border-radius:50%;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:16px;color:#fff;border:2px solid rgba(255,255,255,.1)}
+.m-step-name{font-size:12px;font-weight:600;color:#fff;margin-bottom:4px}
+.m-step-desc{font-size:11px;color:rgba(255,255,255,.35);line-height:1.4}
+.m-arrow{color:rgba(255,255,255,.15);font-size:18px;display:flex;align-items:center;justify-content:center}
+.m-outputs{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;position:relative;z-index:1}
+.m-output{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:14px}
+.m-output-num{font-family:'Bebas Neue',sans-serif;font-size:28px;color:#fff;line-height:1;margin-bottom:4px}
+.m-output-label{font-size:11px;color:rgba(255,255,255,.35);line-height:1.4}
+.m-branch{display:grid;grid-template-columns:1fr 1fr;gap:16px;position:relative;z-index:1}
+.m-branch-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:20px}
+.m-branch-name{font-family:'Bebas Neue',sans-serif;font-size:22px;color:#fff;line-height:1;margin-bottom:4px}
+.m-branch-price{font-size:13px;font-weight:600;margin-bottom:8px}
+.m-branch-list{font-size:12px;color:rgba(255,255,255,.4);line-height:1.7}
+.m-merge{text-align:center;margin-top:24px;position:relative;z-index:1}
+.m-merge-text{font-size:13px;color:rgba(255,255,255,.5);font-style:italic;font-family:'Outfit',sans-serif}
+.m-merge-text strong{color:#fff;font-weight:500;font-style:normal}
+
+/* ACADEMY GRID */
+.academy-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+.academy-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px;transition:transform .2s}
+.academy-card:hover{transform:translateY(-2px)}
+.academy-num{font-family:'Bebas Neue',sans-serif;font-size:36px;line-height:1;opacity:.1;margin-bottom:4px}
+.academy-title{font-size:13px;font-weight:700;margin-bottom:4px;line-height:1.3}
+.academy-desc{font-size:12px;color:var(--muted);line-height:1.5}
+
+/* ACCELERATOR */
+.accel-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:48px}
+.accel-col{padding:24px;border-right:1px solid var(--border)}
+.accel-col:last-child{border-right:none}
+.accel-week{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:4px}
+.accel-name{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:.04em;line-height:1;margin-bottom:10px}
+.accel-desc{font-size:12px;color:var(--muted);line-height:1.55}
+.accel-mentor{font-size:11px;font-weight:600;margin-top:8px}
+
+/* TEAM */
+.team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:12px}
+.team-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px;transition:transform .2s}
+.team-card:hover{transform:translateY(-2px)}
+.team-card.featured{grid-column:span 3;display:grid;grid-template-columns:1fr 1fr;gap:32px;padding:32px;background:#0a0a0a;border-color:#1a1a1a}
+.team-card.featured .team-name{color:#fff}
+.team-card.featured .team-role{color:var(--red)}
+.team-card.featured .team-bio{color:rgba(255,255,255,.5)}
+.team-card.featured .team-stats{border-color:#1a1a1a}
+.team-card.featured .team-stat-label{color:rgba(255,255,255,.3)}
+.team-card.featured .team-stat-val{color:#fff}
+.team-name{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:.04em;line-height:1;margin-bottom:2px}
+.team-role{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--red);margin-bottom:10px}
+.team-bio{font-size:12px;color:var(--muted);line-height:1.55}
+.team-stats{display:flex;gap:16px;margin-top:14px;padding-top:14px;border-top:1px solid var(--border)}
+.team-stat-label{font-size:10px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+.team-stat-val{font-size:13px;font-weight:600;margin-top:2px}
+
+/* REVENUE TABLE */
+.rev-table{width:100%;border-collapse:collapse;margin-bottom:24px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+.rev-table th{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-align:left;padding:14px 16px;border-bottom:2px solid var(--border);background:var(--surface)}
+.rev-table td{font-size:13px;padding:12px 16px;border-bottom:1px solid var(--border);line-height:1.5}
+.rev-table tr:last-child td{border-bottom:none}
+.rev-table td:first-child{font-weight:600}
+.rev-table .highlight{background:rgba(22,163,74,.04);font-weight:700}
+.rev-table .highlight td{color:var(--green)}
+
+/* DIFFERENTIATORS */
+.diff-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:48px}
+.diff{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px;position:relative;overflow:hidden}
+.diff::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.diff-num{font-family:'Bebas Neue',sans-serif;font-size:48px;line-height:1;opacity:.08;margin-bottom:8px}
+.diff-title{font-size:13px;font-weight:700;margin-bottom:6px;line-height:1.3}
+.diff-text{font-size:12px;color:var(--muted);line-height:1.55}
+
+/* COMPARISON */
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:48px}
+.compare-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:24px}
+.compare-card.highlight{background:#0a0a0a;border-color:#1a1a1a}
+.compare-card.highlight .compare-name{color:#fff}
+.compare-card.highlight .compare-cred{color:rgba(255,255,255,.5)}
+.compare-card.highlight .compare-feature{color:rgba(255,255,255,.4)}
+.compare-card.highlight .compare-feature strong{color:#fff}
+.compare-name{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:.04em;line-height:1;margin-bottom:6px}
+.compare-cred{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:16px}
+.compare-feature{font-size:12px;color:var(--muted);line-height:1.8}
+.compare-feature strong{color:var(--text);font-weight:600}
+
+/* COMPANY STRUCTURE */
+.structure{background:#0a0a0a;border-radius:var(--r);padding:48px;margin-bottom:48px;position:relative;overflow:hidden}
+.structure::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 50%, rgba(124,58,237,.05) 0%, transparent 50%)}
+.s-title{font-family:'Bebas Neue',sans-serif;font-size:36px;color:#fff;letter-spacing:.04em;line-height:1;margin-bottom:24px;position:relative;z-index:1}
+.s-tree{position:relative;z-index:1}
+.s-node{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:16px 20px;margin-bottom:12px}
+.s-node-name{font-family:'Bebas Neue',sans-serif;font-size:20px;color:#fff;letter-spacing:.04em;line-height:1;margin-bottom:4px}
+.s-node-desc{font-size:12px;color:rgba(255,255,255,.35);line-height:1.5}
+.s-children{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-left:32px;margin-bottom:12px}
+.s-child{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:14px}
+.s-child-name{font-size:13px;font-weight:600;color:#fff;margin-bottom:4px}
+.s-child-desc{font-size:11px;color:rgba(255,255,255,.3);line-height:1.4}
+.s-connector{width:2px;height:16px;background:rgba(255,255,255,.08);margin-left:48px}
+
+/* READY GRID */
+.ready-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:48px}
+.ready-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px}
+.ready-num{font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:.04em;line-height:1;margin-bottom:4px}
+.ready-label{font-size:12px;color:var(--muted);line-height:1.4}
+
+/* CTA */
+.cta{background:#0a0a0a;border-radius:var(--r);padding:64px 48px;text-align:center;margin-bottom:48px;position:relative;overflow:hidden}
+.cta::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 50%, rgba(255,60,0,.08) 0%, transparent 60%)}
+.cta-quote{font-family:'Outfit',sans-serif;font-size:clamp(18px,2.5vw,24px);color:rgba(255,255,255,.7);line-height:1.6;font-weight:300;font-style:italic;max-width:700px;margin:0 auto 24px;position:relative;z-index:1}
+.cta-quote strong{color:#fff;font-weight:500;font-style:normal}
+.cta-source{font-size:11px;color:rgba(255,255,255,.2);letter-spacing:.1em;text-transform:uppercase;position:relative;z-index:1}
+.cta-divider{width:40px;height:2px;background:var(--red);margin:32px auto;position:relative;z-index:1}
+.cta-ask{font-family:'Bebas Neue',sans-serif;font-size:clamp(28px,4vw,44px);color:#fff;letter-spacing:.04em;line-height:1;position:relative;z-index:1;margin-bottom:12px}
+.cta-ask-sub{font-size:14px;color:rgba(255,255,255,.35);position:relative;z-index:1;max-width:600px;margin:0 auto;line-height:1.6}
+
+/* DISRUPTION SECTION */
+.disruption{background:#0a0a0a;padding:64px 0;position:relative;overflow:hidden}
+.disruption::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%, rgba(255,60,0,.10) 0%, transparent 60%)}
+.disruption-inner{max-width:1060px;margin:0 auto;padding:0 48px;position:relative;z-index:1}
+.disruption .sec-tag::after{background:rgba(255,60,0,.2)}
+.danger-thesis{background:rgba(255,60,0,.06);border:1px solid rgba(255,60,0,.15);border-radius:var(--r);padding:48px;margin-bottom:40px;position:relative;overflow:hidden}
+.danger-thesis::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--red)}
+.danger-thesis .thesis-text{color:rgba(255,255,255,.85)}
+.danger-thesis .thesis-text strong{color:var(--red)}
+.danger-list{list-style:none;padding:0;margin:0 0 32px}
+.danger-list li{font-size:13px;color:rgba(255,255,255,.5);line-height:1.8;padding-left:24px;position:relative}
+.danger-list li::before{content:'';position:absolute;left:0;top:10px;width:8px;height:8px;border-radius:50%;background:var(--red);opacity:.6}
+.danger-list li strong{color:rgba(255,255,255,.85);font-weight:600}
+.auto-cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:40px}
+.auto-card{border-radius:var(--r);padding:32px;text-align:center}
+.auto-card-num{font-family:'Bebas Neue',sans-serif;font-size:72px;line-height:1;letter-spacing:.04em;margin-bottom:4px}
+.auto-card-label{font-size:11px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:4px}
+.auto-card-desc{font-size:12px;line-height:1.5}
+.split-compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:40px}
+.split-card{border-radius:var(--r);padding:24px;border:1px solid}
+.split-card.bad{background:rgba(255,60,0,.04);border-color:rgba(255,60,0,.15)}
+.split-card.good{background:rgba(22,163,74,.04);border-color:rgba(22,163,74,.15)}
+.split-title{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.04em;line-height:1;margin-bottom:12px}
+.split-list{font-size:12px;line-height:1.9;list-style:none;padding:0;margin:0}
+.split-list li{padding-left:20px;position:relative}
+.split-list li::before{content:'';position:absolute;left:0;top:8px;width:6px;height:6px;border-radius:50%}
+.split-card.bad .split-title{color:var(--red)}
+.split-card.bad .split-list li{color:rgba(255,255,255,.5)}
+.split-card.bad .split-list li::before{background:var(--red);opacity:.5}
+.split-card.good .split-title{color:var(--green)}
+.split-card.good .split-list li{color:rgba(255,255,255,.5)}
+.split-card.good .split-list li::before{background:var(--green);opacity:.5}
+.answer-block{background:rgba(22,163,74,.06);border:1px solid rgba(22,163,74,.15);border-radius:var(--r);padding:32px;position:relative}
+.answer-block::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--green)}
+.answer-label{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:10px}
+.answer-text{font-family:'Outfit',sans-serif;font-size:clamp(16px,2vw,20px);color:rgba(255,255,255,.8);line-height:1.6;font-weight:300}
+.answer-text strong{color:#fff;font-weight:600}
+
+/* SIDEKICK+ SECTION */
+.agent-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:32px}
+.agent-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;transition:transform .2s}
+.agent-card:hover{transform:translateY(-2px)}
+.agent-accent{height:3px}
+.agent-body{padding:20px}
+.agent-name{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:.04em;line-height:1;margin-bottom:6px}
+.agent-what{font-size:12px;color:var(--muted);line-height:1.5;margin-bottom:8px}
+.agent-relevance{font-size:11px;font-weight:600;line-height:1.5;padding:8px 12px;background:rgba(0,0,0,.03);border-radius:8px}
+.ba-table{width:100%;border-collapse:collapse;margin-bottom:32px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+.ba-table th{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;text-align:left;padding:14px 16px;border-bottom:2px solid var(--border)}
+.ba-table th:first-child{color:var(--muted)}
+.ba-table th:nth-child(2){color:var(--muted);background:rgba(0,0,0,.02)}
+.ba-table th:nth-child(3){color:var(--green);background:rgba(22,163,74,.04)}
+.ba-table td{font-size:13px;padding:12px 16px;border-bottom:1px solid var(--border);line-height:1.5}
+.ba-table tr:last-child td{border-bottom:none}
+.ba-table td:first-child{font-weight:600;color:var(--text)}
+.ba-table td:nth-child(2){color:var(--muted);background:rgba(0,0,0,.01)}
+.ba-table td:nth-child(3){color:var(--green);font-weight:600;background:rgba(22,163,74,.02)}
+.participation-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:32px}
+.part-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px;transition:transform .2s}
+.part-card:hover{transform:translateY(-2px)}
+.part-name{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:.04em;line-height:1;margin-bottom:6px}
+.part-desc{font-size:11px;color:var(--muted);line-height:1.5}
+
+/* FOOTER */
+footer{padding:24px 48px;text-align:center;font-size:11px;color:var(--muted);letter-spacing:.06em}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .eco-grid,.team-grid,.diff-grid,.accel-grid,.academy-grid,.m-outputs,.m-flow,.m-branch,.compare-grid,.ready-grid,.s-children,.agent-grid,.auto-cards,.split-compare,.participation-grid{grid-template-columns:1fr}
+  .eco-wide,.team-card.featured{grid-column:span 1}
+  .team-card.featured{grid-template-columns:1fr}
+  .hero-stats{gap:24px}
+  .hero{padding:60px 24px}
+  .wrap{padding:0 24px}
+  nav{padding:0 20px}
+  .n-right{overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .n-right::-webkit-scrollbar{display:none}
+  .thesis,.machine,.cta,.structure{padding:32px 24px}
+  .s-children{margin-left:0}
+  .disruption-inner{padding:0 24px}
+  .danger-thesis{padding:32px 24px}
+}
+@media(max-width:900px) and (min-width:601px){
+  .eco-grid,.team-grid,.ready-grid,.academy-grid,.agent-grid{grid-template-columns:1fr 1fr}
+  .diff-grid{grid-template-columns:1fr 1fr}
+  .accel-grid{grid-template-columns:1fr 1fr}
+  .m-branch,.auto-cards,.split-compare{grid-template-columns:1fr 1fr}
+  .participation-grid{grid-template-columns:1fr 1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="n-logo">PERFORMANCE LAB<span>.</span></div>
+  <div class="n-right">
+    <a href="#problem" class="n-link active">Problem</a>
+    <a href="#opportunity" class="n-link">Opportunity</a>
+    <a href="#dual-model" class="n-link">Dual Model</a>
+    <a href="#product" class="n-link">Product</a>
+    <a href="#team" class="n-link">Team</a>
+    <a href="#revenue" class="n-link">Revenue</a>
+    <a href="#company" class="n-link">Company</a>
+    <a href="#ai-disruption" class="n-link">AI Disruption</a>
+    <a href="#sidekick" class="n-link">Sidekick+</a>
+    <a href="#why-now" class="n-link">Why Now</a>
+    <a href="#cta" class="n-link">CTA</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">Pangea + Amplifica &mdash; Partner Pitch</div>
+  <h1>PERFORMANCE<br><span>LAB</span><span>.</span></h1>
+  <p class="hero-statement">Tu equipo ha generado resultados que viven dentro de decks internos, SOPs que solo tu equipo ve, y en la cabeza de 5 C-levels con <strong>60+ a&ntilde;os combinados de experiencia</strong> en performance marketing. <strong>Esta propuesta cambia eso.</strong></p>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="hero-stat-num">$175M+</div>
+      <div class="hero-stat-label">COP para VIVA</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">6,000</div>
+      <div class="hero-stat-label">Ventas/mes WOM</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">+163%</div>
+      <div class="hero-stat-label">Revenue YoY LEGO</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">$145M</div>
+      <div class="hero-stat-label">COP en 1 d&iacute;a Estelar</div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+<!-- THE PROBLEM -->
+<div class="sec" id="problem">
+  <div class="sec-tag">El Problema</div>
+  <div class="sec-h">LAS AGENCIAS ESCALAN LINEALMENTE<span style="color:var(--red)">.</span></div>
+  <div class="sec-sub">M&aacute;s clientes = m&aacute;s personas = m&aacute;s overhead = mismos m&aacute;rgenes. Pangea lo sabe. Su equipo C-suite excepcional les permite manejar Avianca, LEGO y WOM. Pero el modelo tiene un techo.</div>
+
+  <div class="thesis">
+    <div class="thesis-text"><strong>Pangea es una mina de oro</strong> de conocimiento que solo monetiza a trav&eacute;s de horas facturables. Cada cliente que se va, ese conocimiento se queda encerrado. Cada soluci&oacute;n brillante <strong>muere en un Google Drive.</strong></div>
+    <div class="thesis-footer">El problema no es que Pangea no crezca &mdash; es que deja dinero en la mesa</div>
+  </div>
+
+  <table class="stat-table">
+    <thead>
+      <tr>
+        <th>M&eacute;trica</th>
+        <th>Agencia Tradicional</th>
+        <th>Lo Que Podr&iacute;a Ser</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Revenue por hora</td>
+        <td>$50-$200 USD</td>
+        <td>$997-$4,997 por alumno (escalamiento infinito)</td>
+      </tr>
+      <tr>
+        <td>Capacidad de clientes</td>
+        <td>15-25 activos</td>
+        <td>Ilimitada v&iacute;a educaci&oacute;n</td>
+      </tr>
+      <tr>
+        <td>Revenue mientras duermes</td>
+        <td>$0</td>
+        <td>Cursos, templates, comunidad</td>
+      </tr>
+      <tr>
+        <td>Valor de empresa</td>
+        <td>1-3x revenue</td>
+        <td>5-15x revenue (educaci&oacute;n + SaaS)</td>
+      </tr>
+      <tr>
+        <td>Clientes &ldquo;peque&ntilde;os&rdquo;</td>
+        <td>Rechazados (no rentables)</td>
+        <td>Capturados v&iacute;a Amplifica ($3,500-$12,500/mo)</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- THE OPPORTUNITY -->
+<div class="sec" id="opportunity">
+  <div class="sec-tag">La Oportunidad</div>
+  <div class="sec-h">PERFORMANCE LAB + AMPLIFICA<span style="color:var(--red)">.</span></div>
+  <div class="sec-sub">Performance Lab no le quita clientes a Pangea. Le CREA clientes a Pangea. Y los &ldquo;demasiado peque&ntilde;os&rdquo;? Amplifica los atiende.</div>
+
+  <div class="machine">
+    <div class="m-title">EL FUNNEL COMPLETO</div>
+    <div class="m-sub">De caso de estudio a cliente de Pangea &mdash; el embudo que convierte conocimiento en revenue</div>
+
+    <div class="m-flow">
+      <div class="m-step">
+        <div class="m-step-dot" style="background:var(--red);border-color:var(--red)">1</div>
+        <div class="m-step-name">Caso de Estudio</div>
+        <div class="m-step-desc">Santiago publica c&oacute;mo Pangea gener&oacute; $175M para VIVA</div>
+      </div>
+      <div class="m-step">
+        <div class="m-step-dot" style="background:var(--orange);border-color:var(--orange)">2</div>
+        <div class="m-step-name">Crash Course</div>
+        <div class="m-step-desc">500 personas se inscriben al curso gratuito (7 emails)</div>
+      </div>
+      <div class="m-step">
+        <div class="m-step-dot" style="background:var(--purple);border-color:var(--purple)">3</div>
+        <div class="m-step-name">Foundations $1</div>
+        <div class="m-step-desc">200 compran el tripwire de alta conversi&oacute;n</div>
+      </div>
+      <div class="m-step">
+        <div class="m-step-dot" style="background:var(--blue);border-color:var(--blue)">4</div>
+        <div class="m-step-name">Academy $997</div>
+        <div class="m-step-desc">50 compran el programa self-paced de 8 m&oacute;dulos</div>
+      </div>
+      <div class="m-step">
+        <div class="m-step-dot" style="background:var(--green);border-color:var(--green)">5</div>
+        <div class="m-step-name">Accelerator $4,997</div>
+        <div class="m-step-desc">15 aplican al programa con C-suite de Pangea</div>
+      </div>
+    </div>
+
+    <div class="m-outputs">
+      <div class="m-output">
+        <div class="m-output-num">5</div>
+        <div class="m-output-label">Necesitan ejecuci&oacute;n &lt;$5K/mo<br><strong style="color:var(--orange)">Amplifica los atiende</strong></div>
+      </div>
+      <div class="m-output">
+        <div class="m-output-num">3</div>
+        <div class="m-output-label">Crecen con Amplifica &gt;$50K/mo<br><strong style="color:var(--red)">Pangea los absorbe</strong></div>
+      </div>
+      <div class="m-output">
+        <div class="m-output-num">7</div>
+        <div class="m-output-label">Implementan solos con herramientas<br><strong style="color:var(--blue)">Generan casos de estudio</strong></div>
+      </div>
+      <div class="m-output">
+        <div class="m-output-num">0</div>
+        <div class="m-output-label">Clientes perdidos<br><strong style="color:var(--green)">Cada lead tiene destino</strong></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DUAL MODEL -->
+<div class="sec" id="dual-model">
+  <div class="sec-tag">El Modelo Dual</div>
+  <div class="sec-h">EDUCACI&Oacute;N ALIMENTA AGENCIA<span style="color:var(--red)">.</span> Y SUBSCRIPCI&Oacute;N<span style="color:var(--red)">.</span></div>
+  <div class="sec-sub">El modelo m&aacute;s poderoso del ecosistema porque tiene DOS brazos de ejecuci&oacute;n. Pangea nunca tuvo equipo de ventas &mdash; Performance Lab SE CONVIERTE en el m&aacute;s efectivo.</div>
+
+  <div class="machine">
+    <div class="m-title">CONTENT MACHINE FLOW</div>
+    <div class="m-sub">Performance Lab (educaci&oacute;n) &rarr; graduados que quieren ejecuci&oacute;n &rarr; dos destinos</div>
+
+    <div style="text-align:center;margin-bottom:24px;position:relative;z-index:1">
+      <div style="display:inline-block;background:rgba(255,60,0,.12);border:1px solid rgba(255,60,0,.2);border-radius:8px;padding:16px 32px">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:#fff;letter-spacing:.04em">PERFORMANCE LAB</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.4)">Santiago + Equipo Pangea &mdash; Educaci&oacute;n</div>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-bottom:24px;position:relative;z-index:1">
+      <div style="font-size:12px;color:rgba(255,255,255,.3);letter-spacing:.1em;text-transform:uppercase">Graduados que quieren ejecuci&oacute;n</div>
+      <div style="font-size:24px;color:rgba(255,255,255,.15);margin:8px 0">&darr;</div>
+    </div>
+
+    <div class="m-branch">
+      <div class="m-branch-card" style="border-color:rgba(232,83,26,.2)">
+        <div class="m-branch-name" style="color:var(--orange)">AMPLIFICA STUDIO</div>
+        <div class="m-branch-price" style="color:var(--orange)">$3,500 - $12,500/mo</div>
+        <div class="m-branch-list">
+          Clientes &lt;$5K ads/mo<br>
+          Subscripci&oacute;n AI-powered<br>
+          Escala sin headcount<br>
+          Modelo de ejecuci&oacute;n recurrente
+        </div>
+      </div>
+      <div class="m-branch-card" style="border-color:rgba(255,60,0,.2)">
+        <div class="m-branch-name" style="color:var(--red)">PANGEA DIRECTO</div>
+        <div class="m-branch-price" style="color:var(--red)">$50,000+/mo</div>
+        <div class="m-branch-list">
+          Clientes &gt;$50K ads/mo<br>
+          Custom, premium, hands-on<br>
+          C-suite team dedicado<br>
+          Escala con talento
+        </div>
+      </div>
+    </div>
+
+    <div class="m-merge">
+      <div style="font-size:24px;color:rgba(255,255,255,.15);margin:16px 0">&darr;</div>
+      <div class="m-merge-text">Clientes que crecen con Amplifica <strong>migran a Pangea</strong> &mdash; M&aacute;s revenue para Pangea <strong>sin costo de adquisici&oacute;n</strong></div>
+    </div>
+  </div>
+
+  <!-- Key Benefits -->
+  <div class="diff-grid" style="margin-bottom:0">
+    <div class="diff">
+      <div class="diff-num">01</div>
+      <div class="diff-title">Cero clientes perdidos</div>
+      <div class="diff-text">Los clientes &ldquo;peque&ntilde;os&rdquo; ya no se pierden. Amplifica los captura con subscripci&oacute;n AI-powered.</div>
+    </div>
+    <div class="diff">
+      <div class="diff-num">02</div>
+      <div class="diff-title">Zero CAC pipeline</div>
+      <div class="diff-text">Los clientes de Amplifica que crecen se convierten en clientes de Pangea. Sin costo de adquisici&oacute;n.</div>
+    </div>
+    <div class="diff">
+      <div class="diff-num">03</div>
+      <div class="diff-title">Educaci&oacute;n como ventas</div>
+      <div class="diff-text">Performance Lab educa al mercado sobre por qu&eacute; necesitan una agencia como Pangea.</div>
+    </div>
+    <div class="diff">
+      <div class="diff-num">04</div>
+      <div class="diff-title">Leads cada trimestre</div>
+      <div class="diff-text">El programa genera leads calificados para Pangea con cada cohorte del Accelerator.</div>
+    </div>
+  </div>
+</div>
+
+<!-- PRODUCT LADDER -->
+<div class="sec" id="product">
+  <div class="sec-tag">Product Ladder</div>
+  <div class="sec-h">4 TIERS<span style="color:var(--red)">.</span> CADA LEAD TIENE DESTINO<span style="color:var(--red)">.</span></div>
+  <div class="sec-sub">Desde gratis hasta premium &mdash; ning&uacute;n prospecto se va con las manos vac&iacute;as.</div>
+
+  <div class="eco-grid">
+    <!-- Crash Course -->
+    <div class="eco-card">
+      <div class="eco-accent" style="background:var(--orange)"></div>
+      <div class="eco-body">
+        <div class="eco-price" style="color:var(--orange)">GRATIS</div>
+        <div class="eco-name">PERFORMANCE CRASH COURSE</div>
+        <div class="eco-desc">Lead generation puro. 7 emails automatizados con los mejores insights de Pangea. Alimenta todo el funnel &mdash; 500+ registros por caso de estudio publicado.</div>
+        <div class="eco-model" style="background:rgba(232,83,26,.08);color:var(--orange)">Lead magnet &mdash; $0</div>
+      </div>
+    </div>
+    <!-- Foundations -->
+    <div class="eco-card">
+      <div class="eco-accent" style="background:var(--purple)"></div>
+      <div class="eco-body">
+        <div class="eco-price" style="color:var(--purple)">$1</div>
+        <div class="eco-name">PERFORMANCE FOUNDATIONS</div>
+        <div class="eco-desc">Tripwire de alta conversi&oacute;n. Revenue insignificante pero genera urgencia y compromiso. El primer paso hacia la monetizaci&oacute;n del conocimiento.</div>
+        <div class="eco-model" style="background:rgba(124,58,237,.08);color:var(--purple)">Tripwire &mdash; Alta conversi&oacute;n</div>
+      </div>
+    </div>
+    <!-- Academy -->
+    <div class="eco-card">
+      <div class="eco-accent" style="background:var(--blue)"></div>
+      <div class="eco-body">
+        <div class="eco-price" style="color:var(--blue)">$997</div>
+        <div class="eco-name">PERFORMANCE LAB ACADEMY</div>
+        <div class="eco-desc">Programa self-paced de 8 m&oacute;dulos. Contenido grabado por Santiago y el equipo C-suite de Pangea. $50K-$200K/a&ntilde;o en revenue recurrente.</div>
+        <div class="eco-model" style="background:rgba(45,110,245,.08);color:var(--blue)">Self-paced &mdash; $50K-$200K/a&ntilde;o</div>
+      </div>
+    </div>
+    <!-- Accelerator -->
+    <div class="eco-card">
+      <div class="eco-accent" style="background:var(--green)"></div>
+      <div class="eco-body">
+        <div class="eco-price" style="color:var(--green)">$4,997</div>
+        <div class="eco-name">PERFORMANCE LAB ACCELERATOR</div>
+        <div class="eco-desc">Cohorte trimestral de 20 personas. 8 semanas con acceso directo al C-suite de Pangea. Mentor&iacute;a, comunidad WhatsApp, sesiones en vivo. $80K-$400K/a&ntilde;o.</div>
+        <div class="eco-model" style="background:rgba(22,163,74,.08);color:var(--green)">Cohort &mdash; $80K-$400K/a&ntilde;o</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Client segmentation bar -->
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:24px;display:flex;align-items:center;gap:20px;margin-top:12px">
+    <div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:.04em;line-height:1">SEGMENTACI&Oacute;N POR AD SPEND</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.5;margin-top:4px">Cada nivel de inversi&oacute;n tiene un destino. Cero oportunidades desperdiciadas.</div>
+    </div>
+    <div style="display:flex;gap:8px;flex-shrink:0;flex-wrap:wrap">
+      <div style="background:rgba(45,110,245,.08);color:var(--blue);font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px">&lt;$5K/mo &rarr; Academy</div>
+      <div style="background:rgba(232,83,26,.08);color:var(--orange);font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px">$5K-$50K &rarr; Amplifica</div>
+      <div style="background:rgba(255,60,0,.08);color:var(--red);font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px">&gt;$50K &rarr; Pangea</div>
+    </div>
+  </div>
+</div>
+
+<!-- ACADEMY CURRICULUM -->
+<div class="sec" id="academy">
+  <div class="sec-tag">Academy Curriculum</div>
+  <div class="sec-h">8 M&Oacute;DULOS<span style="color:var(--red)">.</span> EL CONOCIMIENTO DE PANGEA EMPAQUETADO<span style="color:var(--red)">.</span></div>
+  <div class="sec-sub">Cada m&oacute;dulo refleja experiencia real de la agencia con clientes como Avianca, LEGO, WOM y Decathlon. No teor&iacute;a &mdash; workflows reales.</div>
+
+  <div class="academy-grid">
+    <div class="academy-card">
+      <div class="academy-num" style="color:var(--red)">01</div>
+      <div class="academy-title">Fundamentos de Performance</div>
+      <div class="academy-desc">Las bases que todo marketer necesita dominar. M&eacute;tricas, atribuci&oacute;n, y pensamiento estrat&eacute;gico de agencia top.</div>
+    </div>
+    <div class="academy-card">
+      <div class="academy-num" style="color:var(--orange)">02</div>
+      <div class="academy-title">Paid Media Mastery</div>
+      <div class="academy-desc">Meta Ads, Google Ads, TikTok. Los frameworks que Pangea usa para manejar presupuestos de millones.</div>
+    </div>
+    <div class="academy-card">
+      <div class="academy-num" style="color:var(--blue)">03</div>
+      <div class="academy-title">E-commerce & Conversi&oacute;n</div>
+      <div class="academy-desc">De la mano de Daniel Galvis (CPO). C&oacute;mo Pangea genera ventas masivas para marcas como Hoteles Estelar.</div>
+    </div>
+    <div class="academy-card">
+      <div class="academy-num" style="color:var(--green)">04</div>
+      <div class="academy-title">Creative Strategy</div>
+      <div class="academy-desc">Miguel Grillo (CCO, 18 a&ntilde;os). La estrategia creativa que mueve marcas Fortune 500 en LATAM.</div>
+    </div>
+    <div class="academy-card">
+      <div class="academy-num" style="color:var(--purple)">05</div>
+      <div class="academy-title">Data & Analytics</div>
+      <div class="academy-desc">Investigaci&oacute;n y operaciones con Camilo Valencia (COO). C&oacute;mo los datos de Pangea informan cada decisi&oacute;n.</div>
+    </div>
+    <div class="academy-card">
+      <div class="academy-num" style="color:var(--teal)">06</div>
+      <div class="academy-title">Estrategia Digital Integral</div>
+      <div class="academy-desc">M&oacute;nica Matiz (CSO, 15 a&ntilde;os). Visi&oacute;n 360 de la estrategia digital para empresas de cualquier tama&ntilde;o.</div>
+    </div>
+    <div class="academy-card">
+      <div class="academy-num" style="color:var(--yellow)">07</div>
+      <div class="academy-title">AI + Performance 2026</div>
+      <div class="academy-desc">Experiencia real, no teor&iacute;a. Runway, Kling AI, Midjourney, Krea IA &mdash; los workflows de AI creative que Pangea ya usa.</div>
+    </div>
+    <div class="academy-card">
+      <div class="academy-num" style="color:var(--pink)">08</div>
+      <div class="academy-title">Scaling & Operations</div>
+      <div class="academy-desc">C&oacute;mo pasar de freelancer a agencia. SOPs, equipos, y la visi&oacute;n de Santiago García como CEO.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ACCELERATOR -->
+<div class="sec" id="accelerator">
+  <div class="sec-tag">Accelerator Program</div>
+  <div class="sec-h">8 SEMANAS CON EL C-SUITE DE PANGEA<span style="color:var(--red)">.</span></div>
+  <div class="sec-sub">Cohortes trimestrales de 20 personas. Acceso directo a Santiago y su equipo. Mentor&iacute;a real, no webinars grabados.</div>
+
+  <div class="accel-grid">
+    <div class="accel-col">
+      <div class="accel-week" style="color:var(--red)">Semana 1-2</div>
+      <div class="accel-name">FUNDAMENTOS</div>
+      <div class="accel-desc">Auditor&iacute;a de cuentas, setup de tracking, definici&oacute;n de KPIs con framework Pangea</div>
+      <div class="accel-mentor" style="color:var(--red)">Santiago García, CEO</div>
+    </div>
+    <div class="accel-col">
+      <div class="accel-week" style="color:var(--orange)">Semana 3-4</div>
+      <div class="accel-name">EJECUCI&Oacute;N</div>
+      <div class="accel-desc">Implementaci&oacute;n de campa&ntilde;as, creative testing, optimizaci&oacute;n de presupuestos</div>
+      <div class="accel-mentor" style="color:var(--orange)">Daniel Galvis, CPO + Miguel Grillo, CCO</div>
+    </div>
+    <div class="accel-col">
+      <div class="accel-week" style="color:var(--purple)">Semana 5-6</div>
+      <div class="accel-name">ESCALA</div>
+      <div class="accel-desc">Escalamiento de cuentas, automatizaci&oacute;n, AI tools, data analysis avanzado</div>
+      <div class="accel-mentor" style="color:var(--purple)">Camilo Valencia, COO + M&oacute;nica Matiz, CSO</div>
+    </div>
+    <div class="accel-col">
+      <div class="accel-week" style="color:var(--green)">Semana 7-8</div>
+      <div class="accel-name">DEMO DAY</div>
+      <div class="accel-desc">Presentaci&oacute;n de resultados, referral a Amplifica o Pangea, certificaci&oacute;n Performance Lab</div>
+      <div class="accel-mentor" style="color:var(--green)">Full C-Suite + Evaluaci&oacute;n</div>
+    </div>
+  </div>
+</div>
+
+<!-- TEAM -->
+<div class="sec" id="team">
+  <div class="sec-tag">El Equipo</div>
+  <div class="sec-h">5 C-LEVELS<span style="color:var(--red)">.</span> 60+ A&Ntilde;OS COMBINADOS<span style="color:var(--red)">.</span></div>
+  <div class="sec-sub">No es un solo instructor &mdash; es el C-suite completo de una agencia top de LATAM. Eso no existe en ning&uacute;n otro programa.</div>
+
+  <div class="team-grid">
+    <!-- Santiago - Featured -->
+    <div class="team-card featured">
+      <div>
+        <div class="team-name">SANTIAGO GARCÍA</div>
+        <div class="team-role">CEO &bull; Pangea Digital Marketing</div>
+        <div class="team-bio">Visi&oacute;n y estrategia general. Lidera la agencia que maneja Avianca, LEGO, WOM, Decathlon. Los resultados de Pangea son el hook de marketing m&aacute;s poderoso que existe. Control total del contenido, curr&iacute;culo, y marca de Performance Lab.</div>
+      </div>
+      <div>
+        <div class="team-stats" style="border:none;padding:0;margin:0;flex-direction:column;gap:12px">
+          <div>
+            <div class="team-stat-label">Rol en Performance Lab</div>
+            <div class="team-stat-val">L&iacute;der de operaci&oacute;n + Instructor principal</div>
+          </div>
+          <div>
+            <div class="team-stat-label">Commitment</div>
+            <div class="team-stat-val">8 m&oacute;dulos + 4 sesiones en vivo/cohorte + 3-4 posts/semana</div>
+          </div>
+          <div>
+            <div class="team-stat-label">Clientes emblem&aacute;ticos</div>
+            <div class="team-stat-val">Avianca, LEGO, WOM, Decathlon, Hoteles Estelar</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Camilo -->
+    <div class="team-card">
+      <div class="team-name">CAMILO VALENCIA</div>
+      <div class="team-role">COO &bull; 15 a&ntilde;os experiencia</div>
+      <div class="team-bio">Investigaci&oacute;n y operaciones. La columna vertebral anal&iacute;tica de Pangea. Lidera data, research y procesos operativos.</div>
+      <div class="team-stats">
+        <div>
+          <div class="team-stat-label">Sesi&oacute;n</div>
+          <div class="team-stat-val">2 guest/a&ntilde;o</div>
+        </div>
+        <div>
+          <div class="team-stat-label">M&oacute;dulo</div>
+          <div class="team-stat-val">Data & Analytics</div>
+        </div>
+      </div>
+    </div>
+    <!-- Daniel -->
+    <div class="team-card">
+      <div class="team-name">DANIEL GALVIS</div>
+      <div class="team-role">CPO &bull; 7 a&ntilde;os experiencia</div>
+      <div class="team-bio">E-commerce y producto. El especialista en conversi&oacute;n que genera ventas masivas. Arquitecto de los resultados de Hoteles Estelar y WOM.</div>
+      <div class="team-stats">
+        <div>
+          <div class="team-stat-label">Sesi&oacute;n</div>
+          <div class="team-stat-val">4 guest/a&ntilde;o</div>
+        </div>
+        <div>
+          <div class="team-stat-label">M&oacute;dulo</div>
+          <div class="team-stat-val">E-commerce</div>
+        </div>
+      </div>
+    </div>
+    <!-- Miguel -->
+    <div class="team-card">
+      <div class="team-name">MIGUEL GRILLO</div>
+      <div class="team-role">CCO &bull; 18 a&ntilde;os experiencia</div>
+      <div class="team-bio">Creative strategy a nivel Fortune 500. 18 a&ntilde;os creando campa&ntilde;as para las marcas m&aacute;s grandes de LATAM. Mente creativa detr&aacute;s de los &eacute;xitos visuales de Pangea.</div>
+      <div class="team-stats">
+        <div>
+          <div class="team-stat-label">Sesi&oacute;n</div>
+          <div class="team-stat-val">4 guest/a&ntilde;o</div>
+        </div>
+        <div>
+          <div class="team-stat-label">M&oacute;dulo</div>
+          <div class="team-stat-val">Creative Strategy</div>
+        </div>
+      </div>
+    </div>
+    <!-- Monica -->
+    <div class="team-card">
+      <div class="team-name">M&Oacute;NICA MATIZ</div>
+      <div class="team-role">CSO &bull; 15 a&ntilde;os experiencia</div>
+      <div class="team-bio">Estrategia digital integral. Visi&oacute;n 360 que conecta performance con marca, contenido y negocio. La estratega detr&aacute;s de las cuentas m&aacute;s complejas.</div>
+      <div class="team-stats">
+        <div>
+          <div class="team-stat-label">Sesi&oacute;n</div>
+          <div class="team-stat-val">2 guest/a&ntilde;o</div>
+        </div>
+        <div>
+          <div class="team-stat-label">M&oacute;dulo</div>
+          <div class="team-stat-val">Estrategia Digital</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- REVENUE -->
+<div class="sec" id="revenue">
+  <div class="sec-tag">Revenue Projections</div>
+  <div class="sec-h">PANGEA SOLA VS<span style="color:var(--red)">.</span> PANGEA + PERFORMANCE LAB<span style="color:var(--red)">.</span></div>
+  <div class="sec-sub">Estos n&uacute;meros son ADICIONALES al revenue actual de Pangea. No reemplazan nada. Se suman.</div>
+
+  <!-- Scenario A -->
+  <div style="margin-bottom:32px">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:.04em;margin-bottom:12px;color:var(--muted)">ESCENARIO A: PANGEA SIGUE SOLA</div>
+    <table class="rev-table">
+      <thead>
+        <tr>
+          <th>A&ntilde;o</th>
+          <th>Revenue</th>
+          <th>Crecimiento</th>
+          <th>Margen Neto</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Y1</td><td>$X</td><td>Org&aacute;nico</td><td>15-25%</td></tr>
+        <tr><td>Y2</td><td>$X + 15%</td><td>M&aacute;s clientes, m&aacute;s personas</td><td>15-25%</td></tr>
+        <tr><td>Y3</td><td>$X + 30%</td><td>Techo de capacidad</td><td>15-25%</td></tr>
+      </tbody>
+    </table>
+    <div style="font-size:12px;color:var(--muted);font-style:italic">Crecimiento lineal. Limitado por headcount. M&aacute;rgenes estables pero no espectaculares.</div>
+  </div>
+
+  <!-- Scenario B -->
+  <div style="margin-bottom:32px">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:.04em;margin-bottom:12px;color:var(--green)">ESCENARIO B: PANGEA + PERFORMANCE LAB + AMPLIFICA</div>
+    <table class="rev-table">
+      <thead>
+        <tr>
+          <th>A&ntilde;o</th>
+          <th>Performance Lab</th>
+          <th>Amplifica Referrals</th>
+          <th>Pangea Pipeline</th>
+          <th>Total Adicional</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="highlight"><td>Y1</td><td>$130K-$300K</td><td>$42K-$150K/a&ntilde;o</td><td>2-3 clientes nuevos</td><td>$200K-$500K</td></tr>
+        <tr class="highlight"><td>Y2</td><td>$300K-$600K</td><td>$168K-$600K/a&ntilde;o</td><td>5-8 clientes nuevos</td><td>$500K-$1.3M</td></tr>
+        <tr class="highlight"><td>Y3</td><td>$500K-$1M</td><td>$420K-$1.5M/a&ntilde;o</td><td>10-15 clientes nuevos</td><td>$1M-$2.5M</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Y1 Breakdown -->
+  <div style="margin-bottom:32px">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:.04em;margin-bottom:12px">DESGLOSE Y1 PERFORMANCE LAB</div>
+    <table class="rev-table">
+      <thead>
+        <tr>
+          <th>Producto</th>
+          <th>Precio</th>
+          <th>Alumnos</th>
+          <th>Revenue</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Academy (4 cohortes)</td><td>$997</td><td>50-100</td><td>$49,850 - $99,700</td></tr>
+        <tr><td>Accelerator (4 cohortes x 20)</td><td>$4,997</td><td>30-60</td><td>$149,910 - $299,820</td></tr>
+        <tr><td>Templates & tools (upsell)</td><td>$97-$297</td><td>100+</td><td>Variable</td></tr>
+        <tr class="highlight"><td>Total Y1</td><td></td><td></td><td>$130K - $300K+</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Compound Growth -->
+  <div class="thesis">
+    <div class="thesis-text"><strong>A&ntilde;o 1:</strong> Santiago graba 8 m&oacute;dulos + 4 cohortes = fundaci&oacute;n.<br><strong>A&ntilde;o 2:</strong> Contenido evergreen + nuevos m&oacute;dulos + marca establecida = aceleraci&oacute;n.<br><strong>A&ntilde;o 3:</strong> Performance Lab es <strong>LA referencia</strong> de performance education en LATAM = dominancia.</div>
+    <div class="thesis-footer">Y durante todo esto, Pangea sigue operando igual. Performance Lab funciona en paralelo.</div>
+  </div>
+</div>
+
+<!-- COMPANY STRUCTURE -->
+<div class="sec" id="company">
+  <div class="sec-tag">Estructura</div>
+  <div class="sec-h">PERFORMANCE LAB ES DE SANTIAGO<span style="color:var(--red)">.</span> 100X ES EL ACELERADOR<span style="color:var(--red)">.</span></div>
+  <div class="sec-sub">Performance Lab es un NUEVO veh&iacute;culo. Pangea no cambia en nada. Pangea sigue siendo 100% independiente.</div>
+
+  <div class="structure">
+    <div class="s-title">ESTRUCTURA CORPORATIVA</div>
+
+    <div class="s-tree">
+      <div class="s-node">
+        <div class="s-node-name">100X (HOLDING)</div>
+        <div class="s-node-desc">Acelerador e infraestructura para Performance Lab</div>
+      </div>
+
+      <div class="s-connector"></div>
+
+      <div class="s-children">
+        <div class="s-child" style="border-color:rgba(255,60,0,.2)">
+          <div class="s-child-name" style="color:var(--red)">Performance Lab S.A.S.</div>
+          <div class="s-child-desc">Santiago + Pangea = operaci&oacute;n. Control total del contenido, curr&iacute;culo, marca, pricing y estrategia.</div>
+        </div>
+        <div class="s-child" style="border-color:rgba(232,83,26,.2)">
+          <div class="s-child-name" style="color:var(--orange)">Amplifica Studio</div>
+          <div class="s-child-desc">Brazo de ejecuci&oacute;n por subscripci&oacute;n. Atiende graduados que necesitan implementaci&oacute;n.</div>
+        </div>
+        <div class="s-child" style="border-color:rgba(124,58,237,.2)">
+          <div class="s-child-name" style="color:var(--purple)">Infraestructura</div>
+          <div class="s-child-desc">Sidekick+ (plataforma), TRIBE V2 (content strategy AI), Virality Lab (an&aacute;lisis viral)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- What Santiago gets -->
+  <div class="ready-grid">
+    <div class="ready-card">
+      <div class="ready-num" style="color:var(--red)">100%</div>
+      <div class="ready-label">Control de Santiago sobre contenido, curr&iacute;culo, marca y posicionamiento de Performance Lab</div>
+    </div>
+    <div class="ready-card">
+      <div class="ready-num" style="color:var(--orange)">0%</div>
+      <div class="ready-label">Cambio en Pangea. No pedimos que cambie su modelo ni que deje clientes. Cero exclusividad.</div>
+    </div>
+    <div class="ready-card">
+      <div class="ready-num" style="color:var(--green)">5-15x</div>
+      <div class="ready-label">Valor de empresa de educaci&oacute;n + comunidad vs 1-3x de una agencia. Valor que escala sin horas.</div>
+    </div>
+  </div>
+
+  <!-- Distribution -->
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:.04em;margin-bottom:12px">DISTRIBUCI&Oacute;N QUE PANGEA NO TIENE HOY</div>
+  <div class="diff-grid">
+    <div class="diff">
+      <div class="diff-num" style="color:var(--orange)">01</div>
+      <div class="diff-title">Podcast &ldquo;En Producci&oacute;n&rdquo;</div>
+      <div class="diff-text">Audiencia de founders y l&iacute;deres de marketing en LATAM. Santiago como invitado recurrente.</div>
+    </div>
+    <div class="diff">
+      <div class="diff-num" style="color:var(--blue)">02</div>
+      <div class="diff-title">Newsletter cruzada</div>
+      <div class="diff-text">Distribuci&oacute;n con Growth Lab (Jos&eacute; Prieto, 1.7M seguidores) y CMO Lab (Daniela L&oacute;pez Ochoa).</div>
+    </div>
+    <div class="diff">
+      <div class="diff-num" style="color:var(--purple)">03</div>
+      <div class="diff-title">LinkedIn Protocol</div>
+      <div class="diff-text">11 personas del ecosistema Builders amplificando contenido de Santiago y Pangea semanalmente.</div>
+    </div>
+    <div class="diff">
+      <div class="diff-num" style="color:var(--green)">04</div>
+      <div class="diff-title">AI Tools incluidas</div>
+      <div class="diff-text">TRIBE V2 (content strategy), Virality Lab (an&aacute;lisis viral), Sidekick+ (plataforma), AI agents (operaciones).</div>
+    </div>
+  </div>
+</div>
+
+<!-- WHY PANGEA -->
+<div class="sec" id="why">
+  <div class="sec-tag">Por Qu&eacute; Pangea</div>
+  <div class="sec-h">LA CREDIBILIDAD ES INCOMPARABLE<span style="color:var(--red)">.</span></div>
+  <div class="sec-sub">Cuando alguien dice &ldquo;aprend&iacute; de la agencia que maneja LEGO&rdquo;, eso no necesita explicaci&oacute;n.</div>
+
+  <div class="compare-grid">
+    <div class="compare-card">
+      <div class="compare-name">30X (REFERENTE)</div>
+      <div class="compare-cred">&ldquo;Fundadores de Rappi te ense&ntilde;an&rdquo; &mdash; credibilidad de startup/founder. Un solo tipo de experiencia, enfocada en emprendimiento.</div>
+      <div class="compare-feature">
+        <strong>Credibilidad:</strong> Startup/founder<br>
+        <strong>Instructores:</strong> Fundadores individuales<br>
+        <strong>Post-programa:</strong> Solo educaci&oacute;n<br>
+        <strong>Precio:</strong> $1,500-$5,000
+      </div>
+    </div>
+    <div class="compare-card highlight">
+      <div class="compare-name" style="color:var(--red)">PERFORMANCE LAB</div>
+      <div class="compare-cred">&ldquo;El equipo que maneja Avianca, LEGO, WOM, Decathlon te ense&ntilde;a&rdquo; &mdash; credibilidad de MARCAS GLOBALES que todo el mundo conoce.</div>
+      <div class="compare-feature">
+        <strong>Credibilidad:</strong> Marcas globales Fortune 500<br>
+        <strong>Instructores:</strong> 5 C-levels, 60+ a&ntilde;os combinados<br>
+        <strong>Post-programa:</strong> Educaci&oacute;n + Amplifica + Pangea<br>
+        <strong>Ventaja:</strong> No solo ense&ntilde;amos &mdash; ejecutamos
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</div><!-- /wrap (closing main wrap before full-width disruption) -->
+
+<!-- SECTION X: AI DISRUPTION -->
+<div class="disruption" id="ai-disruption">
+  <div class="disruption-inner">
+    <div class="sec-tag" style="color:var(--red)">La Realidad</div>
+    <div class="sec-h" style="color:#fff">AI VA A PARTIR TU AGENCIA EN DOS<span style="color:var(--red)">.</span></div>
+    <div class="sec-sub" style="color:rgba(255,255,255,.4)">Santiago, esto no es un pitch de miedo. Es matem&aacute;tica.</div>
+
+    <!-- The Uncomfortable Question - Danger Thesis -->
+    <div class="danger-thesis">
+      <div class="thesis-text" style="font-size:clamp(18px,2.5vw,24px)"><strong>&ldquo;Si un equipo de 3 personas con AI puede hacer lo que hoy hace un equipo de 10&hellip; &iquest;qu&eacute; haces con los otros 7?&rdquo;</strong></div>
+      <div class="thesis-footer" style="color:rgba(255,60,0,.4)">La pregunta inc&oacute;moda que todo CEO de agencia evita</div>
+    </div>
+
+    <!-- The Tsunami -->
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:.04em;margin-bottom:16px;color:#fff">EL TSUNAMI QUE YA LLEG&Oacute;</div>
+    <div style="font-size:13px;color:rgba(255,255,255,.4);margin-bottom:20px">En 2024, un media buyer junior dedicaba ~60% de su tiempo a tareas que AI ya hace mejor:</div>
+
+    <ul class="danger-list">
+      <li><strong>Crear variaciones de ads</strong> &rarr; Midjourney, Runway, Kling AI (Pangea ya las usa)</li>
+      <li><strong>Escribir copy de ads</strong> &rarr; Claude, ChatGPT</li>
+      <li><strong>Configurar campa&ntilde;as</strong> &rarr; Advantage+ de Meta y PMax de Google lo automatizan</li>
+      <li><strong>Reporting</strong> &rarr; AI dashboards generan reportes en segundos</li>
+      <li><strong>Optimizaci&oacute;n de bids</strong> &rarr; AI bidding ya gana a manos humanas en el 80% de los casos</li>
+    </ul>
+
+    <!-- Automation Progression Cards -->
+    <div class="auto-cards">
+      <div class="auto-card" style="background:rgba(255,60,0,.06);border:1px solid rgba(255,60,0,.12)">
+        <div class="auto-card-num" style="color:var(--red)">60%</div>
+        <div class="auto-card-label" style="color:var(--red)">Automatizable en 2024</div>
+        <div class="auto-card-desc" style="color:rgba(255,255,255,.4)">Tareas de un media buyer junior que AI ya hac&iacute;a mejor</div>
+      </div>
+      <div class="auto-card" style="background:rgba(255,60,0,.12);border:1px solid rgba(255,60,0,.2)">
+        <div class="auto-card-num" style="color:#fff">80%</div>
+        <div class="auto-card-label" style="color:var(--red)">Automatizable en 2026</div>
+        <div class="auto-card-desc" style="color:rgba(255,255,255,.5)">Ese n&uacute;mero ya no es el 60%. Es el 80%. Y sigue subiendo.</div>
+      </div>
+    </div>
+
+    <!-- Split Comparison -->
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:.04em;margin-bottom:16px;color:#fff">LO QUE ESTO SIGNIFICA PARA PANGEA</div>
+    <div style="font-size:13px;color:rgba(255,255,255,.4);margin-bottom:20px">Hoy Pangea tiene un equipo. Ma&ntilde;ana &mdash; y no es un &ldquo;ma&ntilde;ana&rdquo; lejano, es Q4 de 2026 &mdash; ese equipo necesita ser la mitad del tama&ntilde;o actual haciendo el doble del trabajo.</div>
+
+    <div class="split-compare">
+      <div class="split-card bad">
+        <div class="split-title">AGENCIAS QUE NO ADAPTAN</div>
+        <ul class="split-list">
+          <li>Pierden clientes contra agencias que cobran la mitad con AI</li>
+          <li>Equipos sobredimensionados comiendo los m&aacute;rgenes</li>
+          <li>Compiten en precio &mdash; una guerra que ninguna agencia gana</li>
+          <li>M&aacute;rgenes de 15-25% que se comprimen a&uacute;n m&aacute;s</li>
+        </ul>
+      </div>
+      <div class="split-card good">
+        <div class="split-title">AGENCIAS QUE S&Iacute; ADAPTAN</div>
+        <ul class="split-list">
+          <li>Operan con equipos lean + AI como multiplicador</li>
+          <li>Cobran por estrategia y resultados, no por horas</li>
+          <li>M&aacute;rgenes de 40-60% en vez de 15-25%</li>
+          <li>El equipo se enfoca en lo que AI no puede hacer</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- The Answer -->
+    <div class="answer-block">
+      <div class="answer-label">La Respuesta</div>
+      <div class="answer-text"><strong>Los conviertes en instructores de Performance Lab, mentores del Accelerator, y estrategas de alto nivel que ninguna AI puede reemplazar.</strong> El conocimiento que tienen es el activo. No sus horas de ejecuci&oacute;n.</div>
+    </div>
+
+    <div style="text-align:center;margin-top:32px">
+      <div style="font-size:13px;color:rgba(255,255,255,.35);font-style:italic;font-family:'Outfit',sans-serif">Pangea est&aacute; en la posici&oacute;n perfecta &mdash; ya usa AI. Pero <strong style="color:rgba(255,255,255,.8);font-weight:500;font-style:normal">usarla para clientes no es lo mismo que redise&ntilde;ar el modelo entero.</strong></div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION XI: SIDEKICK+ -->
+<div class="wrap">
+<div class="sec" id="sidekick">
+  <div class="sec-tag">Sidekick+</div>
+  <div class="sec-h">EL SISTEMA OPERATIVO DE PANGEA<span style="color:var(--red)">.</span></div>
+  <div class="sec-sub">Aqu&iacute; es donde la propuesta se vuelve m&aacute;s grande que Performance Lab. Sidekick+ es nuestra plataforma de &ldquo;C-Suite as a Service&rdquo; &mdash; AI agents que operan departamentos completos.</div>
+
+  <!-- 6 AI Agents Grid -->
+  <div class="agent-grid">
+    <div class="agent-card">
+      <div class="agent-accent" style="background:var(--red)"></div>
+      <div class="agent-body">
+        <div class="agent-name" style="color:var(--red)">CMO AGENT</div>
+        <div class="agent-what">Marketing completo: dise&ntilde;o, contenido, ads, SEO, social, foto/video</div>
+        <div class="agent-relevance" style="color:var(--red)">Esto ES lo que Pangea vende, pero automatizado</div>
+      </div>
+    </div>
+    <div class="agent-card">
+      <div class="agent-accent" style="background:var(--blue)"></div>
+      <div class="agent-body">
+        <div class="agent-name" style="color:var(--blue)">CTO AGENT</div>
+        <div class="agent-what">Arquitectura, DevOps, code audits para activos digitales</div>
+        <div class="agent-relevance" style="color:var(--blue)">Para los activos digitales de Pangea y sus clientes</div>
+      </div>
+    </div>
+    <div class="agent-card">
+      <div class="agent-accent" style="background:var(--green)"></div>
+      <div class="agent-body">
+        <div class="agent-name" style="color:var(--green)">CFO AGENT</div>
+        <div class="agent-what">Finanzas, reporting financiero, cash flow automatizado</div>
+        <div class="agent-relevance" style="color:var(--green)">Para la operaci&oacute;n interna de Pangea</div>
+      </div>
+    </div>
+    <div class="agent-card">
+      <div class="agent-accent" style="background:var(--purple)"></div>
+      <div class="agent-body">
+        <div class="agent-name" style="color:var(--purple)">CPO AGENT</div>
+        <div class="agent-what">Producto, roadmaps, UX research y testing</div>
+        <div class="agent-relevance" style="color:var(--purple)">Para los clientes de e-commerce de Pangea</div>
+      </div>
+    </div>
+    <div class="agent-card">
+      <div class="agent-accent" style="background:var(--orange)"></div>
+      <div class="agent-body">
+        <div class="agent-name" style="color:var(--orange)">COO AGENT</div>
+        <div class="agent-what">Procesos, SOPs, automatizaci&oacute;n operativa</div>
+        <div class="agent-relevance" style="color:var(--orange)">Para escalar Pangea sin m&aacute;s headcount</div>
+      </div>
+    </div>
+    <div class="agent-card">
+      <div class="agent-accent" style="background:var(--teal)"></div>
+      <div class="agent-body">
+        <div class="agent-name" style="color:var(--teal)">CDO AGENT</div>
+        <div class="agent-what">Analytics, dashboards, data pipelines automatizados</div>
+        <div class="agent-relevance" style="color:var(--teal)">Para los reportes que Pangea entrega a clientes</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- The Proposal -->
+  <div class="thesis" style="margin-bottom:32px">
+    <div class="thesis-text" style="font-size:clamp(16px,2vw,20px)"><strong>Pangea adopta Sidekick+ como infraestructura interna</strong> &mdash; los AI agents hacen el 80% del trabajo operativo. El equipo se enfoca en lo que ninguna AI puede hacer: estrategia, relaciones con clientes, creative direction de alto nivel. <strong>Y Santiago tiene participaci&oacute;n en Sidekick+</strong> &mdash; no solo usa la herramienta, le pertenece parte del resultado.</div>
+    <div class="thesis-footer">Pangea corre sobre Sidekick+ &mdash; no le pedimos que cambie, le ofrecemos algo mejor</div>
+  </div>
+
+  <!-- Before/After Table -->
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:.04em;margin-bottom:12px">LO QUE CAMBIA CON SIDEKICK+</div>
+  <table class="ba-table">
+    <thead>
+      <tr>
+        <th>Proceso</th>
+        <th>Antes (Manual)</th>
+        <th>Despu&eacute;s (Sidekick+)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Reporting</td>
+        <td>3 personas para 20 clientes</td>
+        <td>CDO Agent genera reportes autom&aacute;ticos</td>
+      </tr>
+      <tr>
+        <td>Dise&ntilde;o</td>
+        <td>2 dise&ntilde;adores hacen 40 piezas/semana</td>
+        <td>CMO Agent genera 200 piezas/semana, equipo revisa</td>
+      </tr>
+      <tr>
+        <td>Copywriting</td>
+        <td>Copy se escribe a mano</td>
+        <td>AI genera, equipo edita y aprueba</td>
+      </tr>
+      <tr>
+        <td>Campaign Setup</td>
+        <td>Setup toma 2 d&iacute;as</td>
+        <td>Setup autom&aacute;tico, equipo hace QA</td>
+      </tr>
+      <tr>
+        <td style="font-weight:700;color:var(--green)">Resultado</td>
+        <td>Equipo de 15-20 personas</td>
+        <td style="font-weight:700">Equipo de 8-10 personas haciendo 2x el output</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Margin Impact -->
+  <div class="ready-grid">
+    <div class="ready-card" style="background:#0a0a0a;border-color:#1a1a1a">
+      <div class="ready-num" style="color:var(--muted)">15-25%</div>
+      <div class="ready-label" style="color:rgba(255,255,255,.35)">M&aacute;rgenes actuales de Pangea. Modelo tradicional, escalamiento lineal.</div>
+    </div>
+    <div class="ready-card" style="background:#0a0a0a;border-color:rgba(22,163,74,.2)">
+      <div class="ready-num" style="color:var(--green)">40-60%</div>
+      <div class="ready-label" style="color:rgba(255,255,255,.35)">M&aacute;rgenes con Sidekick+. Misma calidad. Mismos clientes. Mitad del esfuerzo operativo.</div>
+    </div>
+    <div class="ready-card" style="background:#0a0a0a;border-color:rgba(255,60,0,.2)">
+      <div class="ready-num" style="color:var(--red)">2X</div>
+      <div class="ready-label" style="color:rgba(255,255,255,.35)">Output con la mitad del equipo. Sidekick+ es el multiplicador.</div>
+    </div>
+  </div>
+
+  <!-- Santiago's Participation -->
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:.04em;margin-bottom:6px">LA PARTICIPACI&Oacute;N DE SANTIAGO EN EL ECOSISTEMA</div>
+  <div style="font-size:13px;color:var(--muted);margin-bottom:16px">Santiago no es solo un &ldquo;usuario&rdquo; de Sidekick+. Al entrar al ecosistema:</div>
+
+  <div class="participation-grid">
+    <div class="part-card" style="border-top:3px solid var(--red)">
+      <div class="part-name" style="color:var(--red)">Performance Lab</div>
+      <div class="part-desc">Su empresa de educaci&oacute;n &mdash; genera revenue nuevo</div>
+    </div>
+    <div class="part-card" style="border-top:3px solid var(--orange)">
+      <div class="part-name" style="color:var(--orange)">Amplifica Studio</div>
+      <div class="part-desc">Referral partner &mdash; cada cliente genera comisi&oacute;n recurrente</div>
+    </div>
+    <div class="part-card" style="border-top:3px solid var(--purple)">
+      <div class="part-name" style="color:var(--purple)">Sidekick+</div>
+      <div class="part-desc">Participaci&oacute;n en el ecosistema &mdash; crece con la plataforma</div>
+    </div>
+    <div class="part-card" style="border-top:3px solid var(--blue)">
+      <div class="part-name" style="color:var(--blue)">Builders Universe</div>
+      <div class="part-desc">Visibilidad &mdash; 11 personas amplificando la marca de Santiago</div>
+    </div>
+    <div class="part-card" style="border-top:3px solid var(--green)">
+      <div class="part-name" style="color:var(--green)">Cross-sell Labs</div>
+      <div class="part-desc">Estudiantes de Growth Lab y CMO Lab que necesitan performance</div>
+    </div>
+  </div>
+
+  <div class="thesis">
+    <div class="thesis-text" style="font-size:clamp(16px,2vw,20px)">Santiago pasa de tener <strong>UNA empresa</strong> (agencia) a participar en <strong>UN ECOSISTEMA</strong> (agencia + educaci&oacute;n + plataforma + comunidad).</div>
+    <div class="thesis-footer">De operador a ecosistema</div>
+  </div>
+</div>
+
+<!-- SECTION XII: WHY NOW -->
+<div class="sec" id="why-now">
+  <div class="sec-tag">Por Qu&eacute; Ahora</div>
+  <div class="sec-h">LA VENTANA SE CIERRA<span style="color:var(--red)">.</span></div>
+  <div class="sec-sub">No es solo una oportunidad. Es un momento que no se repite.</div>
+
+  <div class="diff-grid" style="grid-template-columns:repeat(3,1fr)">
+    <div class="diff" style="grid-column:span 3;background:#0a0a0a;border-color:#1a1a1a">
+      <div class="diff-num" style="color:var(--red)">01</div>
+      <div class="diff-title" style="color:#fff;font-size:15px">AI va a forzar la decisi&oacute;n &mdash; con o sin nosotros</div>
+      <div class="diff-text" style="color:rgba(255,255,255,.45);font-size:13px;line-height:1.7">En 12 meses, Santiago va a tener que decidir: &iquest;reduzco equipo y adopto AI, o sigo como estoy? <strong style="color:rgba(255,255,255,.7)">Con nosotros:</strong> Sidekick+ ya est&aacute; construido, la transici&oacute;n es suave, Performance Lab compensa cualquier reestructuraci&oacute;n, y tiene participaci&oacute;n en la plataforma. <strong style="color:rgba(255,255,255,.7)">Sin nosotros:</strong> Pangea hace la transici&oacute;n sola, compra herramientas sueltas, sin revenue adicional, sin red de distribuci&oacute;n, sin participaci&oacute;n en nada nuevo.</div>
+    </div>
+    <div class="diff">
+      <div class="diff-num" style="color:var(--orange)">02</div>
+      <div class="diff-title">Mercado vac&iacute;o en LATAM</div>
+      <div class="diff-text">No hay nada de performance education que venga de una agencia real con clientes reales y resultados medibles. Performance Lab ocupa ese espacio antes de que alguien m&aacute;s lo haga.</div>
+    </div>
+    <div class="diff">
+      <div class="diff-num" style="color:var(--blue)">03</div>
+      <div class="diff-title">Ecosistema listo AHORA</div>
+      <div class="diff-text">TRIBE V2, Virality Lab, Sidekick+, podcast, Growth Lab (Jos&eacute; Prieto), CMO Lab (Daniela L&oacute;pez Ochoa). Performance Lab no empieza de cero.</div>
+    </div>
+    <div class="diff">
+      <div class="diff-num" style="color:var(--purple)">04</div>
+      <div class="diff-title">30x valid&oacute; el modelo</div>
+      <div class="diff-text">Andr&eacute;s Bilbao demostr&oacute; que se puede cobrar $1,500-$5,000 por educaci&oacute;n de alto nivel. Performance Lab tiene ventaja: no solo ense&ntilde;amos, ejecutamos.</div>
+    </div>
+    <div class="diff">
+      <div class="diff-num" style="color:var(--green)">05</div>
+      <div class="diff-title">Los n&uacute;meros se venden solos</div>
+      <div class="diff-text">$175M COP. 6,000 ventas/mes. +163% YoY. $145M en un d&iacute;a. Esos n&uacute;meros no necesitan pitch. Son el mejor marketing que existe.</div>
+    </div>
+    <div class="diff">
+      <div class="diff-num" style="color:var(--teal)">06</div>
+      <div class="diff-title">Amplifica lo dice todo</div>
+      <div class="diff-text">No reemplazamos a Pangea. No competimos. La AMPLIFICAMOS. Literalmente. Ese es el nombre y esa es la misi&oacute;n.</div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div id="cta" class="cta">
+  <div class="cta-quote">&ldquo;Los n&uacute;meros no mienten. Y <strong>Pangea tiene los mejores n&uacute;meros de LATAM.</strong>&rdquo;</div>
+  <div class="cta-source">Propuesta 100x para Santiago García</div>
+  <div class="cta-divider"></div>
+  <div class="cta-ask">SIGUIENTE PASO<span style="color:var(--red)">.</span></div>
+  <div class="cta-ask-sub">Una conversaci&oacute;n de 60 minutos. Santiago, su equipo, y nosotros. Sin compromisos. Sin contratos. Solo para explorar si Performance Lab puede generar <strong style="color:rgba(255,255,255,.8)">$200K-$500K adicionales en Y1</strong> sin tocar una sola hora de Pangea.</div>
+</div>
+
+</div><!-- /wrap (sidekick + why-now + cta) -->
+
+<footer>Performance Lab &mdash; Pangea + 100x &mdash; Confidencial &mdash; Abril 2026</footer>
+
+</body>
+</html>

@@ -111,17 +111,24 @@ module Virality
 
     def cli_available?
       return @cli_available if defined?(@cli_available)
-      @cli_available = system("which claude > /dev/null 2>&1")
+      @cli_available = claude_path.present?
+    end
+
+    def claude_path
+      @claude_path ||= [
+        "/opt/homebrew/bin/claude",
+        "#{ENV['HOME']}/.claude/local/claude",
+        `which claude 2>/dev/null`.strip.presence
+      ].compact.find { |p| File.executable?(p.to_s) }
     end
 
     def call_claude_cli(system_prompt, user_content)
       require "open3"
-      require "tempfile"
 
       prompt = "#{system_prompt}\n\n#{user_content}"
 
       result_text, status = Open3.capture2(
-        "claude", "-p", prompt,
+        claude_path, "-p", prompt,
         "--output-format", "text",
         "--model", "sonnet"
       )

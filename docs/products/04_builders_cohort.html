@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Builders Cohort &mdash; Amplifica Studio</title>
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --bg-card: #141414;
+    --bg-code: #1a1a1a;
+    --border: #2a2a2a;
+    --border-table: #333;
+    --gold: #d4a853;
+    --gold-dim: #b8923f;
+    --gold-glow: rgba(212, 168, 83, 0.15);
+    --text: #e8e8e8;
+    --text-dim: #999;
+    --text-bright: #ffffff;
+    --link: #d4a853;
+    --link-hover: #f0c96c;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  .page-wrapper {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .site-header {
+    border-bottom: 1px solid var(--border);
+    padding: 40px 0 32px;
+    margin-bottom: 12px;
+  }
+
+  .site-header h1 {
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: -0.5px;
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+
+  .site-header .tagline {
+    font-size: 1.1rem;
+    color: var(--text-dim);
+    font-weight: 400;
+  }
+
+  .site-header .codename {
+    display: inline-block;
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--gold-dim);
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+
+  .nav-bar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10, 10, 10, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 0;
+    margin-bottom: 40px;
+  }
+
+  .nav-bar nav {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .nav-bar a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 500;
+    padding: 5px 12px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    border: 1px solid transparent;
+  }
+
+  .nav-bar a:hover {
+    color: var(--gold);
+    background: var(--gold-glow);
+    border-color: rgba(212, 168, 83, 0.2);
+  }
+
+  .nav-bar a.active {
+    color: var(--gold);
+    background: var(--gold-glow);
+    border-color: rgba(212, 168, 83, 0.3);
+  }
+
+  .nav-bar .nav-label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #555;
+    margin-right: 4px;
+    font-weight: 600;
+  }
+
+  h2 {
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: var(--gold);
+    margin: 56px 0 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+    letter-spacing: -0.3px;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-bright);
+    margin: 36px 0 14px;
+  }
+
+  h4 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--gold-dim);
+    margin: 24px 0 10px;
+  }
+
+  p { margin-bottom: 16px; color: var(--text); }
+  strong { color: var(--text-bright); font-weight: 600; }
+  a { color: var(--link); text-decoration: none; transition: color 0.2s; }
+  a:hover { color: var(--link-hover); }
+
+  blockquote {
+    border-left: 3px solid var(--gold);
+    padding: 16px 24px;
+    margin: 24px 0;
+    background: var(--gold-glow);
+    border-radius: 0 8px 8px 0;
+    font-style: italic;
+    color: var(--text);
+    font-size: 1.1rem;
+  }
+
+  hr {
+    border: none;
+    height: 1px;
+    background: var(--border);
+    margin: 40px 0;
+  }
+
+  ul, ol {
+    margin: 12px 0 20px 24px;
+    color: var(--text);
+  }
+
+  li { margin-bottom: 6px; }
+  li::marker { color: var(--gold-dim); }
+
+  ol li { margin-bottom: 8px; }
+  ol li::marker { color: var(--gold); font-weight: 600; }
+
+  .tier-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 32px;
+    margin: 28px 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tier-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+  }
+
+  .tier-card h3 {
+    margin-top: 0;
+    color: var(--gold);
+    font-size: 1.3rem;
+  }
+
+  .tier-card .price {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--text-bright);
+    margin-bottom: 4px;
+  }
+
+  .tier-card .format {
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    margin-bottom: 16px;
+  }
+
+  .table-wrap {
+    overflow-x: auto;
+    margin: 20px 0 28px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.92rem;
+  }
+
+  thead th {
+    background: #1c1c1c;
+    color: var(--gold);
+    font-weight: 600;
+    text-align: left;
+    padding: 14px 18px;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+  }
+
+  tbody td {
+    padding: 12px 18px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    color: var(--text);
+  }
+
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: rgba(212, 168, 83, 0.04); }
+  tbody td:first-child { font-weight: 600; color: var(--text-bright); }
+
+  pre {
+    background: var(--bg-code);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px;
+    overflow-x: auto;
+    margin: 20px 0 28px;
+    font-size: 0.88rem;
+    line-height: 1.6;
+  }
+
+  code {
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    color: var(--gold);
+  }
+
+  pre code { color: var(--text); background: none; padding: 0; }
+
+  .highlight-box {
+    background: var(--gold-glow);
+    border: 1px solid rgba(212, 168, 83, 0.25);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin: 24px 0;
+  }
+
+  .highlight-box p { margin-bottom: 8px; }
+  .highlight-box p:last-child { margin-bottom: 0; }
+
+  /* ── Demo Day section ── */
+  .demo-day-section {
+    background: linear-gradient(135deg, rgba(212, 168, 83, 0.08), rgba(212, 168, 83, 0.02));
+    border: 1px solid rgba(212, 168, 83, 0.2);
+    border-radius: 12px;
+    padding: 32px;
+    margin: 32px 0;
+  }
+
+  .demo-day-section h3 {
+    color: var(--gold);
+    margin-top: 0;
+    font-size: 1.4rem;
+  }
+
+  .prize {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .prize-rank {
+    background: var(--gold);
+    color: var(--bg);
+    font-weight: 700;
+    font-size: 0.75rem;
+    padding: 4px 10px;
+    border-radius: 4px;
+    white-space: nowrap;
+    margin-top: 2px;
+  }
+
+  .prize-rank.second { background: #999; }
+  .prize-rank.third { background: #7a6543; }
+
+  .site-footer {
+    margin-top: 80px;
+    padding: 32px 0;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+  }
+
+  .site-footer .brand {
+    color: var(--gold);
+    font-weight: 600;
+  }
+
+  @media (max-width: 640px) {
+    .site-header h1 { font-size: 1.8rem; }
+    h2 { font-size: 1.4rem; }
+    .nav-bar nav { gap: 4px; }
+    .nav-bar a { font-size: 0.75rem; padding: 4px 8px; }
+    pre { padding: 16px; font-size: 0.8rem; }
+    thead th, tbody td { padding: 10px 12px; }
+    .tier-card { padding: 20px; }
+    .demo-day-section { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="site-header">
+  <div class="page-wrapper">
+    <div class="codename">Build Club x 30x</div>
+    <h1>Builders Cohort</h1>
+    <div class="tagline">Powered by the Builders Universe Team</div>
+  </div>
+</div>
+
+<div class="nav-bar">
+  <nav>
+    <span class="nav-label">Products:</span>
+    <a href="00_ecosystem_overview.html">Ecosystem</a>
+    <a href="01_growth_lab_jose_prieto.html">Growth Lab</a>
+    <a href="02_cmo_lab_daniela_lopez.html">CMO Lab</a>
+    <a href="03_performance_lab_santiago_garcia.html">Performance Lab</a>
+    <a href="04_builders_cohort.html" class="active">Builders Cohort</a>
+  </nav>
+</div>
+
+<div class="page-wrapper">
+
+  <blockquote>"No te ensenamos a construir. Construimos CONTIGO. En 8 semanas, en publico, con AI."</blockquote>
+
+  <h2>What It Is</h2>
+
+  <p>Builders Cohort es un programa de 8 semanas donde empresas y founders construyen y lanzan un producto real &mdash; con el equipo de Builders Universe como co-pilotos y la infraestructura de Sidekick+ como acelerador.</p>
+
+  <p>Inspirado en 30x (Andres Bilbao, Rappi) pero con una diferencia fundamental: <strong>en 30x aprendes de founders. En Builders Cohort, construyes CON un equipo de 11 ingenieros, PMs y operadores que tienen AI agents como infraestructura.</strong></p>
+
+  <hr>
+
+  <h2>El Modelo: 30x Meets Y Combinator Meets Build-in-Public</h2>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>30x</th>
+          <th>Y Combinator</th>
+          <th>Builders Cohort</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>3 dias intensivo</td>
+          <td>3 meses batch</td>
+          <td style="color:var(--gold);font-weight:600;">8 semanas cohort</td>
+        </tr>
+        <tr>
+          <td>Aprende de founders</td>
+          <td>Construye tu startup</td>
+          <td style="color:var(--gold);font-weight:600;">Construye tu PRODUCTO</td>
+        </tr>
+        <tr>
+          <td>$1,500-$5,000</td>
+          <td>7% equity</td>
+          <td style="color:var(--gold);font-weight:600;">$1,500-$5,000, 0% equity</td>
+        </tr>
+        <tr>
+          <td>Casos de estudio</td>
+          <td>Office hours</td>
+          <td style="color:var(--gold);font-weight:600;">Co-building sessions</td>
+        </tr>
+        <tr>
+          <td>Certificado</td>
+          <td>Demo Day</td>
+          <td style="color:var(--gold);font-weight:600;">Demo Day + PRODUCTO EN VIVO</td>
+        </tr>
+        <tr>
+          <td>Comunidad alumni</td>
+          <td>Founder network</td>
+          <td style="color:var(--gold);font-weight:600;">Builders Universe ecosystem</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr>
+
+  <h2>Product Tiers</h2>
+
+  <div class="tier-card">
+    <h3>Tier 1 &mdash; BUILDERS STARTER: "Ship It"</h3>
+    <div class="price">$1,500 USD</div>
+    <div class="format">8 semanas, virtual, cohort de 20-30 personas &mdash; Para founders solos o equipos de 1-3 que quieren lanzar un MVP</div>
+
+    <h4>Curriculum:</h4>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Semana</th>
+          <th>Tema</th>
+          <th>Lider</th>
+          <th>Entregable</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td><strong>Product Discovery</strong></td>
+          <td>Daniela Calvano (Product Mind)</td>
+          <td>Problema validado + ICP definido</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td><strong>Architecture &amp; Stack</strong></td>
+          <td>Andres Murcia (CTO) + Harold Mideros</td>
+          <td>Stack elegido + repo creado</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td><strong>Build Sprint 1</strong></td>
+          <td>Harold + Juan Santamaria</td>
+          <td>MVP v0.1 (core feature)</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td><strong>Build Sprint 2 + AI Integration</strong></td>
+          <td>Edixon Hernandez + equipo</td>
+          <td>MVP v0.2 con AI features</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td><strong>QA &amp; Polish</strong></td>
+          <td>Josua Chaves + Jonathan Rubiano</td>
+          <td>Testing completo + bug fixes</td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td><strong>Marketing &amp; Launch Prep</strong></td>
+          <td>Jose Prieto + Daniela Lopez Ochoa</td>
+          <td>Landing page + contenido de lanzamiento</td>
+        </tr>
+        <tr>
+          <td>7</td>
+          <td><strong>Go-to-Market</strong></td>
+          <td>Santiago Garcia + Claudia Mirza</td>
+          <td>Estrategia de lanzamiento + primeros usuarios</td>
+        </tr>
+        <tr>
+          <td>8</td>
+          <td><strong>Demo Day</strong></td>
+          <td>Todo el equipo</td>
+          <td>Producto en vivo + pitch</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Incluye:</h3>
+  <ul>
+    <li>Acceso a sesiones en vivo semanales (2h)</li>
+    <li>Comunidad del cohort (Slack/Discord)</li>
+    <li>Templates de Fluyenta (como operan con AI)</li>
+    <li>Grabaciones de todas las sesiones</li>
+    <li>Certificado Builders Universe</li>
+    <li>3 meses de acceso a comunidad alumni</li>
+  </ul>
+
+  <hr>
+
+  <div class="tier-card">
+    <h3>Tier 2 &mdash; BUILDERS PRO: "Scale It"</h3>
+    <div class="price">$3,500 USD</div>
+    <div class="format">8 semanas, virtual + 1 sesion presencial, cohort de 15 personas max &mdash; Para startups con producto existente que quieren escalar con AI</div>
+
+    <p><strong>Todo de Starter MAS:</strong></p>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Beneficio</th>
+          <th>Detalle</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Mentoria 1:1 semanal</td>
+          <td>30 min con un miembro senior del equipo Builders (Andres, Harold, Edixon, o Daniela Calvano)</td>
+        </tr>
+        <tr>
+          <td>Code Review semanal</td>
+          <td>El equipo de Fluyenta revisa tu codigo y arquitectura</td>
+        </tr>
+        <tr>
+          <td>AI Agent Setup</td>
+          <td>Te ayudan a configurar AI agents para tu operacion (como APEX, FORGE, ATLAS de Fluyenta)</td>
+        </tr>
+        <tr>
+          <td>Acceso a Sidekick+</td>
+          <td>1 mes gratis de Sidekick+ Explore (1 agent, 3 requests)</td>
+        </tr>
+        <tr>
+          <td>Office Hours con Claudia Mirza</td>
+          <td>2 sesiones (semanas 4 y 7) sobre ventas enterprise y scaling</td>
+        </tr>
+        <tr>
+          <td>Sesion presencial</td>
+          <td>1 dia en Bogota (o virtual) con todo el equipo Builders</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr>
+
+  <div class="tier-card">
+    <h3>Tier 3 &mdash; BUILDERS ENTERPRISE: "Transform It"</h3>
+    <div class="price">$5,000 USD</div>
+    <div class="format">8 semanas, hibrido, cohort de 10 empresas max &mdash; Para empresas establecidas ($500K+ revenue) que quieren integrar AI</div>
+
+    <p><strong>Todo de Pro MAS:</strong></p>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Beneficio</th>
+          <th>Detalle</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Dedicated Builder</td>
+          <td>Un miembro del equipo Builders asignado como co-pilot de tu empresa por 8 semanas</td>
+        </tr>
+        <tr>
+          <td>AI Operations Audit</td>
+          <td>Edixon + David Nieto auditan tus procesos y proponen AI integration roadmap</td>
+        </tr>
+        <tr>
+          <td>Fluyenta Pilot</td>
+          <td>3-week POC de Fluyenta agents corriendo en tu operacion</td>
+        </tr>
+        <tr>
+          <td>Acceso a Sidekick+</td>
+          <td>2 meses de Sidekick+ Concept Validation (2 agents)</td>
+        </tr>
+        <tr>
+          <td>Monthly retro con C-suite Builders</td>
+          <td>Andres + Claudia + equipo en monthly review de tu progreso</td>
+        </tr>
+        <tr>
+          <td>Priority access</td>
+          <td>Beta tester de los 31 productos de FluyentaLab</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr>
+
+  <div class="demo-day-section">
+    <h3>Demo Day</h3>
+    <p><strong>El evento mas importante del cohort.</strong> Inspirado en YC Demo Day pero con un twist:</p>
+
+    <ol>
+      <li><strong>Formato:</strong> Virtual (streamed en YouTube) + presencial en Bogota para quienes puedan asistir</li>
+      <li><strong>Audiencia:</strong> Comunidad Builders Universe + inversionistas invitados + audiencia de En Produccion</li>
+      <li><strong>Pitch:</strong> Cada participante tiene 5 minutos para presentar su producto EN VIVO (no slides &mdash; producto real)</li>
+      <li><strong>Jurado:</strong> Claudia Mirza, Andres Murcia, + 2 invitados (founders/VCs de LATAM)</li>
+    </ol>
+
+    <h4>Premios:</h4>
+    <div class="prize">
+      <span class="prize-rank">1ST</span>
+      <span>3 meses de Amplifica Growth gratis ($16,500 valor)</span>
+    </div>
+    <div class="prize">
+      <span class="prize-rank second">2ND</span>
+      <span>1 mes de Sidekick+ Explore + mentoria mensual con Andres por 3 meses</span>
+    </div>
+    <div class="prize">
+      <span class="prize-rank third">3RD</span>
+      <span>Feature en "En Produccion" podcast + $500 en creditos de FluyentaLab</span>
+    </div>
+
+    <p style="margin-top:16px;"><strong>Grabacion:</strong> Se convierte en contenido para En Produccion (meta: el cohort alimenta el content engine)</p>
+  </div>
+
+  <hr>
+
+  <h2>Calendar Year 1</h2>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Cohort</th>
+          <th>Mes</th>
+          <th>Tier Focus</th>
+          <th>Target</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Cohort 1</td>
+          <td>Jul-Aug 2026</td>
+          <td>Starter only (validate)</td>
+          <td>20 personas</td>
+        </tr>
+        <tr>
+          <td>Cohort 2</td>
+          <td>Oct-Nov 2026</td>
+          <td>Starter + Pro</td>
+          <td>25 personas</td>
+        </tr>
+        <tr>
+          <td>Cohort 3</td>
+          <td>Jan-Feb 2027</td>
+          <td>All tiers</td>
+          <td>30 personas</td>
+        </tr>
+        <tr>
+          <td>Cohort 4</td>
+          <td>Apr-May 2027</td>
+          <td>All tiers + Enterprise</td>
+          <td>30 personas + 5 empresas</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr>
+
+  <h2>ICP por Tier</h2>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Tier</th>
+          <th>Quien</th>
+          <th>Stage</th>
+          <th>Budget</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Starter</td>
+          <td>Founders solos, side-project builders, developers</td>
+          <td>Pre-launch, idea stage</td>
+          <td>$1,500</td>
+        </tr>
+        <tr>
+          <td>Pro</td>
+          <td>Startups con equipo de 2-5, producto existente</td>
+          <td>Post-launch, pre-product-market-fit</td>
+          <td>$3,500</td>
+        </tr>
+        <tr>
+          <td>Enterprise</td>
+          <td>Empresas $500K+ revenue, equipos de 10+</td>
+          <td>Growth stage, quieren AI operations</td>
+          <td>$5,000</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr>
+
+  <h2>Go-to-Market</h2>
+
+  <h3>Canal principal: En Produccion (podcast)</h3>
+  <ul>
+    <li>CTA directo: "Quieres construir como nosotros? Aplica a Builders Cohort"</li>
+    <li>Demo Day se transmite como episodio especial</li>
+    <li>Cada cohort genera 4+ episodios de contenido</li>
+  </ul>
+
+  <h3>Canal secundario: LinkedIn del equipo (11 personas)</h3>
+  <ul>
+    <li>Cada miembro del equipo postea sobre el cohort</li>
+    <li>Engagement protocol de Builders Universe (staggered posts)</li>
+    <li>Behind-the-scenes del mentoring</li>
+  </ul>
+
+  <h3>Canal terciario: Cross-sell desde los 3 Labs</h3>
+  <ul>
+    <li>Growth Lab &rarr; "Quieres construir tu propio sistema de contenido? Builders Cohort"</li>
+    <li>CMO Lab &rarr; "Quieres construir tu marketing stack con AI? Builders Cohort"</li>
+    <li>Performance Lab &rarr; "Quieres construir tu maquina de ads? Builders Cohort"</li>
+  </ul>
+
+  <h3>Canal cuaternario: Partnerships</h3>
+  <ul>
+    <li>30x como partner (no competencia &mdash; ellos educan, nosotros co-construimos)</li>
+    <li>Aceleradoras: referral deal con Y Combinator LATAM, 500 Global, Platzi Startups</li>
+    <li>AWS: programa de startups (Claudia's connection via RunMyProcess)</li>
+  </ul>
+
+  <hr>
+
+  <h2>Conexion con el Ecosistema</h2>
+
+  <pre><code>BUILDERS COHORT (co-building)
+    ↓ necesitan marketing
+GROWTH LAB / CMO LAB / PERFORMANCE LAB ($997-$4,997)
+    ↓ necesitan ejecucion
+AMPLIFICA STUDIO ($3,500-$12,500/mo)
+    ↓ necesitan operaciones AI
+FLUYENTA (20% of savings)
+    ↓ necesitan infraestructura
+SIDEKICK+ ($50K+/yr)</code></pre>
+
+  <div class="highlight-box">
+    <p><strong>El flywheel:</strong></p>
+    <ol>
+      <li>Builders Cohort produce founders educados</li>
+      <li>Que se convierten en clientes de los 3 Labs</li>
+      <li>Que se convierten en clientes de Amplifica</li>
+      <li>Que se convierten en casos de estudio para En Produccion</li>
+      <li>Que atrae mas personas al siguiente Builders Cohort</li>
+      <li>Repeat.</li>
+    </ol>
+  </div>
+
+  <hr>
+
+  <h2>The Builders Universe Advantage (vs 30x)</h2>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>30x</th>
+          <th>Builders Cohort</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Aprende de Rappi founders</td>
+          <td style="color:var(--gold);">Construye CON un equipo de 11 engineers + PM + ops</td>
+        </tr>
+        <tr>
+          <td>Casos de estudio del pasado</td>
+          <td style="color:var(--gold);">Tu producto se construye en tiempo real</td>
+        </tr>
+        <tr>
+          <td>Networking con ejecutivos</td>
+          <td style="color:var(--gold);">Co-building sessions con el equipo que opera AI agents diario</td>
+        </tr>
+        <tr>
+          <td>Certificado</td>
+          <td style="color:var(--gold);">Producto en produccion + contenido de lanzamiento</td>
+        </tr>
+        <tr>
+          <td>3 dias intensivo</td>
+          <td style="color:var(--gold);">8 semanas de build + support</td>
+        </tr>
+        <tr>
+          <td>$1,500-$5,000</td>
+          <td style="color:var(--gold);">$1,500-$5,000 (mismo precio, 10x mas entregables)</td>
+        </tr>
+        <tr>
+          <td>"Founders teaching founders"</td>
+          <td style="color:var(--gold);">"Builders building WITH you"</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<div class="site-footer">
+  <div class="page-wrapper">
+    <span class="brand">Amplifica Studio</span> &mdash; amplifica.studio
+  </div>
+</div>
+
+</body>
+</html>

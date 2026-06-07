@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Growth Lab &mdash; Jos&eacute; Prieto x 100x / Amplifica</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@300;400;500;600;700&family=Outfit:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --red:#ff3c00;--orange:#e8531a;--blue:#2d6ef5;--green:#16a34a;
+  --yellow:#facc15;--purple:#7c3aed;--teal:#0d9488;--pink:#ec4899;
+  --bg:#f5f4f0;--surface:#fff;--border:#e5e2dc;
+  --text:#111;--muted:#77776f;--r:12px;
+}
+body{font-family:'Space Grotesk',system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.6}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:rgba(10,10,10,.97);backdrop-filter:blur(20px);border-bottom:1px solid #1a1a1a;height:56px;display:flex;align-items:center;padding:0 40px;justify-content:space-between}
+.n-logo{font-family:'Bebas Neue',sans-serif;font-size:20px;color:#fff;letter-spacing:.06em}.n-logo span{color:var(--red)}
+.n-right{display:flex;gap:4px}
+.n-link{padding:6px 14px;border-radius:20px;font-size:11px;font-weight:500;color:rgba(255,255,255,.4);cursor:pointer;transition:all .2s;border:none;background:none;text-decoration:none;letter-spacing:.04em}
+.n-link:hover{color:#fff;background:rgba(255,255,255,.08)}
+.n-link.active{color:var(--red)}
+
+/* HERO */
+.hero{background:#0a0a0a;padding:100px 48px 80px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-120px;right:-120px;width:600px;height:600px;border-radius:50%;border:1px solid rgba(255,60,0,.06)}
+.hero::after{content:'';position:absolute;bottom:-200px;left:-100px;width:500px;height:500px;border-radius:50%;border:1px solid rgba(124,58,237,.04)}
+.hero-tag{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--red);margin-bottom:20px;display:flex;align-items:center;gap:8px}
+.hero-tag::before{content:'';width:24px;height:2px;background:var(--red)}
+.hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(56px,10vw,120px);color:#fff;letter-spacing:.04em;line-height:.88;margin-bottom:28px}
+.hero h1 span{color:var(--red)}
+.hero-statement{font-family:'Outfit',sans-serif;font-size:clamp(17px,2.2vw,22px);color:rgba(255,255,255,.45);max-width:680px;line-height:1.65;font-weight:300;font-style:italic;margin-bottom:48px}
+.hero-statement strong{color:rgba(255,255,255,.9);font-weight:500;font-style:normal}
+.hero-stats{display:flex;gap:48px;flex-wrap:wrap}
+.hero-stat{text-align:left}
+.hero-stat-num{font-family:'Bebas Neue',sans-serif;font-size:48px;color:#fff;letter-spacing:.04em;line-height:1}
+.hero-stat-label{font-size:11px;color:rgba(255,255,255,.3);letter-spacing:.1em;text-transform:uppercase;margin-top:4px}
+
+/* WRAP & SECTIONS */
+.wrap{max-width:1060px;margin:0 auto;padding:0 48px}
+.sec{padding:64px 0}
+.sec+.sec{border-top:1px solid var(--border)}
+.sec-tag{font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;display:flex;align-items:center;gap:10px}
+.sec-tag::after{content:'';flex:1;height:1px;background:var(--border)}
+.sec-h{font-family:'Bebas Neue',sans-serif;font-size:clamp(34px,4vw,52px);letter-spacing:.04em;line-height:.95;margin-bottom:10px}
+.sec-sub{font-size:15px;color:var(--muted);margin-bottom:36px;max-width:600px;line-height:1.6}
+
+/* THESIS */
+.thesis{background:#0a0a0a;border-radius:var(--r);padding:48px;margin-bottom:48px;position:relative;overflow:hidden}
+.thesis::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 30% 50%, rgba(255,60,0,.06) 0%, transparent 60%)}
+.thesis-text{font-family:'Outfit',sans-serif;font-size:clamp(20px,3vw,28px);color:rgba(255,255,255,.8);line-height:1.5;font-weight:300;max-width:700px;position:relative;z-index:1}
+.thesis-text strong{color:#fff;font-weight:600}
+.thesis-footer{font-size:11px;color:rgba(255,255,255,.2);margin-top:24px;letter-spacing:.1em;text-transform:uppercase;position:relative;z-index:1}
+
+/* ECOSYSTEM GRID */
+.eco-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.eco-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;transition:transform .2s}
+.eco-card:hover{transform:translateY(-2px)}
+.eco-accent{height:3px}
+.eco-body{padding:20px}
+.eco-name{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:.04em;line-height:1;margin-bottom:6px}
+.eco-desc{font-size:13px;color:var(--muted);line-height:1.5;margin-bottom:12px}
+.eco-model{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:20px;display:inline-block}
+.eco-wide{grid-column:span 3}
+.eco-wide .eco-body{display:flex;align-items:center;gap:20px}
+.eco-wide .eco-desc{margin-bottom:0;flex:1}
+
+/* CONTENT MACHINE / FUNNEL */
+.machine{background:#0a0a0a;border-radius:var(--r);padding:48px;margin-bottom:48px;position:relative;overflow:hidden}
+.machine::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 70% 30%, rgba(124,58,237,.05) 0%, transparent 50%)}
+.m-title{font-family:'Bebas Neue',sans-serif;font-size:36px;color:#fff;letter-spacing:.04em;line-height:1;margin-bottom:6px;position:relative;z-index:1}
+.m-sub{font-size:13px;color:rgba(255,255,255,.35);margin-bottom:32px;position:relative;z-index:1}
+.m-flow{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:32px;position:relative;z-index:1}
+.m-step{text-align:center}
+.m-step-dot{width:40px;height:40px;border-radius:50%;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:16px;color:#fff;border:2px solid rgba(255,255,255,.1)}
+.m-step-name{font-size:12px;font-weight:600;color:#fff;margin-bottom:4px}
+.m-step-desc{font-size:11px;color:rgba(255,255,255,.35);line-height:1.4}
+.m-arrow{color:rgba(255,255,255,.15);font-size:18px;display:flex;align-items:center;justify-content:center}
+.m-outputs{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;position:relative;z-index:1}
+.m-output{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:14px}
+.m-output-num{font-family:'Bebas Neue',sans-serif;font-size:28px;color:#fff;line-height:1;margin-bottom:4px}
+.m-output-label{font-size:11px;color:rgba(255,255,255,.35);line-height:1.4}
+
+/* PRODUCT GRID (4-col) */
+.product-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+
+/* TEAM / INFRA CARDS */
+.team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:12px}
+.team-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px;transition:transform .2s}
+.team-card:hover{transform:translateY(-2px)}
+.team-card.featured{grid-column:span 3;display:grid;grid-template-columns:1fr 1fr;gap:32px;padding:32px;background:#0a0a0a;border-color:#1a1a1a}
+.team-card.featured .team-name{color:#fff}
+.team-card.featured .team-role{color:var(--red)}
+.team-card.featured .team-bio{color:rgba(255,255,255,.5)}
+.team-card.featured .team-stats{border-color:#1a1a1a}
+.team-card.featured .team-stat-label{color:rgba(255,255,255,.3)}
+.team-card.featured .team-stat-val{color:#fff}
+.team-name{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:.04em;line-height:1;margin-bottom:2px}
+.team-role{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--red);margin-bottom:10px}
+.team-bio{font-size:12px;color:var(--muted);line-height:1.55}
+.team-stats{display:flex;gap:16px;margin-top:14px;padding-top:14px;border-top:1px solid var(--border)}
+.team-stat-label{font-size:10px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+.team-stat-val{font-size:13px;font-weight:600;margin-top:2px}
+
+/* DIFFERENTIATORS */
+.diff-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:48px}
+.diff{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px;position:relative;overflow:hidden}
+.diff::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.diff-num{font-family:'Bebas Neue',sans-serif;font-size:48px;line-height:1;opacity:.08;margin-bottom:8px}
+.diff-title{font-size:13px;font-weight:700;margin-bottom:6px;line-height:1.3}
+.diff-text{font-size:12px;color:var(--muted);line-height:1.55}
+
+/* ARC / REVENUE PROJECTION */
+.arc{display:grid;grid-template-columns:repeat(3,1fr);gap:0;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:48px}
+.arc-col{padding:24px;border-right:1px solid var(--border)}
+.arc-col:last-child{border-right:none}
+.arc-q{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:4px}
+.arc-name{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.04em;line-height:1;margin-bottom:12px}
+.arc-row{display:flex;justify-content:space-between;font-size:12px;padding:6px 0;border-bottom:1px solid var(--border)}
+.arc-row:last-child{border-bottom:none}
+.arc-row-label{color:var(--muted)}
+.arc-row-val{font-weight:600;text-align:right}
+
+/* REVENUE CARDS */
+.rev-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:12px}
+.rev-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px}
+.rev-name{font-size:13px;font-weight:700;margin-bottom:4px}
+.rev-model{font-size:12px;color:var(--muted);line-height:1.5;margin-bottom:10px}
+.rev-tag{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:12px;display:inline-block}
+.rev-wide{grid-column:span 4}
+
+/* MODULE GRID */
+.mod-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+.mod-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;transition:transform .2s}
+.mod-card:hover{transform:translateY(-2px)}
+.mod-num{padding:12px 20px 0;font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:.04em;line-height:1;opacity:.08}
+.mod-body{padding:4px 20px 20px}
+.mod-name{font-size:13px;font-weight:700;margin-bottom:4px;line-height:1.3}
+.mod-desc{font-size:12px;color:var(--muted);line-height:1.5}
+
+/* WEEK GRID (ACCELERATOR) */
+.week-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+.week-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px;transition:transform .2s}
+.week-card:hover{transform:translateY(-2px)}
+.week-num{font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+.week-title{font-size:13px;font-weight:700;line-height:1.3;margin-bottom:4px}
+.week-desc{font-size:12px;color:var(--muted);line-height:1.5}
+
+/* READY / STAT CARDS */
+.ready-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:48px}
+.ready-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px}
+.ready-num{font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:.04em;line-height:1;margin-bottom:4px}
+.ready-label{font-size:12px;color:var(--muted);line-height:1.4}
+
+/* GTM */
+.gtm-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:48px}
+.gtm-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+.gtm-head{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.gtm-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.gtm-brand{font-size:13px;font-weight:700}
+.gtm-body{padding:16px 20px}
+.gtm-channel{font-size:12px;line-height:1.7;color:var(--muted)}
+.gtm-channel strong{color:var(--text);font-weight:600}
+
+/* TWO-COL CONTRAST */
+.contrast{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:48px}
+.contrast-col{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:24px}
+.contrast-col.dark{background:#0a0a0a;border-color:#1a1a1a}
+.contrast-col h3{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:.04em;line-height:1;margin-bottom:16px}
+.contrast-col.dark h3{color:#fff}
+.contrast-item{font-size:13px;color:var(--muted);line-height:1.7;padding:6px 0;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:10px}
+.contrast-col.dark .contrast-item{border-color:#1a1a1a;color:rgba(255,255,255,.45)}
+.contrast-item:last-child{border-bottom:none}
+.contrast-icon{flex-shrink:0;width:20px;text-align:center;font-size:14px;line-height:1.4}
+
+/* CTA */
+.cta{background:#0a0a0a;border-radius:var(--r);padding:64px 48px;text-align:center;margin-bottom:48px;position:relative;overflow:hidden}
+.cta::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 50%, rgba(255,60,0,.08) 0%, transparent 60%)}
+.cta-quote{font-family:'Outfit',sans-serif;font-size:clamp(18px,2.5vw,24px);color:rgba(255,255,255,.7);line-height:1.6;font-weight:300;font-style:italic;max-width:700px;margin:0 auto 24px;position:relative;z-index:1}
+.cta-quote strong{color:#fff;font-weight:500;font-style:normal}
+.cta-source{font-size:11px;color:rgba(255,255,255,.2);letter-spacing:.1em;text-transform:uppercase;position:relative;z-index:1}
+.cta-divider{width:40px;height:2px;background:var(--red);margin:32px auto;position:relative;z-index:1}
+.cta-ask{font-family:'Bebas Neue',sans-serif;font-size:clamp(28px,4vw,44px);color:#fff;letter-spacing:.04em;line-height:1;position:relative;z-index:1;margin-bottom:12px}
+.cta-ask-sub{font-size:14px;color:rgba(255,255,255,.35);position:relative;z-index:1}
+
+/* FOOTER */
+footer{padding:24px 48px;text-align:center;font-size:11px;color:var(--muted);letter-spacing:.06em}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .eco-grid,.team-grid,.diff-grid,.arc,.m-outputs,.m-flow,.rev-grid,.gtm-grid,.ready-grid,.product-grid,.mod-grid,.week-grid,.contrast{grid-template-columns:1fr}
+  .eco-wide,.team-card.featured{grid-column:span 1}
+  .team-card.featured{grid-template-columns:1fr}
+  .hero-stats{gap:24px}
+  .hero{padding:60px 24px}
+  .wrap{padding:0 24px}
+  nav{padding:0 20px}
+  .thesis,.machine,.cta{padding:32px 24px}
+}
+@media(max-width:900px) and (min-width:601px){
+  .eco-grid,.team-grid,.gtm-grid,.ready-grid,.rev-grid,.mod-grid,.week-grid,.product-grid{grid-template-columns:1fr 1fr}
+  .diff-grid{grid-template-columns:1fr 1fr}
+  .arc{grid-template-columns:1fr 1fr}
+  .contrast{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="n-logo">GROWTH LAB<span>.</span></div>
+  <div class="n-right">
+    <a href="#opportunity" class="n-link active">Opportunity</a>
+    <a href="#product" class="n-link">Product</a>
+    <a href="#academy" class="n-link">Academy</a>
+    <a href="#accelerator" class="n-link">Accelerator</a>
+    <a href="#revenue" class="n-link">Revenue</a>
+    <a href="#company" class="n-link">Company</a>
+    <a href="#cta" class="n-link">CTA</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">Partner Pitch &mdash; Jos&eacute; Prieto x 100x / Amplifica</div>
+  <h1>GROWTH<br><span>LAB</span><span>.</span></h1>
+  <p class="hero-statement">Tu empresa. Tu metodolog&iacute;a. Nuestra infraestructura. <strong>&ldquo;Jos&eacute;, esto no es un pitch de consultor&iacute;a. Es una propuesta para construir una empresa juntos.&rdquo;</strong></p>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="hero-stat-num">1.7M</div>
+      <div class="hero-stat-label">Followers</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">1.2M</div>
+      <div class="hero-stat-label">Votes (Oviedo)</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">2M+</div>
+      <div class="hero-stat-label">Impressions (92 days)</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">$0</div>
+      <div class="hero-stat-label">Spent in ads</div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+<!-- THE HOOK / THESIS -->
+<div class="sec" id="hook">
+  <div class="sec-tag">The Hook</div>
+  <div class="thesis">
+    <div class="thesis-text">Tres plataformas diferentes. Tres audiencias completamente distintas. El mismo resultado. <strong>Eso no es talento. Es un sistema.</strong> Y los sistemas se escalan.</div>
+    <div class="thesis-footer">@SABANA_ADENTRO &bull; Oviedo Campaign &bull; LinkedIn 2M+ impressions</div>
+  </div>
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:24px;margin-top:-32px">
+    <div style="font-size:14px;color:var(--text);line-height:1.7">
+      El problema es que hoy, con Caporal, est&aacute;s escalando de la forma cl&aacute;sica: <strong>m&aacute;s clientes = m&aacute;s horas de Jos&eacute;.</strong> Y ya sabes que eso tiene techo. Lo viviste. Lo sabes mejor que nadie porque t&uacute; eres el que les ense&ntilde;a a los dem&aacute;s que multiplicar no funciona &mdash; que lo que funciona es <strong>amplificar.</strong>
+    </div>
+    <div style="margin-top:16px;font-family:'Outfit',sans-serif;font-size:14px;color:var(--muted);font-style:italic;line-height:1.6">
+      This is the pitch: let's turn your system into a company. Not a side project. Not a partnership. A real company with infrastructure, technology, a team, and a distribution network.
+    </div>
+  </div>
+</div>
+
+<!-- THE OPPORTUNITY -->
+<div class="sec" id="opportunity">
+  <div class="sec-tag">The Opportunity</div>
+  <div class="sec-h">EL MERCADO PERFECTO<span style="color:var(--red)">.</span></div>
+  <div class="sec-sub">Tres megatrends est&aacute;n colisionando en este momento exacto.</div>
+
+  <div class="diff-grid">
+    <div class="diff">
+      <div class="diff" style="border:none;padding:0"><div class="diff-num">01</div></div>
+      <div class="diff-title">AI en Marketing &mdash; $107B para 2028</div>
+      <div class="diff-text">Cada empresa en LATAM sabe que necesita AI. Nadie sabe c&oacute;mo usarla sin perder autenticidad. Las herramientas sin metodolog&iacute;a son ruido. T&uacute; tienes la metodolog&iacute;a. Nosotros tenemos las herramientas.</div>
+    </div>
+    <div class="diff">
+      <div class="diff" style="border:none;padding:0"><div class="diff-num">02</div></div>
+      <div class="diff-title">LATAM: El mercado m&aacute;s subestimado</div>
+      <div class="diff-text">700M de hispanohablantes. La penetraci&oacute;n de redes sociales m&aacute;s alta del mundo. Y casi CERO infraestructura de educaci&oacute;n en growth org&aacute;nico en espa&ntilde;ol. Los gringos tienen Ali Abdaal, Gary Vee. Nosotros no tenemos a nadie. Excepto t&uacute;.</div>
+    </div>
+    <div class="diff">
+      <div class="diff" style="border:none;padding:0"><div class="diff-num">03</div></div>
+      <div class="diff-title">La resurrecci&oacute;n del organic reach</div>
+      <div class="diff-text">En 2025-2026, con AI generando basura masivamente, los algoritmos premian autenticidad y engagement real. El organic growth expertise se convierte en el activo m&aacute;s valioso del marketing digital.</div>
+    </div>
+    <div class="diff">
+      <div class="diff" style="border:none;padding:0"><div class="diff-num">04</div></div>
+      <div class="diff-title">La ventana se cierra r&aacute;pido</div>
+      <div class="diff-text">En 12 meses, habr&aacute; 50 "expertos en viralidad" usando AI. En 24 meses, habr&aacute; 500. Hoy eres el &uacute;nico. Ma&ntilde;ana ser&aacute;s uno de muchos. A menos que construyas la infraestructura ahora.</div>
+    </div>
+  </div>
+</div>
+
+<!-- THE PRODUCT LADDER -->
+<div class="sec" id="product">
+  <div class="sec-tag">The Product Ladder</div>
+  <div class="sec-h">DE $1 A $50K<span style="color:var(--red)">.</span> UNA M&Aacute;QUINA<span style="color:var(--red)">.</span></div>
+  <div class="sec-sub">No te estoy ofreciendo un contrato de consultor&iacute;a. Te estoy ofreciendo construir Growth Lab como una empresa real.</div>
+
+  <div class="product-grid">
+    <!-- Tier 1 -->
+    <div class="eco-card">
+      <div class="eco-accent" style="background:var(--green)"></div>
+      <div class="eco-body">
+        <div class="eco-name">TRIPWIRE</div>
+        <div class="eco-desc">$1 &mdash; 3 video lessons. Converts leads to buyers at scale. Zero Jos&eacute;-time required after recording.</div>
+        <div class="eco-model" style="background:rgba(22,163,74,.08);color:var(--green)">$1 &mdash; Entry</div>
+      </div>
+    </div>
+    <!-- Tier 2 -->
+    <div class="eco-card">
+      <div class="eco-accent" style="background:var(--blue)"></div>
+      <div class="eco-body">
+        <div class="eco-name">ACADEMY</div>
+        <div class="eco-desc">$997 &mdash; Self-paced, 8 modules. Recorded content, templates, community. Scales WITHOUT Jos&eacute;'s time.</div>
+        <div class="eco-model" style="background:rgba(45,110,245,.08);color:var(--blue)">$997 &mdash; Self-paced</div>
+      </div>
+    </div>
+    <!-- Tier 3 -->
+    <div class="eco-card">
+      <div class="eco-accent" style="background:var(--orange)"></div>
+      <div class="eco-body">
+        <div class="eco-name">ACCELERATOR</div>
+        <div class="eco-desc">$4,997 &mdash; 8-week cohort, 30 people max. Jos&eacute;'s high-touch, high-ticket time. 4 times a year.</div>
+        <div class="eco-model" style="background:rgba(232,83,26,.08);color:var(--orange)">$4,997 &mdash; Cohort</div>
+      </div>
+    </div>
+    <!-- Tier 4 -->
+    <div class="eco-card">
+      <div class="eco-accent" style="background:var(--purple)"></div>
+      <div class="eco-body">
+        <div class="eco-name">AMPLIFICA STUDIO + SIDEKICK+</div>
+        <div class="eco-desc">$3,500&ndash;$12,500/mo (Studio) &bull; $50K+/yr (Enterprise). Jos&eacute;'s methodology in AI agents for corporations.</div>
+        <div class="eco-model" style="background:rgba(124,58,237,.08);color:var(--purple)">$3.5K&ndash;$50K+ &mdash; Enterprise</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- The Math -->
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:24px;display:flex;align-items:center;gap:20px">
+    <div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:.04em;line-height:1">THE MATH CHANGES COMPLETELY</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.5;margin-top:4px">$1 y $997 corren SIN ti. $4,997 Accelerator es TU tiempo &mdash; 8 semanas, 4 veces al a&ntilde;o. Todo por encima de $4,997 es Amplifica ejecutando, contigo como el autor de la metodolog&iacute;a liderando la empresa.</div>
+    </div>
+    <div style="display:flex;gap:8px;flex-shrink:0">
+      <div style="background:rgba(255,60,0,.08);color:var(--red);font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px">Passive income</div>
+      <div style="background:rgba(124,58,237,.08);color:var(--purple);font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px">Company growth</div>
+    </div>
+  </div>
+</div>
+
+<!-- THE ACADEMY -->
+<div class="sec" id="academy">
+  <div class="sec-tag">The Academy</div>
+  <div class="sec-h">8 MODULES<span style="color:var(--red)">.</span> TU SISTEMA<span style="color:var(--red)">.</span></div>
+  <div class="sec-sub">Self-paced curriculum designed with Product Mind methodology. Data-driven, not improvised.</div>
+
+  <div class="mod-grid">
+    <div class="mod-card">
+      <div class="mod-num">01</div>
+      <div class="mod-body">
+        <div class="mod-name">Foundations of Virality</div>
+        <div class="mod-desc">Why things go viral. The science behind shareability, emotional resonance, and hook power.</div>
+      </div>
+    </div>
+    <div class="mod-card">
+      <div class="mod-num">02</div>
+      <div class="mod-body">
+        <div class="mod-name">Platform Intelligence</div>
+        <div class="mod-desc">How each algorithm works. TikTok, Instagram, LinkedIn, YouTube &mdash; different rules, same principles.</div>
+      </div>
+    </div>
+    <div class="mod-card">
+      <div class="mod-num">03</div>
+      <div class="mod-body">
+        <div class="mod-name">Content Engineering</div>
+        <div class="mod-desc">The Jos&eacute; Prieto system: hooks, structures, pacing, and the art of making people SHARE.</div>
+      </div>
+    </div>
+    <div class="mod-card">
+      <div class="mod-num">04</div>
+      <div class="mod-body">
+        <div class="mod-name">Hook Formulas</div>
+        <div class="mod-desc">Templates, frameworks, and the 8-dimension scoring system. Score BEFORE publishing.</div>
+      </div>
+    </div>
+    <div class="mod-card">
+      <div class="mod-num">05</div>
+      <div class="mod-body">
+        <div class="mod-name">Authenticity at Scale</div>
+        <div class="mod-desc">How to use AI without losing your voice. The @SABANA_ADENTRO lesson: real beats polished.</div>
+      </div>
+    </div>
+    <div class="mod-card">
+      <div class="mod-num">06</div>
+      <div class="mod-body">
+        <div class="mod-name">Growth Systems</div>
+        <div class="mod-desc">Building repeatable processes. From one-hit wonder to systematic organic growth machine.</div>
+      </div>
+    </div>
+    <div class="mod-card">
+      <div class="mod-num">07</div>
+      <div class="mod-body">
+        <div class="mod-name">AI-Powered Content</div>
+        <div class="mod-desc">Virality Lab, TRIBE V2 brain visualization, and AI tools built on YOUR methodology.</div>
+      </div>
+    </div>
+    <div class="mod-card">
+      <div class="mod-num">08</div>
+      <div class="mod-body">
+        <div class="mod-name">Monetization &amp; Brand</div>
+        <div class="mod-desc">From audience to revenue. Personal brand as business asset. The full product ladder strategy.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- THE ACCELERATOR -->
+<div class="sec" id="accelerator">
+  <div class="sec-tag">The Accelerator</div>
+  <div class="sec-h">8 WEEKS<span style="color:var(--red)">.</span> 30 BUILDERS<span style="color:var(--red)">.</span></div>
+  <div class="sec-sub">Jos&eacute;'s high-touch, high-value time. $4,997 per seat. 2&ndash;4 cohorts per year.</div>
+
+  <div class="week-grid">
+    <div class="week-card">
+      <div class="week-num" style="color:var(--red)">Week 1&ndash;2</div>
+      <div class="week-title">Diagn&oacute;stico &amp; Fundamentos</div>
+      <div class="week-desc">Audit each participant's current content. Establish baselines. Introduce the 8-dimension scoring system and Virality Lab tools.</div>
+    </div>
+    <div class="week-card">
+      <div class="week-num" style="color:var(--orange)">Week 3&ndash;4</div>
+      <div class="week-title">Content Engineering Live</div>
+      <div class="week-desc">Hook formulas in action. Live scoring sessions with TRIBE V2 brain visualization. Students submit and Jos&eacute; reviews in real-time.</div>
+    </div>
+    <div class="week-card">
+      <div class="week-num" style="color:var(--blue)">Week 5&ndash;6</div>
+      <div class="week-title">Platform Mastery &amp; AI</div>
+      <div class="week-desc">Platform-specific strategies. AI content tools powered by Jos&eacute;'s methodology. Score content BEFORE publishing.</div>
+    </div>
+    <div class="week-card">
+      <div class="week-num" style="color:var(--green)">Week 7&ndash;8</div>
+      <div class="week-title">Scale &amp; Launch</div>
+      <div class="week-desc">Build repeatable systems. Graduate with a content machine. Top performers enter the Amplifica Studio pipeline ($5,500/mo).</div>
+    </div>
+  </div>
+
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:24px;display:flex;align-items:center;gap:20px">
+    <div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:.04em;line-height:1">THE UPSELL ENGINE</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.5;margin-top:4px">Cada cohorte es un pipeline de ventas. Graduates que necesitan ejecuci&oacute;n se convierten en clientes de Amplifica Studio a $5,500/mes. Jos&eacute; ense&ntilde;a, el ecosistema ejecuta, todos ganan.</div>
+    </div>
+    <div style="display:flex;gap:8px;flex-shrink:0">
+      <div style="background:rgba(232,83,26,.08);color:var(--orange);font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px">30 seats</div>
+      <div style="background:rgba(22,163,74,.08);color:var(--green);font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px">2h/week</div>
+      <div style="background:rgba(45,110,245,.08);color:var(--blue);font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px">$150K/cohort</div>
+    </div>
+  </div>
+</div>
+
+<!-- WHAT JOS&Eacute; GETS -->
+<div class="sec" id="infrastructure">
+  <div class="sec-tag">What Jos&eacute; Gets</div>
+  <div class="sec-h">LO QUE NO PUEDES CONSTRUIR SOLO<span style="color:var(--red)">.</span></div>
+  <div class="sec-sub">Brutally honest: what you'd need to build alone vs. what you get on day one.</div>
+
+  <div class="eco-grid">
+    <!-- Sidekick+ -->
+    <div class="eco-card">
+      <div class="eco-accent" style="background:var(--purple)"></div>
+      <div class="eco-body">
+        <div class="eco-name">SIDEKICK+ INFRASTRUCTURE</div>
+        <div class="eco-desc">AI content generation using YOUR methodology. TRIBE V2 brain visualization. Virality Lab 8-dimension scoring. Dashboards and analytics.</div>
+        <div class="eco-model" style="background:rgba(124,58,237,.08);color:var(--purple)">$200K&ndash;$500K to build alone</div>
+      </div>
+    </div>
+    <!-- Amplifica Studio -->
+    <div class="eco-card">
+      <div class="eco-accent" style="background:var(--orange)"></div>
+      <div class="eco-body">
+        <div class="eco-name">AMPLIFICA STUDIO TEAM</div>
+        <div class="eco-desc">11-person team for content production, editing, design, distribution. En Producci&oacute;n podcast as your distribution channel. Staggered posting protocol.</div>
+        <div class="eco-model" style="background:rgba(232,83,26,.08);color:var(--orange)">$15K&ndash;$25K/mo to build alone</div>
+      </div>
+    </div>
+    <!-- Builders Ecosystem -->
+    <div class="eco-card">
+      <div class="eco-accent" style="background:var(--blue)"></div>
+      <div class="eco-body">
+        <div class="eco-name">BUILDERS ECOSYSTEM</div>
+        <div class="eco-desc">Cross-sell from CMO Lab, Performance Lab, Builders Cohort. Product design from Daniela Calvano.</div>
+        <div class="eco-model" style="background:rgba(45,110,245,.08);color:var(--blue)">10+ adjacent audiences</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sidekick Detail Cards -->
+  <div class="rev-grid" style="margin-top:12px">
+    <div class="rev-card">
+      <div class="rev-name">AI Content Generation</div>
+      <div class="rev-model">Students get AI tools using YOUR methodology &mdash; not generic prompts.</div>
+      <div class="rev-tag" style="background:rgba(124,58,237,.08);color:var(--purple)">Sidekick+</div>
+    </div>
+    <div class="rev-card">
+      <div class="rev-name">TRIBE V2 Brain Viz</div>
+      <div class="rev-model">The "wow factor" &mdash; show what happens in the brain when viral content hits.</div>
+      <div class="rev-tag" style="background:rgba(255,60,0,.08);color:var(--red)">Exclusive</div>
+    </div>
+    <div class="rev-card">
+      <div class="rev-name">Virality Lab</div>
+      <div class="rev-model">8-dimension scoring: hook power, emotional resonance, shareability &mdash; all quantified.</div>
+      <div class="rev-tag" style="background:rgba(232,83,26,.08);color:var(--orange)">Scoring</div>
+    </div>
+    <div class="rev-card">
+      <div class="rev-name">Dashboards &amp; Analytics</div>
+      <div class="rev-model">Every student, every cohort, every piece of content &mdash; tracked and data-driven.</div>
+      <div class="rev-tag" style="background:rgba(22,163,74,.08);color:var(--green)">Data</div>
+    </div>
+  </div>
+</div>
+
+<!-- REVENUE -->
+<div class="sec" id="revenue">
+  <div class="sec-tag">Revenue Model</div>
+  <div class="sec-h">LOS N&Uacute;MEROS<span style="color:var(--red)">.</span></div>
+  <div class="sec-sub">Proyecciones conservadoras. Growth Lab company revenues.</div>
+
+  <div class="arc">
+    <div class="arc-col">
+      <div class="arc-q" style="color:var(--green)">Year 1 &mdash; Foundation</div>
+      <div class="arc-name">$496,610</div>
+      <div class="arc-row"><span class="arc-row-label">Tripwire ($1)</span><span class="arc-row-val">$2,000</span></div>
+      <div class="arc-row"><span class="arc-row-label">Academy ($997 &times; 80)</span><span class="arc-row-val">$79,760</span></div>
+      <div class="arc-row"><span class="arc-row-label">Accelerator (2 cohorts)</span><span class="arc-row-val">$249,850</span></div>
+      <div class="arc-row"><span class="arc-row-label">Amplifica upsell (5 clients)</span><span class="arc-row-val">$165,000</span></div>
+    </div>
+    <div class="arc-col">
+      <div class="arc-q" style="color:var(--blue)">Year 2 &mdash; Scale</div>
+      <div class="arc-name">$1,564,040</div>
+      <div class="arc-row"><span class="arc-row-label">Tripwire ($1)</span><span class="arc-row-val">$5,000</span></div>
+      <div class="arc-row"><span class="arc-row-label">Academy ($997 &times; 200)</span><span class="arc-row-val">$199,400</span></div>
+      <div class="arc-row"><span class="arc-row-label">Accelerator (4 cohorts)</span><span class="arc-row-val">$599,640</span></div>
+      <div class="arc-row"><span class="arc-row-label">Amplifica upsell (15)</span><span class="arc-row-val">$660,000</span></div>
+      <div class="arc-row"><span class="arc-row-label">Workshops (4)</span><span class="arc-row-val">$100,000</span></div>
+    </div>
+    <div class="arc-col">
+      <div class="arc-q" style="color:var(--purple)">Year 3 &mdash; Domination</div>
+      <div class="arc-name">$3,658,440</div>
+      <div class="arc-row"><span class="arc-row-label">Tripwire ($1)</span><span class="arc-row-val">$10,000</span></div>
+      <div class="arc-row"><span class="arc-row-label">Academy ($997 &times; 400)</span><span class="arc-row-val">$398,800</span></div>
+      <div class="arc-row"><span class="arc-row-label">Accelerator (4 cohorts)</span><span class="arc-row-val">$599,640</span></div>
+      <div class="arc-row"><span class="arc-row-label">Amplifica upsell (30)</span><span class="arc-row-val">$2,250,000</span></div>
+      <div class="arc-row"><span class="arc-row-label">Workshops + Events (8)</span><span class="arc-row-val">$250,000</span></div>
+      <div class="arc-row"><span class="arc-row-label">Sidekick+ Enterprise (3)</span><span class="arc-row-val">$150,000</span></div>
+    </div>
+  </div>
+
+  <!-- Revenue summary -->
+  <div class="ready-grid">
+    <div class="ready-card">
+      <div class="ready-num" style="color:var(--green)">$497K</div>
+      <div class="ready-label">Year 1 revenue &mdash; conservative. Caporal continues independently on top of this.</div>
+    </div>
+    <div class="ready-card">
+      <div class="ready-num" style="color:var(--blue)">$1.56M</div>
+      <div class="ready-label">Year 2 revenue. A company at this stage with 5,000+ customers trades at 3&ndash;7x revenue.</div>
+    </div>
+    <div class="ready-card">
+      <div class="ready-num" style="color:var(--purple)">$3.66M</div>
+      <div class="ready-label">Year 3 revenue. Valor de empresa: $5M&ndash;$10M+ at education company multiples.</div>
+    </div>
+  </div>
+</div>
+
+<!-- THE AMPLIFICA CONNECTION (FUNNEL) -->
+<div class="sec" id="funnel">
+  <div class="sec-tag">The Amplifica Connection</div>
+  <div class="sec-h">EL FUNNEL COMPLETO<span style="color:var(--red)">.</span></div>
+  <div class="sec-sub">Hoy tu funnel es: Jos&eacute; postea, alguien le escribe, Jos&eacute; cierra. Dentro del ecosistema, el funnel se convierte en una m&aacute;quina.</div>
+
+  <div class="machine">
+    <div class="m-title">GROWTH LAB FUNNEL</div>
+    <div class="m-sub">From free lead capture to enterprise &mdash; fully automated at every tier</div>
+
+    <div class="m-flow">
+      <div class="m-step">
+        <div class="m-step-dot" style="background:var(--green);border-color:var(--green)">1</div>
+        <div class="m-step-name">FREE</div>
+        <div class="m-step-desc">Email crash course (7 days) &mdash; capture leads at scale</div>
+      </div>
+      <div class="m-step">
+        <div class="m-step-dot" style="background:var(--teal);border-color:var(--teal)">2</div>
+        <div class="m-step-name">$1</div>
+        <div class="m-step-desc">Tripwire: 3 video lessons &mdash; converts leads to buyers</div>
+      </div>
+      <div class="m-step">
+        <div class="m-step-dot" style="background:var(--blue);border-color:var(--blue)">3</div>
+        <div class="m-step-name">$997</div>
+        <div class="m-step-desc">Academy: 8 modules self-paced &mdash; scales without Jos&eacute;</div>
+      </div>
+      <div class="m-step">
+        <div class="m-step-dot" style="background:var(--orange);border-color:var(--orange)">4</div>
+        <div class="m-step-name">$4,997</div>
+        <div class="m-step-desc">Accelerator: 8 weeks, 30 people &mdash; Jos&eacute;'s high-touch</div>
+      </div>
+      <div class="m-step">
+        <div class="m-step-dot" style="background:var(--purple);border-color:var(--purple)">5</div>
+        <div class="m-step-name">$5.5K/MO</div>
+        <div class="m-step-desc">Amplifica Studio: "Jos&eacute; taught you. We execute for you."</div>
+      </div>
+      <div class="m-step">
+        <div class="m-step-dot" style="background:var(--red);border-color:var(--red)">6</div>
+        <div class="m-step-name">$50K+/YR</div>
+        <div class="m-step-desc">Sidekick+ Enterprise: AI agents for corporations</div>
+      </div>
+    </div>
+
+    <div class="m-outputs">
+      <div class="m-output">
+        <div class="m-output-num">11</div>
+        <div class="m-output-label">Team members posting<br>LinkedIn, TikTok, YouTube &mdash; coordinated</div>
+      </div>
+      <div class="m-output">
+        <div class="m-output-num">5+</div>
+        <div class="m-output-label">Cross-sell sources<br>CMO Lab, Performance Lab, Builders, Calvano</div>
+      </div>
+      <div class="m-output">
+        <div class="m-output-num">88/100</div>
+        <div class="m-output-label">Virality target<br>Amplifica origin story video &mdash; Jos&eacute; is in the narrative</div>
+      </div>
+      <div class="m-output">
+        <div class="m-output-num">Jul 26</div>
+        <div class="m-output-label">Builders Cohort starts<br>Week 6 is Jos&eacute;'s slot &mdash; 20 founders become Academy leads</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- COMPANY STRUCTURE -->
+<div class="sec" id="company">
+  <div class="sec-tag">The Company</div>
+  <div class="sec-h">ESTRUCTURA<span style="color:var(--red)">.</span> ROLES<span style="color:var(--red)">.</span> GOVERNANCE<span style="color:var(--red)">.</span></div>
+  <div class="sec-sub">Growth Lab is a standalone company. Jos&eacute; opera.</div>
+
+  <div class="thesis" style="margin-bottom:32px">
+    <div class="thesis-text" style="font-size:clamp(16px,2vw,20px)">
+      <strong>100x (Holding Company)</strong><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;socio en &rarr; <strong>GROWTH LAB</strong> (Jos&eacute; opera)<br><br>
+      Jos&eacute; Prieto: <strong>CEO / Operador</strong><br>
+      100x: <strong>Socio + proveedor de infraestructura</strong>
+    </div>
+    <div class="thesis-footer">Growth Lab es una empresa separada &bull; Standalone P&amp;L</div>
+  </div>
+
+  <!-- Roles -->
+  <div class="eco-grid" style="grid-template-columns:1fr 1fr;margin-bottom:24px">
+    <div class="eco-card">
+      <div class="eco-accent" style="background:var(--red)"></div>
+      <div class="eco-body">
+        <div class="eco-name">JOS&Eacute; PRIETO</div>
+        <div class="eco-desc"><strong style="color:var(--text)">CEO / Operador.</strong> Face, Methodology, Operations. Opera la empresa &mdash; pricing, branding, hiring, strategy. All decisions are yours.</div>
+        <div class="eco-model" style="background:rgba(255,60,0,.08);color:var(--red)">Operador</div>
+      </div>
+    </div>
+    <div class="eco-card">
+      <div class="eco-accent" style="background:var(--blue)"></div>
+      <div class="eco-body">
+        <div class="eco-name">100x (HOLDING)</div>
+        <div class="eco-desc"><strong style="color:var(--text)">Socio.</strong> Infrastructure, Technology, Team, Distribution. Provides at cost &mdash; el retorno viene del crecimiento del negocio, not billing.</div>
+        <div class="eco-model" style="background:rgba(45,110,245,.08);color:var(--blue)">Infraestructura</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Governance -->
+  <div class="rev-grid">
+    <div class="rev-card">
+      <div class="rev-name">Board</div>
+      <div class="rev-model">Jos&eacute; + 1 representative from 100x. Jos&eacute; has operational autonomy.</div>
+      <div class="rev-tag" style="background:rgba(22,163,74,.08);color:var(--green)">Governance</div>
+    </div>
+    <div class="rev-card">
+      <div class="rev-name">Monthly P&amp;L Review</div>
+      <div class="rev-model">Revenue, expenses, profit &mdash; tracked separately. Full transparency.</div>
+      <div class="rev-tag" style="background:rgba(45,110,245,.08);color:var(--blue)">Financial</div>
+    </div>
+    <div class="rev-card">
+      <div class="rev-name">No Non-Compete</div>
+      <div class="rev-model">Caporal stays yours. Growth Lab is the productized version of your methodology.</div>
+      <div class="rev-tag" style="background:rgba(232,83,26,.08);color:var(--orange)">Freedom</div>
+    </div>
+    <div class="rev-card">
+      <div class="rev-name">Exit Optionality</div>
+      <div class="rev-model">Raise capital, sell, bring in other partners &mdash; it's YOUR company. Full flexibility.</div>
+      <div class="rev-tag" style="background:rgba(124,58,237,.08);color:var(--purple)">Optionality</div>
+    </div>
+  </div>
+</div>
+
+<!-- WHAT WE ASK vs WHAT WE DON'T -->
+<div class="sec" id="commitment">
+  <div class="sec-tag">El Compromiso</div>
+  <div class="sec-h">LO QUE PEDIMOS<span style="color:var(--red)">.</span> LO QUE NO<span style="color:var(--red)">.</span></div>
+  <div class="sec-sub">No te pedimos dejar Caporal. No te pedimos mudarte a Bogot&aacute;. No te pedimos trabajar para nosotros.</div>
+
+  <div class="contrast">
+    <!-- What We Ask -->
+    <div class="contrast-col">
+      <h3>LO QUE PEDIMOS</h3>
+      <div class="contrast-item">
+        <div class="contrast-icon" style="color:var(--orange)">&#9632;</div>
+        <div><strong style="color:var(--text)">Record Academy modules</strong> &mdash; 40-60 hours total, months 1-3</div>
+      </div>
+      <div class="contrast-item">
+        <div class="contrast-icon" style="color:var(--orange)">&#9632;</div>
+        <div><strong style="color:var(--text)">Lead Accelerator cohorts</strong> &mdash; 16h per cohort (8 weeks &times; 2h), 2-4x/year</div>
+      </div>
+      <div class="contrast-item">
+        <div class="contrast-icon" style="color:var(--orange)">&#9632;</div>
+        <div><strong style="color:var(--text)">Content creation</strong> &mdash; LinkedIn, YouTube, 4-6 hours/week</div>
+      </div>
+      <div class="contrast-item">
+        <div class="contrast-icon" style="color:var(--orange)">&#9632;</div>
+        <div><strong style="color:var(--text)">En Producci&oacute;n podcast</strong> &mdash; 1-2 hours, monthly</div>
+      </div>
+      <div class="contrast-item">
+        <div class="contrast-icon" style="color:var(--orange)">&#9632;</div>
+        <div><strong style="color:var(--text)">Strategic review with 100x</strong> &mdash; 2 hours, monthly</div>
+      </div>
+      <div class="contrast-item">
+        <div class="contrast-icon" style="color:var(--orange)">&#9632;</div>
+        <div><strong style="color:var(--text)">Contribute to ecosystem</strong> &mdash; Builders Cohort Week 6. Cross-promote. Be part of the team.</div>
+      </div>
+    </div>
+
+    <!-- What We Don't Ask -->
+    <div class="contrast-col dark">
+      <h3>LO QUE NO TIENES QUE HACER</h3>
+      <div class="contrast-item">
+        <div class="contrast-icon" style="color:var(--green)">&#10003;</div>
+        <div>You don't <strong style="color:rgba(255,255,255,.8)">edit videos</strong>. The team does.</div>
+      </div>
+      <div class="contrast-item">
+        <div class="contrast-icon" style="color:var(--green)">&#10003;</div>
+        <div>You don't <strong style="color:rgba(255,255,255,.8)">build landing pages</strong>. The team does.</div>
+      </div>
+      <div class="contrast-item">
+        <div class="contrast-icon" style="color:var(--green)">&#10003;</div>
+        <div>You don't <strong style="color:rgba(255,255,255,.8)">manage customer support</strong>. The team does.</div>
+      </div>
+      <div class="contrast-item">
+        <div class="contrast-icon" style="color:var(--green)">&#10003;</div>
+        <div>You don't <strong style="color:rgba(255,255,255,.8)">write email sequences</strong>. AI + the team does.</div>
+      </div>
+      <div class="contrast-item">
+        <div class="contrast-icon" style="color:var(--green)">&#10003;</div>
+        <div>You don't <strong style="color:rgba(255,255,255,.8)">design courses</strong>. Product Mind methodology + the team does.</div>
+      </div>
+      <div class="contrast-item">
+        <div class="contrast-icon" style="color:var(--green)">&#10003;</div>
+        <div>You don't <strong style="color:rgba(255,255,255,.8)">set up payments, analytics, dashboards, community</strong>. The team does.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom line -->
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:24px;text-align:center">
+    <div style="font-family:'Outfit',sans-serif;font-size:16px;color:var(--text);font-style:italic;line-height:1.6">
+      <strong style="font-style:normal">Tu haces lo que mejor sabes hacer:</strong> crear, ense&ntilde;ar, y ser Jos&eacute;. Todo lo dem&aacute;s lo ejecutamos nosotros.
+    </div>
+  </div>
+</div>
+
+<!-- THE BOTTOM LINE TABLE -->
+<div class="sec" id="bottom-line">
+  <div class="sec-tag">The Bottom Line</div>
+  <div class="sec-h">LO QUE HAY EN LA MESA<span style="color:var(--red)">.</span></div>
+  <div class="sec-sub">This is not a job offer. This is not a consulting gig. This is not a revenue share.</div>
+
+  <div class="eco-grid" style="grid-template-columns:1fr 1fr;margin-bottom:24px">
+    <!-- What Jos&eacute; Gets -->
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:24px">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:.04em;line-height:1;margin-bottom:16px">WHAT JOS&Eacute; GETS</div>
+      <div style="font-size:13px;color:var(--muted);line-height:2">
+        <div style="padding:6px 0;border-bottom:1px solid var(--border)"><strong style="color:var(--text)">Participaci&oacute;n</strong> en Growth Lab</div>
+        <div style="padding:6px 0;border-bottom:1px solid var(--border)"><strong style="color:var(--text)">Sidekick+ infrastructure</strong> (TRIBE V2, Virality Lab, AI tools)</div>
+        <div style="padding:6px 0;border-bottom:1px solid var(--border)"><strong style="color:var(--text)">11-person team</strong> for execution</div>
+        <div style="padding:6px 0;border-bottom:1px solid var(--border)"><strong style="color:var(--text)">Distribution network</strong> (podcast, 11 LinkedIn accounts, cross-sells)</div>
+        <div style="padding:6px 0;border-bottom:1px solid var(--border)"><strong style="color:var(--text)">Full product ladder</strong> ($1 to $50K+)</div>
+        <div style="padding:6px 0"><strong style="color:var(--text)">Technology</strong> that no competitor has</div>
+      </div>
+    </div>
+    <!-- What 100x Gets -->
+    <div style="background:#0a0a0a;border:1px solid #1a1a1a;border-radius:var(--r);padding:24px">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:.04em;line-height:1;margin-bottom:16px;color:#fff">WHAT 100x GETS</div>
+      <div style="font-size:13px;color:rgba(255,255,255,.4);line-height:2">
+        <div style="padding:6px 0;border-bottom:1px solid #1a1a1a"><strong style="color:rgba(255,255,255,.85)">Participaci&oacute;n</strong> en una empresa de educaci&oacute;n de alto crecimiento</div>
+        <div style="padding:6px 0;border-bottom:1px solid #1a1a1a"><strong style="color:rgba(255,255,255,.85)">Growth Lab</strong> feeding leads into the Amplifica funnel</div>
+        <div style="padding:6px 0;border-bottom:1px solid #1a1a1a"><strong style="color:rgba(255,255,255,.85)">Jos&eacute;'s methodology</strong> embedded in the ecosystem</div>
+        <div style="padding:6px 0;border-bottom:1px solid #1a1a1a"><strong style="color:rgba(255,255,255,.85)">Jos&eacute;'s credibility</strong> and proof elevating the brand</div>
+        <div style="padding:6px 0;border-bottom:1px solid #1a1a1a"><strong style="color:rgba(255,255,255,.85)">A founding story</strong> that inspires the next 10 partners</div>
+        <div style="padding:6px 0"><strong style="color:rgba(255,255,255,.85)">A partner</strong> who's already proven the system 3 times</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta" id="cta">
+  <div class="cta-quote">&ldquo;Multiplicar nunca funcion&oacute;. <strong>Amplificar.</strong> Eso es diferente.&rdquo;</div>
+  <div class="cta-source">Growth Lab Manifesto</div>
+  <div class="cta-divider"></div>
+  <div class="cta-ask">HABLEMOS<span style="color:var(--red)">.</span></div>
+  <div class="cta-ask-sub">Jos&eacute; &mdash; la silla est&aacute; ah&iacute;. Tiene tu nombre escrito. <strong style="color:rgba(255,255,255,.7)">amplifica.studio</strong></div>
+</div>
+
+</div><!-- /wrap -->
+
+<footer>Growth Lab &mdash; Jos&eacute; Prieto x 100x / Amplifica &mdash; Confidential &mdash; April 2026</footer>
+
+</body>
+</html>

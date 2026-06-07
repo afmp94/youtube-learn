@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Growth Lab by Jose Prieto &mdash; Amplifica Studio</title>
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --bg-card: #141414;
+    --bg-code: #1a1a1a;
+    --border: #2a2a2a;
+    --border-table: #333;
+    --gold: #d4a853;
+    --gold-dim: #b8923f;
+    --gold-glow: rgba(212, 168, 83, 0.15);
+    --text: #e8e8e8;
+    --text-dim: #999;
+    --text-bright: #ffffff;
+    --link: #d4a853;
+    --link-hover: #f0c96c;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  .page-wrapper {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ── Header ── */
+  .site-header {
+    border-bottom: 1px solid var(--border);
+    padding: 40px 0 32px;
+    margin-bottom: 12px;
+  }
+
+  .site-header h1 {
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: -0.5px;
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+
+  .site-header .tagline {
+    font-size: 1.1rem;
+    color: var(--text-dim);
+    font-weight: 400;
+  }
+
+  .site-header .codename {
+    display: inline-block;
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--gold-dim);
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+
+  /* ── Navigation ── */
+  .nav-bar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10, 10, 10, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 0;
+    margin-bottom: 40px;
+  }
+
+  .nav-bar nav {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .nav-bar a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 500;
+    padding: 5px 12px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    border: 1px solid transparent;
+  }
+
+  .nav-bar a:hover {
+    color: var(--gold);
+    background: var(--gold-glow);
+    border-color: rgba(212, 168, 83, 0.2);
+  }
+
+  .nav-bar a.active {
+    color: var(--gold);
+    background: var(--gold-glow);
+    border-color: rgba(212, 168, 83, 0.3);
+  }
+
+  .nav-bar .nav-label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #555;
+    margin-right: 4px;
+    font-weight: 600;
+  }
+
+  /* ── Content ── */
+  h2 {
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: var(--gold);
+    margin: 56px 0 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+    letter-spacing: -0.3px;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-bright);
+    margin: 36px 0 14px;
+  }
+
+  h4 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--gold-dim);
+    margin: 24px 0 10px;
+  }
+
+  p { margin-bottom: 16px; color: var(--text); }
+
+  strong { color: var(--text-bright); font-weight: 600; }
+
+  a { color: var(--link); text-decoration: none; transition: color 0.2s; }
+  a:hover { color: var(--link-hover); }
+
+  blockquote {
+    border-left: 3px solid var(--gold);
+    padding: 16px 24px;
+    margin: 24px 0;
+    background: var(--gold-glow);
+    border-radius: 0 8px 8px 0;
+    font-style: italic;
+    color: var(--text);
+    font-size: 1.1rem;
+  }
+
+  hr {
+    border: none;
+    height: 1px;
+    background: var(--border);
+    margin: 40px 0;
+  }
+
+  ul, ol {
+    margin: 12px 0 20px 24px;
+    color: var(--text);
+  }
+
+  li { margin-bottom: 6px; }
+  li::marker { color: var(--gold-dim); }
+
+  /* ── Tier Cards ── */
+  .tier-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 32px;
+    margin: 28px 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tier-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+  }
+
+  .tier-card h3 {
+    margin-top: 0;
+    color: var(--gold);
+    font-size: 1.3rem;
+  }
+
+  .tier-card .price {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--text-bright);
+    margin-bottom: 4px;
+  }
+
+  .tier-card .format {
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    margin-bottom: 16px;
+  }
+
+  /* ── Tables ── */
+  .table-wrap {
+    overflow-x: auto;
+    margin: 20px 0 28px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.92rem;
+  }
+
+  thead th {
+    background: #1c1c1c;
+    color: var(--gold);
+    font-weight: 600;
+    text-align: left;
+    padding: 14px 18px;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+  }
+
+  tbody td {
+    padding: 12px 18px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    color: var(--text);
+  }
+
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: rgba(212, 168, 83, 0.04); }
+  tbody td:first-child { font-weight: 600; color: var(--text-bright); }
+
+  /* ── Code Blocks ── */
+  pre {
+    background: var(--bg-code);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px;
+    overflow-x: auto;
+    margin: 20px 0 28px;
+    font-size: 0.88rem;
+    line-height: 1.6;
+  }
+
+  code {
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    color: var(--gold);
+  }
+
+  pre code { color: var(--text); background: none; padding: 0; }
+
+  /* ── Footer ── */
+  .site-footer {
+    margin-top: 80px;
+    padding: 32px 0;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+  }
+
+  .site-footer .brand {
+    color: var(--gold);
+    font-weight: 600;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 640px) {
+    .site-header h1 { font-size: 1.8rem; }
+    h2 { font-size: 1.4rem; }
+    .nav-bar nav { gap: 4px; }
+    .nav-bar a { font-size: 0.75rem; padding: 4px 8px; }
+    pre { padding: 16px; font-size: 0.8rem; }
+    thead th, tbody td { padding: 10px 12px; }
+    .tier-card { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="site-header">
+  <div class="page-wrapper">
+    <div class="codename">El Amplificador</div>
+    <h1>Growth Lab</h1>
+    <div class="tagline">by Jose Prieto &mdash; Powered by Amplifica Studio</div>
+  </div>
+</div>
+
+<div class="nav-bar">
+  <nav>
+    <span class="nav-label">Products:</span>
+    <a href="00_ecosystem_overview.html">Ecosystem</a>
+    <a href="01_growth_lab_jose_prieto.html" class="active">Growth Lab</a>
+    <a href="02_cmo_lab_daniela_lopez.html">CMO Lab</a>
+    <a href="03_performance_lab_santiago_garcia.html">Performance Lab</a>
+    <a href="04_builders_cohort.html">Builders Cohort</a>
+  </nav>
+</div>
+
+<div class="page-wrapper">
+
+  <blockquote>"1.7 millones de seguidores. $0 en publicidad. Un sistema."</blockquote>
+
+  <h2>What It Is</h2>
+
+  <p>Growth Lab es el programa de Jose Prieto para ensenar su metodologia de crecimiento organico &mdash; la misma que lo llevo de 0 a 1.7M seguidores sin gastar un peso en ads, y que convirtio a un candidato presidencial en ultimo lugar en 1.2 millones de votos.</p>
+
+  <p>No es un curso de "como ser influencer." Es un sistema replicable para marcas, fundadores y creadores que quieren que su contenido se comparta solo.</p>
+
+  <hr>
+
+  <h2>The Product Ladder</h2>
+
+  <div class="tier-card">
+    <h3>Tier 0 &mdash; FREE: "El Crash Course de Viralidad"</h3>
+    <div class="price">$0</div>
+    <div class="format">Email capture &mdash; 7 emails en 7 dias</div>
+    <h4>Contenido:</h4>
+    <ul>
+      <li>Dia 1: Por que el 95% del contenido muere (y el 5% explota)</li>
+      <li>Dia 2: El framework STEPPS aplicado a LATAM</li>
+      <li>Dia 3: Como Jose hizo 1.4M con @SABANA_ADENTRO</li>
+      <li>Dia 4: El error #1 que mata el engagement</li>
+      <li>Dia 5: Volumen &gt; Perfeccion (por que publicar diario funciona)</li>
+      <li>Dia 6: Los 3 formatos que Jose repite 60-100 veces</li>
+      <li>Dia 7: El sistema completo (preview del Academy)</li>
+    </ul>
+    <p><strong>Lead magnet:</strong> "Las 10 ideas de contenido que SIEMPRE funcionan" (PDF)<br>
+    <strong>CTA final:</strong> Upgrade to Foundations ($1)</p>
+  </div>
+
+  <div class="tier-card">
+    <h3>Tier 1 &mdash; FOUNDATIONS: "Viral Content Foundations"</h3>
+    <div class="price">$1 <span style="font-size:0.9rem;color:var(--text-dim);font-weight:400;">(tripwire)</span></div>
+    <div class="format">3 video lessons + 1 workbook</div>
+    <h4>Contenido:</h4>
+    <ul>
+      <li>Leccion 1: El Modelo de Contenido Organico de Jose (framework completo)</li>
+      <li>Leccion 2: Como encontrar tu "Sabana Adentro" &mdash; tu nicho de contenido imparable</li>
+      <li>Leccion 3: Tu primer video viral &mdash; paso a paso con template</li>
+    </ul>
+    <p><strong>Objetivo:</strong> Micro-compromiso. Convertir un lead gratuito en comprador. La barrera psicologica mas grande es de $0 a $1, no de $1 a $997.</p>
+  </div>
+
+  <div class="tier-card">
+    <h3>Tier 2 &mdash; ACADEMY: "Growth Lab Academy"</h3>
+    <div class="price">$997 <span style="font-size:0.9rem;color:var(--text-dim);font-weight:400;">(o 3 pagos de $365)</span></div>
+    <div class="format">Self-paced &mdash; 8 modulos, 20+ horas de video &mdash; Garantia 30 dias</div>
+
+    <h4>Curriculum:</h4>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Modulo</th>
+          <th>Nombre</th>
+          <th>Contenido</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td><strong>El Sistema Organico</strong></td>
+          <td>La metodologia completa de Jose: por que organico > paid. Caso Sabana Adentro (0 a 1.4M). Caso Juan Daniel Oviedo (ultimo lugar a 1.2M votos). El ROI real del contenido organico.</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td><strong>Tu Nicho Imparable</strong></td>
+          <td>Como Jose eligio "llanero cowboy culture" y lo convirtio en un imperio. El framework: pasion x audiencia x monetizacion. Analisis de 50 nichos en LATAM. Validacion rapida sin gastar.</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td><strong>La Maquina de Ideas</strong></td>
+          <td>El sistema de Jose para nunca quedarse sin ideas. Birdsong Technique adaptada. "5 Meses en 5 Minutos." Base de datos de ideas con Notion template. Como robar ideas legalmente (reverse engineering de virales).</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td><strong>El Hook Perfecto</strong></td>
+          <td>Los primeros 1.2 segundos deciden todo. Anatomia de un hook. 15 formulas de hook probadas. El Virality Lab: como medir si tu hook funciona ANTES de publicar. Pattern interrupts que Jose usa.</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td><strong>Produccion Sin Excusas</strong></td>
+          <td>El setup minimo viable (Jose graba con iPhone). Batch production: 7 videos en 1 sesion. Edicion con IA (CapCut, Runway, ElevenLabs). El sistema de Jose para publicar DIARIO sin burnout.</td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td><strong>Distribucion Multi-Plataforma</strong></td>
+          <td>TikTok, Reels, Shorts, LinkedIn: misma pieza, diferente formato. El "1 contenido &rarr; 12 piezas" system. Cuando adaptar vs cuando crear nativo. Algoritmos por plataforma (2026).</td>
+        </tr>
+        <tr>
+          <td>7</td>
+          <td><strong>La Ciencia de la Viralidad</strong></td>
+          <td>TRIBE V2: que pasa en el cerebro cuando el contenido funciona. Las 8 dimensiones del Virality Lab. STEPPS model aplicado. Hook Point model (Brendan Kane). Como predecir viralidad con datos, no intuicion.</td>
+        </tr>
+        <tr>
+          <td>8</td>
+          <td><strong>De Audiencia a Negocio</strong></td>
+          <td>El modelo de Jose: audiencia &rarr; consultoria (Caporal) &rarr; agencia. Como monetizar sin "vender": educacion e inspiracion > ventas directas. Brand deals, consultoria, productos digitales. El puente a Amplifica (done-for-you).</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Templates y herramientas incluidas:</h3>
+  <ul>
+    <li>Notion: Base de datos de ideas infinitas</li>
+    <li>Notion: Calendario editorial mensual</li>
+    <li>Google Sheets: Tracker de metricas por plataforma</li>
+    <li>PDF: 100 hooks probados en espanol</li>
+    <li>PDF: Guia de produccion con iPhone</li>
+    <li>Acceso al Virality Lab (scoring de contenido)</li>
+    <li>Acceso a TRIBE V2 brain visualization (modulo 7)</li>
+  </ul>
+
+  <h3>Comunidad:</h3>
+  <ul>
+    <li>12 meses de acceso a comunidad privada (Circle.so)</li>
+    <li>Canal de critica de contenido (sube tu video, recibe feedback)</li>
+  </ul>
+
+  <hr>
+
+  <div class="tier-card">
+    <h3>Tier 3 &mdash; ACCELERATOR: "Growth Lab Accelerator"</h3>
+    <div class="price">$4,997</div>
+    <div class="format">Cohort de 8 semanas &mdash; Max 30 personas &mdash; Cada trimestre (4 cohorts/ano)</div>
+
+    <p><strong>Incluye todo del Academy MAS:</strong></p>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Semana</th>
+          <th>Sesion en vivo (2h)</th>
+          <th>Entregable</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Jose: Tu nicho + posicionamiento</td>
+          <td>Nicho definido + 30 ideas</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Jose: Produccion en vivo (graba contigo)</td>
+          <td>3 videos grabados</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>Guest: Brendan Kane (Hook Point) o equiv.</td>
+          <td>Hooks reescritos</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>Lab: Virality Lab scoring session</td>
+          <td>10 piezas scored</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>Jose: Distribucion + algoritmos 2026</td>
+          <td>Calendario 30 dias</td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td>Guest: Brand deal negotiation</td>
+          <td>Media kit creado</td>
+        </tr>
+        <tr>
+          <td>7</td>
+          <td>Jose: De audiencia a negocio</td>
+          <td>Modelo de monetizacion</td>
+        </tr>
+        <tr>
+          <td>8</td>
+          <td>Demo Day: mejores contenidos</td>
+          <td>Portfolio presentado</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Acceso directo:</h3>
+  <ul>
+    <li>Grupo de WhatsApp con Jose (responde dentro de 24h)</li>
+    <li>2 revisiones de video personalizadas por semana (Loom)</li>
+    <li>Acceso al equipo de Amplifica para produccion (descuento 50% primer mes)</li>
+    <li>Mentoria 1:1 con Jose (30 min, semanas 3 y 6)</li>
+  </ul>
+
+  <p><strong>Upsell natural:</strong> Al terminar el Accelerator, ofrecer Amplifica Growth ($5,500/mo) como "ahora que tienes la estrategia, nosotros la ejecutamos."</p>
+
+  <hr>
+
+  <h2>ICP (Ideal Customer Profile)</h2>
+
+  <h3>Primario:</h3>
+  <ul>
+    <li>Fundadores de startups/scaleups en LATAM (Colombia, Mexico, Argentina, Espana)</li>
+    <li>Quieren crecer organicamente pero no saben como crear contenido que se comparta</li>
+    <li>Tienen producto pero no audiencia</li>
+    <li>Budget limitado para paid ads &mdash; necesitan que el contenido trabaje solo</li>
+  </ul>
+
+  <h3>Secundario:</h3>
+  <ul>
+    <li>Creadores de contenido con 1K-50K seguidores estancados</li>
+    <li>Marcas personales de profesionales (abogados, doctores, consultores)</li>
+    <li>Equipos de marketing que quieren agregar organic growth a su mix</li>
+  </ul>
+
+  <hr>
+
+  <h2>Go-to-Market</h2>
+
+  <h3>Canal principal: LinkedIn + YouTube</h3>
+  <ul>
+    <li>Jose publica 3-4 posts/semana sobre crecimiento organico</li>
+    <li>Clips del Accelerator se publican como contenido gratuito</li>
+    <li>Caso de estudio de Oviedo como "hero content"</li>
+  </ul>
+
+  <h3>Canal secundario: Builders Universe / En Produccion</h3>
+  <ul>
+    <li>Jose como guest recurrente en el podcast</li>
+    <li>Cross-newsletter: En Produccion Weekly &rarr; Growth Lab Weekly</li>
+  </ul>
+
+  <h3>Canal terciario: Eventos presenciales</h3>
+  <ul>
+    <li>Workshops en CDMX, Bogota, Madrid (las ciudades de Amplifica)</li>
+    <li>Co-branded con 30x o similares</li>
+  </ul>
+
+  <hr>
+
+  <h2>Conexion con Amplifica</h2>
+
+  <pre><code>GROWTH LAB (educacion)
+    ↓ graduados que quieren ejecucion
+AMPLIFICA STARTER ($3,500/mo)
+    ↓ clientes que quieren escalar
+AMPLIFICA GROWTH ($5,500/mo)
+    ↓ empresas que quieren todo
+SIDEKICK+ CMO AGENT ($50K+/yr)</code></pre>
+
+  <p><strong>La promesa:</strong> "Jose te ensena el sistema. Amplifica lo ejecuta por ti."</p>
+
+</div>
+
+<div class="site-footer">
+  <div class="page-wrapper">
+    <span class="brand">Amplifica Studio</span> &mdash; amplifica.studio
+  </div>
+</div>
+
+</body>
+</html>

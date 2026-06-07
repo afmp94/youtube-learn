@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CMO Lab — Pitch para Daniela López Ochoa</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@300;400;500;600;700&family=Outfit:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --red:#ff3c00;--orange:#e8531a;--blue:#2d6ef5;--green:#16a34a;
+  --yellow:#facc15;--purple:#7c3aed;--teal:#0d9488;--pink:#ec4899;
+  --bg:#f5f4f0;--surface:#fff;--border:#e5e2dc;
+  --text:#111;--muted:#77776f;--r:12px;
+}
+body{font-family:'Space Grotesk',system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.6}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:rgba(10,10,10,.97);backdrop-filter:blur(20px);border-bottom:1px solid #1a1a1a;height:56px;display:flex;align-items:center;padding:0 40px;justify-content:space-between}
+.n-logo{font-family:'Bebas Neue',sans-serif;font-size:20px;color:#fff;letter-spacing:.06em}.n-logo span{color:var(--red)}
+.n-right{display:flex;gap:4px}
+.n-link{padding:6px 14px;border-radius:20px;font-size:11px;font-weight:500;color:rgba(255,255,255,.4);cursor:pointer;transition:all .2s;border:none;background:none;text-decoration:none;letter-spacing:.04em}
+.n-link:hover{color:#fff;background:rgba(255,255,255,.08)}
+.n-link.active{color:var(--red)}
+
+/* HERO */
+.hero{background:#0a0a0a;padding:100px 48px 80px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-120px;right:-120px;width:600px;height:600px;border-radius:50%;border:1px solid rgba(255,60,0,.06)}
+.hero::after{content:'';position:absolute;bottom:-200px;left:-100px;width:500px;height:500px;border-radius:50%;border:1px solid rgba(124,58,237,.04)}
+.hero-tag{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--red);margin-bottom:20px;display:flex;align-items:center;gap:8px}
+.hero-tag::before{content:'';width:24px;height:2px;background:var(--red)}
+.hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(56px,10vw,120px);color:#fff;letter-spacing:.04em;line-height:.88;margin-bottom:28px}
+.hero h1 span{color:var(--red)}
+.hero-statement{font-family:'Outfit',sans-serif;font-size:clamp(17px,2.2vw,22px);color:rgba(255,255,255,.45);max-width:680px;line-height:1.65;font-weight:300;font-style:italic;margin-bottom:48px}
+.hero-statement strong{color:rgba(255,255,255,.9);font-weight:500;font-style:normal}
+.hero-stats{display:flex;gap:48px;flex-wrap:wrap}
+.hero-stat{text-align:left}
+.hero-stat-num{font-family:'Bebas Neue',sans-serif;font-size:48px;color:#fff;letter-spacing:.04em;line-height:1}
+.hero-stat-label{font-size:11px;color:rgba(255,255,255,.3);letter-spacing:.1em;text-transform:uppercase;margin-top:4px}
+
+/* WRAP & SECTIONS */
+.wrap{max-width:1060px;margin:0 auto;padding:0 48px}
+.sec{padding:64px 0}
+.sec+.sec{border-top:1px solid var(--border)}
+.sec-tag{font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;display:flex;align-items:center;gap:10px}
+.sec-tag::after{content:'';flex:1;height:1px;background:var(--border)}
+.sec-h{font-family:'Bebas Neue',sans-serif;font-size:clamp(34px,4vw,52px);letter-spacing:.04em;line-height:.95;margin-bottom:10px}
+.sec-sub{font-size:15px;color:var(--muted);margin-bottom:36px;max-width:600px;line-height:1.6}
+
+/* THESIS */
+.thesis{background:#0a0a0a;border-radius:var(--r);padding:48px;margin-bottom:48px;position:relative;overflow:hidden}
+.thesis::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 30% 50%, rgba(255,60,0,.06) 0%, transparent 60%)}
+.thesis-text{font-family:'Outfit',sans-serif;font-size:clamp(20px,3vw,28px);color:rgba(255,255,255,.8);line-height:1.5;font-weight:300;max-width:700px;position:relative;z-index:1}
+.thesis-text strong{color:#fff;font-weight:600}
+.thesis-footer{font-size:11px;color:rgba(255,255,255,.2);margin-top:24px;letter-spacing:.1em;text-transform:uppercase;position:relative;z-index:1}
+
+/* ECOSYSTEM GRID */
+.eco-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.eco-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;transition:transform .2s}
+.eco-card:hover{transform:translateY(-2px)}
+.eco-accent{height:3px}
+.eco-body{padding:20px}
+.eco-name{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:.04em;line-height:1;margin-bottom:6px}
+.eco-desc{font-size:13px;color:var(--muted);line-height:1.5;margin-bottom:12px}
+.eco-model{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:20px;display:inline-block}
+
+/* PRODUCT LADDER */
+.ladder-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+.ladder-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;transition:transform .2s}
+.ladder-card:hover{transform:translateY(-2px)}
+.ladder-accent{height:3px}
+.ladder-body{padding:20px}
+.ladder-price{font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:.04em;line-height:1;margin-bottom:4px}
+.ladder-name{font-size:13px;font-weight:700;margin-bottom:8px;line-height:1.3}
+.ladder-desc{font-size:12px;color:var(--muted);line-height:1.55;margin-bottom:12px}
+.ladder-metric{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:20px;display:inline-block}
+
+/* ACADEMY GRID (modules) */
+.academy-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+.academy-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px;transition:transform .2s}
+.academy-card:hover{transform:translateY(-2px)}
+.academy-num{font-family:'Bebas Neue',sans-serif;font-size:36px;line-height:1;opacity:.08;margin-bottom:8px}
+.academy-title{font-size:13px;font-weight:700;margin-bottom:6px;line-height:1.3}
+.academy-text{font-size:12px;color:var(--muted);line-height:1.55}
+
+/* ACCELERATOR */
+.machine{background:#0a0a0a;border-radius:var(--r);padding:48px;margin-bottom:48px;position:relative;overflow:hidden}
+.machine::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 70% 30%, rgba(124,58,237,.05) 0%, transparent 50%)}
+.m-title{font-family:'Bebas Neue',sans-serif;font-size:36px;color:#fff;letter-spacing:.04em;line-height:1;margin-bottom:6px;position:relative;z-index:1}
+.m-sub{font-size:13px;color:rgba(255,255,255,.35);margin-bottom:32px;position:relative;z-index:1}
+.m-flow{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px;position:relative;z-index:1}
+.m-step{text-align:center}
+.m-step-dot{width:40px;height:40px;border-radius:50%;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:16px;color:#fff;border:2px solid rgba(255,255,255,.1)}
+.m-step-name{font-size:12px;font-weight:600;color:#fff;margin-bottom:4px}
+.m-step-desc{font-size:11px;color:rgba(255,255,255,.35);line-height:1.4}
+.m-outputs{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;position:relative;z-index:1}
+.m-output{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:14px}
+.m-output-num{font-family:'Bebas Neue',sans-serif;font-size:28px;color:#fff;line-height:1;margin-bottom:4px}
+.m-output-label{font-size:11px;color:rgba(255,255,255,.35);line-height:1.4}
+
+/* INFRASTRUCTURE */
+.infra-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.infra-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px;transition:transform .2s}
+.infra-card:hover{transform:translateY(-2px)}
+.infra-name{font-size:13px;font-weight:700;margin-bottom:4px;line-height:1.3}
+.infra-solo{font-size:11px;color:var(--muted);line-height:1.4;margin-bottom:6px}
+.infra-100x{font-size:11px;font-weight:600;line-height:1.4}
+
+/* REVENUE TABLE */
+.rev-table{width:100%;border-collapse:collapse;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:16px}
+.rev-table th,.rev-table td{padding:12px 16px;text-align:left;font-size:13px;border-bottom:1px solid var(--border)}
+.rev-table th{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);background:var(--bg)}
+.rev-table td{color:var(--text)}
+.rev-table tr:last-child td{border-bottom:none}
+.rev-table .total-row td{background:rgba(255,60,0,.04);font-weight:700;font-size:14px}
+.rev-table .consulting-row td{background:rgba(0,0,0,.02);color:var(--muted)}
+
+/* COMPARISON GRID */
+.comp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.comp-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;transition:transform .2s}
+.comp-card:hover{transform:translateY(-2px)}
+.comp-accent{height:3px}
+.comp-body{padding:20px}
+.comp-name{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.04em;line-height:1;margin-bottom:6px}
+.comp-desc{font-size:12px;color:var(--muted);line-height:1.55;margin-bottom:10px}
+.comp-gap{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:20px;display:inline-block}
+
+/* READY */
+.ready-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:48px}
+.ready-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px}
+.ready-num{font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:.04em;line-height:1;margin-bottom:4px}
+.ready-label{font-size:12px;color:var(--muted);line-height:1.4}
+
+/* STRUCTURE */
+.structure{background:#0a0a0a;border-radius:var(--r);padding:48px;margin-bottom:48px;position:relative;overflow:hidden}
+.structure::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 30% 50%, rgba(255,60,0,.06) 0%, transparent 60%)}
+.s-title{font-family:'Bebas Neue',sans-serif;font-size:36px;color:#fff;letter-spacing:.04em;line-height:1;margin-bottom:6px;position:relative;z-index:1}
+.s-sub{font-size:13px;color:rgba(255,255,255,.35);margin-bottom:32px;position:relative;z-index:1}
+.s-nodes{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;position:relative;z-index:1}
+.s-node{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:16px;text-align:center}
+.s-node-name{font-family:'Bebas Neue',sans-serif;font-size:22px;color:#fff;line-height:1;margin-bottom:4px}
+.s-node-desc{font-size:11px;color:rgba(255,255,255,.35);line-height:1.4}
+.s-node.primary{border-color:var(--red);background:rgba(255,60,0,.06)}
+.s-node.primary .s-node-name{color:var(--red)}
+.s-connector{display:flex;justify-content:center;align-items:center;position:relative;z-index:1;padding:12px 0}
+.s-connector-line{width:2px;height:24px;background:rgba(255,255,255,.1)}
+.s-powered{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px;position:relative;z-index:1}
+.s-powered-item{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:14px;text-align:center}
+.s-powered-name{font-size:12px;font-weight:600;color:#fff;margin-bottom:2px}
+.s-powered-desc{font-size:11px;color:rgba(255,255,255,.35)}
+
+/* CTA */
+.cta{background:#0a0a0a;border-radius:var(--r);padding:64px 48px;text-align:center;margin-bottom:48px;position:relative;overflow:hidden}
+.cta::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 50%, rgba(255,60,0,.08) 0%, transparent 60%)}
+.cta-quote{font-family:'Outfit',sans-serif;font-size:clamp(18px,2.5vw,24px);color:rgba(255,255,255,.7);line-height:1.6;font-weight:300;font-style:italic;max-width:700px;margin:0 auto 24px;position:relative;z-index:1}
+.cta-quote strong{color:#fff;font-weight:500;font-style:normal}
+.cta-source{font-size:11px;color:rgba(255,255,255,.2);letter-spacing:.1em;text-transform:uppercase;position:relative;z-index:1}
+.cta-divider{width:40px;height:2px;background:var(--red);margin:32px auto;position:relative;z-index:1}
+.cta-ask{font-family:'Bebas Neue',sans-serif;font-size:clamp(28px,4vw,44px);color:#fff;letter-spacing:.04em;line-height:1;position:relative;z-index:1;margin-bottom:12px}
+.cta-ask-sub{font-size:14px;color:rgba(255,255,255,.35);position:relative;z-index:1;margin-bottom:24px}
+.cta-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;max-width:700px;margin:0 auto;position:relative;z-index:1}
+.cta-step{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:12px}
+.cta-step-num{font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--red);line-height:1;margin-bottom:4px}
+.cta-step-text{font-size:11px;color:rgba(255,255,255,.35);line-height:1.4}
+
+/* FOOTER */
+footer{padding:24px 48px;text-align:center;font-size:11px;color:var(--muted);letter-spacing:.06em}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .eco-grid,.infra-grid,.academy-grid,.ladder-grid,.comp-grid,.m-flow,.m-outputs,.ready-grid,.s-nodes,.s-powered,.cta-steps{grid-template-columns:1fr}
+  .hero-stats{gap:24px}
+  .hero{padding:60px 24px}
+  .wrap{padding:0 24px}
+  nav{padding:0 20px}
+  .thesis,.machine,.structure,.cta{padding:32px 24px}
+}
+@media(max-width:900px) and (min-width:601px){
+  .eco-grid,.infra-grid,.academy-grid,.ladder-grid,.comp-grid,.ready-grid,.s-nodes,.s-powered,.cta-steps{grid-template-columns:1fr 1fr}
+  .m-flow,.m-outputs{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="n-logo">CMO<span>.</span>LAB</div>
+  <div class="n-right">
+    <a href="#problem" class="n-link active">Problem</a>
+    <a href="#opportunity" class="n-link">Opportunity</a>
+    <a href="#product" class="n-link">Product</a>
+    <a href="#academy" class="n-link">Academy</a>
+    <a href="#revenue" class="n-link">Revenue</a>
+    <a href="#company" class="n-link">Company</a>
+    <a href="#cta" class="n-link">CTA</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">Propuesta para Daniela López Ochoa</div>
+  <h1>CMO<br><span>LAB</span><span>.</span></h1>
+  <p class="hero-statement">La <strong>Arquitecta del Marketing B2B.</strong> No buscamos una cara para un curso. Tu metodolog&iacute;a &mdash; la forma en que construyes <strong>m&aacute;quinas de marketing desde cero</strong> &mdash; es un producto que no existe en espa&ntilde;ol. Y merece ser una empresa.</p>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="hero-stat-num">CMO</div>
+      <div class="hero-stat-label">uPlanner &mdash; B2B desde cero</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">BBS</div>
+      <div class="hero-stat-label">Bologna Business School</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">3,882</div>
+      <div class="hero-stat-label">LinkedIn Followers</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">0</div>
+      <div class="hero-stat-label">Competidores en Espa&ntilde;ol</div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+<!-- THESIS -->
+<div class="sec" id="thesis">
+  <div class="sec-tag">La Tesis</div>
+  <div class="thesis">
+    <div class="thesis-text">Hay exactamente <strong>una persona</strong> en LATAM que ha construido marketing B2B desde cero en startups reales, piensa en <strong>sistemas, no en t&aacute;cticas</strong>, tiene formaci&oacute;n de primer nivel, y tiene el hambre de construir algo propio. <strong>Esa persona eres t&uacute;.</strong></div>
+    <div class="thesis-footer">De: Andr&eacute;s Felipe | 100x / Amplifica &mdash; Abril 2026</div>
+  </div>
+</div>
+
+<!-- THE PROBLEM -->
+<div class="sec" id="problem">
+  <div class="sec-tag">El Problema</div>
+  <div class="sec-h">EL MARKETING B2B<br>EN LATAM EST&Aacute; <span style="color:var(--red)">ROTO</span><span style="color:var(--red)">.</span></div>
+  <div class="sec-sub">T&uacute; lo vives todos los d&iacute;as. Lo has vivido en uPlanner. Lo ves en cada founder que te pide consejo.</div>
+
+  <div class="eco-grid">
+    <div class="eco-card">
+      <div class="eco-accent" style="background:var(--red)"></div>
+      <div class="eco-body">
+        <div class="eco-name">FOUNDERS T&Eacute;CNICOS</div>
+        <div class="eco-desc">No saben vender. Construyen productos brillantes y los lanzan al vac&iacute;o. Sin estrategia de go-to-market.</div>
+        <div class="eco-model" style="background:rgba(255,60,0,.08);color:var(--red)">Productos sin clientes</div>
+      </div>
+    </div>
+    <div class="eco-card">
+      <div class="eco-accent" style="background:var(--orange)"></div>
+      <div class="eco-body">
+        <div class="eco-name">AGENCIAS</div>
+        <div class="eco-desc">Venden &ldquo;leads&rdquo; que nunca cierran porque no entienden B2B. Piensan en Meta Ads + funnels de clickbait.</div>
+        <div class="eco-model" style="background:rgba(232,83,26,.08);color:var(--orange)">Leads que no convierten</div>
+      </div>
+    </div>
+    <div class="eco-card">
+      <div class="eco-accent" style="background:var(--blue)"></div>
+      <div class="eco-body">
+        <div class="eco-name">CONTRATAR CMO</div>
+        <div class="eco-desc">Cuesta $10-15K/mes + equity. Imposible para una startup pre-Series A. Inaccesible para el 90% del mercado.</div>
+        <div class="eco-model" style="background:rgba(45,110,245,.08);color:var(--blue)">$120-180K/a&ntilde;o</div>
+      </div>
+    </div>
+    <div class="eco-card">
+      <div class="eco-accent" style="background:var(--purple)"></div>
+      <div class="eco-body">
+        <div class="eco-name">REFORGE</div>
+        <div class="eco-desc">Excelente... si hablas ingl&eacute;s, vendes en USA, y tienes $2,000 para un curso que no aplica a LATAM.</div>
+        <div class="eco-model" style="background:rgba(124,58,237,.08);color:var(--purple)">No aplica a LATAM</div>
+      </div>
+    </div>
+    <div class="eco-card">
+      <div class="eco-accent" style="background:var(--teal)"></div>
+      <div class="eco-body">
+        <div class="eco-name">30X / EJECUTIVOS</div>
+        <div class="eco-desc">Educa ejecutivos pero no tiene profundidad vertical en marketing B2B. Generalista, no especializado.</div>
+        <div class="eco-model" style="background:rgba(13,148,136,.08);color:var(--teal)">Sin profundidad B2B</div>
+      </div>
+    </div>
+    <div class="eco-card">
+      <div class="eco-accent" style="background:var(--yellow)"></div>
+      <div class="eco-body">
+        <div class="eco-name">PLATZI</div>
+        <div class="eco-desc">Cursos gen&eacute;ricos de &ldquo;marketing digital&rdquo; que no distinguen entre vender zapatos en Instagram y cerrar un contrato enterprise de 12 meses.</div>
+        <div class="eco-model" style="background:rgba(250,204,21,.1);color:#a68c00">Gen&eacute;rico, no B2B</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:24px;display:flex;align-items:center;gap:20px">
+    <div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:.04em;line-height:1">EL HUECO ES GIGANTE<span style="color:var(--red)">.</span></div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.5;margin-top:4px">No hay nadie ense&ntilde;ando marketing B2B en espa&ntilde;ol, para startups de LATAM, con metodolog&iacute;a real y mentor&iacute;a directa. <strong>Ese es tu espacio.</strong></div>
+    </div>
+    <div style="display:flex;gap:8px;flex-shrink:0">
+      <div style="background:rgba(255,60,0,.08);color:var(--red);font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px">0 competidores</div>
+      <div style="background:rgba(22,163,74,.08);color:var(--green);font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px">55K+ startups</div>
+    </div>
+  </div>
+</div>
+
+<!-- OPPORTUNITY -->
+<div class="sec" id="opportunity">
+  <div class="sec-tag">La Oportunidad</div>
+  <div class="sec-h">LOS N&Uacute;MEROS<br>QUE IMPORTAN<span style="color:var(--red)">.</span></div>
+  <div class="sec-sub">Porque t&uacute; eres una constructora, no una so&ntilde;adora. Hablemos de matem&aacute;tica.</div>
+
+  <div class="ready-grid" style="margin-bottom:36px">
+    <div class="ready-card">
+      <div class="ready-num">55,000+</div>
+      <div class="ready-label">Startups activas en LATAM (LAVCA, 2025)</div>
+    </div>
+    <div class="ready-card">
+      <div class="ready-num">73%</div>
+      <div class="ready-label">Sin equipo de marketing estructurado (Platzi Startups survey)</div>
+    </div>
+    <div class="ready-card">
+      <div class="ready-num">$2.1B</div>
+      <div class="ready-label">Invertido en startups LATAM en 2025 &mdash; necesita convertirse en clientes</div>
+    </div>
+  </div>
+
+  <!-- Consulting vs CMO Lab comparison -->
+  <div style="overflow-x:auto;margin-bottom:16px">
+    <table class="rev-table">
+      <thead>
+        <tr>
+          <th>M&eacute;trica</th>
+          <th>Consulting (Hoy)</th>
+          <th>CMO Lab (Ma&ntilde;ana)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Modelo</td>
+          <td>Vendes tu tiempo</td>
+          <td style="font-weight:600">Vendes tu sistema</td>
+        </tr>
+        <tr>
+          <td>Capacidad</td>
+          <td>3-4 clientes max</td>
+          <td style="font-weight:600">Ilimitada</td>
+        </tr>
+        <tr>
+          <td>Ingreso mensual</td>
+          <td>$5K-$8K</td>
+          <td style="font-weight:600;color:var(--green)">$15K-$50K+</td>
+        </tr>
+        <tr>
+          <td>Ingreso anual</td>
+          <td>$60K-$96K</td>
+          <td style="font-weight:600;color:var(--green)">$180K-$600K+</td>
+        </tr>
+        <tr>
+          <td>Vacaciones</td>
+          <td>El negocio para</td>
+          <td style="font-weight:600">El negocio sigue</td>
+        </tr>
+        <tr>
+          <td>Valor de empresa</td>
+          <td>$0 (servicios no tienen exit)</td>
+          <td style="font-weight:600;color:var(--green)">$500K-$2M+</td>
+        </tr>
+        <tr>
+          <td>Brand</td>
+          <td>&ldquo;Daniela, la CMO&rdquo;</td>
+          <td style="font-weight:600">&ldquo;CMO Lab, LA plataforma&rdquo;</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="thesis" style="margin-bottom:0">
+    <div class="thesis-text" style="font-size:clamp(16px,2vw,20px)">El consulting te paga bien. Pero te paga con tu vida. <strong>Cada d&oacute;lar que ganas requiere una hora tuya.</strong> Eso no es una empresa. Es un empleo disfrazado.</div>
+  </div>
+</div>
+
+<!-- PRODUCT LADDER -->
+<div class="sec" id="product">
+  <div class="sec-tag">Modelo de Ingresos</div>
+  <div class="sec-h">LA ESCALERA<br>QUE ESCALA<span style="color:var(--red)">.</span></div>
+  <div class="sec-sub">Modelo Ali Abdaal aplicado a marketing B2B. Cada nivel alimenta al siguiente.</div>
+
+  <div class="ladder-grid">
+    <div class="ladder-card">
+      <div class="ladder-accent" style="background:var(--green)"></div>
+      <div class="ladder-body">
+        <div class="ladder-price">$0</div>
+        <div class="ladder-name">El Blueprint del CMO Part-Time</div>
+        <div class="ladder-desc">Email sequence + lead magnet. La puerta de entrada al ecosistema CMO Lab.</div>
+        <div class="ladder-metric" style="background:rgba(22,163,74,.08);color:var(--green)">10,000 leads/a&ntilde;o</div>
+      </div>
+    </div>
+    <div class="ladder-card">
+      <div class="ladder-accent" style="background:var(--blue)"></div>
+      <div class="ladder-body">
+        <div class="ladder-price">$1</div>
+        <div class="ladder-name">B2B Marketing Foundations</div>
+        <div class="ladder-desc">Tripwire: 3 videos esenciales. Bajo costo, alta conversi&oacute;n al siguiente nivel.</div>
+        <div class="ladder-metric" style="background:rgba(45,110,245,.08);color:var(--blue)">5,000 compradores/a&ntilde;o</div>
+      </div>
+    </div>
+    <div class="ladder-card">
+      <div class="ladder-accent" style="background:var(--purple)"></div>
+      <div class="ladder-body">
+        <div class="ladder-price">$997</div>
+        <div class="ladder-name">CMO Lab Academy</div>
+        <div class="ladder-desc">Self-paced. 8 m&oacute;dulos, 20+ horas de contenido. Tu metodolog&iacute;a completa sistematizada.</div>
+        <div class="ladder-metric" style="background:rgba(124,58,237,.08);color:var(--purple)">200 alumnos/a&ntilde;o = $199K</div>
+      </div>
+    </div>
+    <div class="ladder-card">
+      <div class="ladder-accent" style="background:var(--red)"></div>
+      <div class="ladder-body">
+        <div class="ladder-price">$4,997</div>
+        <div class="ladder-name">CMO Lab Accelerator</div>
+        <div class="ladder-desc">Cohort de 8 semanas, max 25 personas. Mentor&iacute;a directa + feedback en vivo.</div>
+        <div class="ladder-metric" style="background:rgba(255,60,0,.08);color:var(--red)">4 cohorts/a&ntilde;o = $199K</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Amplifica upsell -->
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:24px;display:flex;align-items:center;gap:20px">
+    <div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:.04em;line-height:1">AMPLIFICA STUDIO<span style="color:var(--orange)">.</span></div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.5;margin-top:4px">Done-for-you marketing como upsell natural. Los alumnos que escalan refieren a Amplifica. <strong>Comisi&oacute;n del 15% para ti sin levantar un dedo.</strong></div>
+    </div>
+    <div style="display:flex;gap:8px;flex-shrink:0">
+      <div style="background:rgba(232,83,26,.08);color:var(--orange);font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px">$3,500+/mes</div>
+      <div style="background:rgba(22,163,74,.08);color:var(--green);font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px">$420K+/a&ntilde;o potencial</div>
+    </div>
+  </div>
+</div>
+
+<!-- ACADEMY -->
+<div class="sec" id="academy">
+  <div class="sec-tag">CMO Lab Academy</div>
+  <div class="sec-h">8 M&Oacute;DULOS<span style="color:var(--red)">.</span> TU METODOLOG&Iacute;A<span style="color:var(--red)">.</span></div>
+  <div class="sec-sub">Tu sistema completo de marketing B2B convertido en un producto self-paced de 20+ horas.</div>
+
+  <div class="academy-grid">
+    <div class="academy-card">
+      <div class="academy-num">01</div>
+      <div class="academy-title">B2B Marketing Fundamentals</div>
+      <div class="academy-text">Por qu&eacute; B2B no es B2C. Ciclos de venta, stakeholders, y la psicolog&iacute;a del comprador enterprise.</div>
+    </div>
+    <div class="academy-card">
+      <div class="academy-num">02</div>
+      <div class="academy-title">ICP &amp; Positioning</div>
+      <div class="academy-text">C&oacute;mo definir tu perfil de cliente ideal y posicionarte en un mercado saturado. Mensaje-Market Fit.</div>
+    </div>
+    <div class="academy-card">
+      <div class="academy-num">03</div>
+      <div class="academy-title">Marketing Ops Canvas</div>
+      <div class="academy-text">Tu framework propietario. La m&aacute;quina de marketing en una sola p&aacute;gina. Procesos, herramientas, m&eacute;tricas.</div>
+    </div>
+    <div class="academy-card">
+      <div class="academy-num">04</div>
+      <div class="academy-title">Content Engine B2B</div>
+      <div class="academy-text">LinkedIn, newsletters, thought leadership. C&oacute;mo construir autoridad que genera pipeline, no vanidad.</div>
+    </div>
+    <div class="academy-card">
+      <div class="academy-num">05</div>
+      <div class="academy-title">Sales Enablement</div>
+      <div class="academy-text">El puente entre marketing y ventas. Materiales, secuencias, y alineaci&oacute;n entre equipos.</div>
+    </div>
+    <div class="academy-card">
+      <div class="academy-num">06</div>
+      <div class="academy-title">Demand Generation</div>
+      <div class="academy-text">Estrategias de demanda para B2B: inbound, outbound, ABM, partnerships, y eventos.</div>
+    </div>
+    <div class="academy-card">
+      <div class="academy-num">07</div>
+      <div class="academy-title">Analytics &amp; Attribution</div>
+      <div class="academy-text">M&eacute;tricas que importan en B2B. MQLs, SQLs, pipeline velocity, CAC, LTV. Dashboards accionables.</div>
+    </div>
+    <div class="academy-card">
+      <div class="academy-num">08</div>
+      <div class="academy-title">Scaling the Machine</div>
+      <div class="academy-text">C&oacute;mo escalar de 0 a equipo. Contratar, automatizar, y sistematizar sin perder calidad.</div>
+    </div>
+  </div>
+
+  <!-- ACCELERATOR DARK SECTION -->
+  <div class="machine">
+    <div class="m-title">CMO LAB ACCELERATOR</div>
+    <div class="m-sub">8 semanas intensivas &mdash; M&aacute;x 25 personas por cohort &mdash; $4,997</div>
+
+    <div class="m-flow">
+      <div class="m-step">
+        <div class="m-step-dot" style="background:var(--red);border-color:var(--red)">1-2</div>
+        <div class="m-step-name">Diagn&oacute;stico</div>
+        <div class="m-step-desc">Auditor&iacute;a de marketing actual + definici&oacute;n de ICP</div>
+      </div>
+      <div class="m-step">
+        <div class="m-step-dot" style="background:var(--orange);border-color:var(--orange)">3-4</div>
+        <div class="m-step-name">Arquitectura</div>
+        <div class="m-step-desc">Marketing Ops Canvas + Content Engine setup</div>
+      </div>
+      <div class="m-step">
+        <div class="m-step-dot" style="background:var(--purple);border-color:var(--purple)">5-6</div>
+        <div class="m-step-name">Ejecuci&oacute;n</div>
+        <div class="m-step-desc">Sales enablement + demand gen en vivo</div>
+      </div>
+      <div class="m-step">
+        <div class="m-step-dot" style="background:var(--green);border-color:var(--green)">7-8</div>
+        <div class="m-step-name">Escala</div>
+        <div class="m-step-desc">Analytics, optimizaci&oacute;n + plan de escala</div>
+      </div>
+    </div>
+
+    <div class="m-outputs">
+      <div class="m-output">
+        <div class="m-output-num">25</div>
+        <div class="m-output-label">Personas m&aacute;x<br>por cohort</div>
+      </div>
+      <div class="m-output">
+        <div class="m-output-num">4</div>
+        <div class="m-output-label">Cohorts al a&ntilde;o<br>a velocidad crucero</div>
+      </div>
+      <div class="m-output">
+        <div class="m-output-num">8</div>
+        <div class="m-output-label">Semanas intensivas<br>con feedback en vivo</div>
+      </div>
+      <div class="m-output">
+        <div class="m-output-num">$199K</div>
+        <div class="m-output-label">Revenue potencial<br>a&ntilde;o 3 solo en Accelerator</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WHAT DANIELA GETS -->
+<div class="sec" id="infrastructure">
+  <div class="sec-tag">Lo que Daniela Recibe</div>
+  <div class="sec-h">LO QUE NO PUEDES<br>CONSTRUIR SOLA<span style="color:var(--red)">.</span></div>
+  <div class="sec-sub">Podr&iacute;as intentar hacer esto sola. Muchos lo intentan. Esto tomar&iacute;a 18-24 meses. Con 100x: 8-12 semanas.</div>
+
+  <div class="infra-grid">
+    <div class="infra-card">
+      <div class="infra-name">Plataforma de cursos</div>
+      <div class="infra-solo">Sola: Comprar, configurar, mantener</div>
+      <div class="infra-100x" style="color:var(--green)">Sidekick+ infrastructure &mdash; ya existe</div>
+    </div>
+    <div class="infra-card">
+      <div class="infra-name">Equipo de dise&ntilde;o</div>
+      <div class="infra-solo">Sola: Contratar freelancers, briefear, iterar</div>
+      <div class="infra-100x" style="color:var(--green)">Amplifica Studio &mdash; equipo dedicado</div>
+    </div>
+    <div class="infra-card">
+      <div class="infra-name">Producci&oacute;n de video</div>
+      <div class="infra-solo">Sola: Aprender, comprar equipo, editar</div>
+      <div class="infra-100x" style="color:var(--green)">Equipo de producci&oacute;n listo</div>
+    </div>
+    <div class="infra-card">
+      <div class="infra-name">AI Tools integrados</div>
+      <div class="infra-solo">Sola: Investigar, comprar, configurar</div>
+      <div class="infra-100x" style="color:var(--green)">Suite de AI agents ya operando</div>
+    </div>
+    <div class="infra-card">
+      <div class="infra-name">Distribuci&oacute;n inicial</div>
+      <div class="infra-solo">Sola: Crecer desde 0 seguidores</div>
+      <div class="infra-100x" style="color:var(--green)">11 personas Builders + podcast + newsletter</div>
+    </div>
+    <div class="infra-card">
+      <div class="infra-name">Red de founders</div>
+      <div class="infra-solo">Sola: A&ntilde;os de networking</div>
+      <div class="infra-100x" style="color:var(--green)">Comunidad Builders + alumni inmediato</div>
+    </div>
+    <div class="infra-card">
+      <div class="infra-name">Legal &amp; estructura</div>
+      <div class="infra-solo">Sola: Abogado, contador, constituir empresa</div>
+      <div class="infra-100x" style="color:var(--green)">Jair Chaves (legal) + estructura creada</div>
+    </div>
+    <div class="infra-card">
+      <div class="infra-name">Producto complementario</div>
+      <div class="infra-solo">Sola: Construir agencia de ejecuci&oacute;n</div>
+      <div class="infra-100x" style="color:var(--green)">Amplifica Studio como upsell natural</div>
+    </div>
+    <div class="infra-card">
+      <div class="infra-name">Mentor&iacute;a de producto</div>
+      <div class="infra-solo">Sola: Buscar mentor</div>
+      <div class="infra-100x" style="color:var(--green)">Daniela Calvano (Product Mind) &mdash; tu aliada</div>
+    </div>
+  </div>
+
+  <!-- Daniela Calvano callout -->
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:24px;display:flex;align-items:center;gap:20px">
+    <div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:.04em;line-height:1">DANIELA CALVANO<span style="color:var(--teal)">.</span> TU PARTNER NATURAL</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.5;margin-top:4px"><strong>Producto + Marketing es donde el 80% de las startups fracasan.</strong> Daniela Calvano lidera Product Mind. Juntas cubren el gap m&aacute;s cr&iacute;tico del ecosistema. Y ya est&aacute;n en el mismo equipo.</div>
+    </div>
+    <div style="display:flex;gap:8px;flex-shrink:0">
+      <div style="background:rgba(13,148,136,.08);color:var(--teal);font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px">Product Mind</div>
+      <div style="background:rgba(124,58,237,.08);color:var(--purple);font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px">Sinergia &uacute;nica</div>
+    </div>
+  </div>
+</div>
+
+<!-- REVENUE -->
+<div class="sec" id="revenue">
+  <div class="sec-tag">Proyecciones</div>
+  <div class="sec-h">CONSULTING VS<br>CMO LAB<span style="color:var(--red)">.</span></div>
+  <div class="sec-sub">Proyecciones conservadoras. Tu parte, no el ecosistema completo.</div>
+
+  <div style="overflow-x:auto;margin-bottom:16px">
+    <table class="rev-table">
+      <thead>
+        <tr>
+          <th>Fuente de ingreso</th>
+          <th>A&ntilde;o 1</th>
+          <th>A&ntilde;o 2</th>
+          <th>A&ntilde;o 3</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Tripwires ($1)</td>
+          <td>$2,000</td>
+          <td>$5,000</td>
+          <td>$8,000</td>
+        </tr>
+        <tr>
+          <td>Academy ($997)</td>
+          <td>$49,850 <span style="color:var(--muted);font-size:11px">(50 alumnos)</span></td>
+          <td>$149,550 <span style="color:var(--muted);font-size:11px">(150)</span></td>
+          <td>$299,100 <span style="color:var(--muted);font-size:11px">(300)</span></td>
+        </tr>
+        <tr>
+          <td>Accelerator ($4,997)</td>
+          <td>$49,970 <span style="color:var(--muted);font-size:11px">(2 cohorts)</span></td>
+          <td>$149,910 <span style="color:var(--muted);font-size:11px">(3 cohorts)</span></td>
+          <td>$199,880 <span style="color:var(--muted);font-size:11px">(4 cohorts)</span></td>
+        </tr>
+        <tr>
+          <td>Amplifica Referrals (15%)</td>
+          <td>$12,600</td>
+          <td>$50,400</td>
+          <td>$126,000</td>
+        </tr>
+        <tr>
+          <td>Speaking / Workshops</td>
+          <td>$10,000</td>
+          <td>$25,000</td>
+          <td>$50,000</td>
+        </tr>
+        <tr class="total-row">
+          <td>TOTAL CMO LAB</td>
+          <td style="color:var(--green)">$124,420</td>
+          <td style="color:var(--green)">$379,860</td>
+          <td style="color:var(--green)">$682,980</td>
+        </tr>
+        <tr class="consulting-row">
+          <td>vs. Consulting (techo)</td>
+          <td>$80K</td>
+          <td>$80K</td>
+          <td>$80K</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="ready-grid" style="margin-bottom:36px">
+    <div class="ready-card">
+      <div class="ready-num" style="color:var(--green)">$1.2M</div>
+      <div class="ready-label">A&ntilde;o 3 realista con partnerships, licenciamiento, enterprise, y Sidekick+ referrals incluidos</div>
+    </div>
+    <div class="ready-card">
+      <div class="ready-num" style="color:var(--blue)">$1.5-3M</div>
+      <div class="ready-label">Valor de CMO Lab en Y3 (3-5x revenue para EdTech con buenos m&aacute;rgenes)</div>
+    </div>
+    <div class="ready-card">
+      <div class="ready-num" style="color:var(--red)">$0</div>
+      <div class="ready-label">Valor del consulting. Servicios no tienen exit. Cada d&oacute;lar requiere tu hora.</div>
+    </div>
+  </div>
+
+  <!-- Not included -->
+  <div class="thesis" style="margin-bottom:0">
+    <div class="thesis-text" style="font-size:clamp(14px,1.8vw,17px)">Y esto es <strong>conservador.</strong> No incluye: partnerships con aceleradoras (YC LATAM, 500 Global), licenciamiento de tu metodolog&iacute;a, enterprise contracts directos, libro/contenido monetizado, ni <strong>Sidekick+ enterprise referrals ($50K+/a&ntilde;o cada uno).</strong></div>
+  </div>
+</div>
+
+<!-- COMPANY STRUCTURE -->
+<div class="sec" id="company">
+  <div class="sec-tag">Estructura</div>
+  <div class="sec-h">100X HOLDING<span style="color:var(--red)">.</span></div>
+  <div class="sec-sub">T&uacute; operas. T&uacute; decides. 100x aporta infraestructura. Es como una franquicia de primer nivel donde t&uacute; controlas la marca.</div>
+
+  <div class="structure">
+    <div class="s-title">CMO LAB &mdash; TU EMPRESA</div>
+    <div class="s-sub">Operaci&oacute;n + Metodolog&iacute;a por Daniela &bull; Infraestructura por 100x</div>
+
+    <div class="s-nodes">
+      <div class="s-node primary">
+        <div class="s-node-name">DANIELA LOPEZ OCHOA</div>
+        <div class="s-node-desc">Operaci&oacute;n + Metodolog&iacute;a<br>Autoridad y ejecuci&oacute;n</div>
+      </div>
+      <div class="s-node">
+        <div class="s-node-name">CMO LAB</div>
+        <div class="s-node-desc">Tu empresa independiente<br>dentro del ecosistema 100x</div>
+      </div>
+      <div class="s-node">
+        <div class="s-node-name">100X HOLDING</div>
+        <div class="s-node-desc">Infraestructura + distribuci&oacute;n<br>Tecnolog&iacute;a y equipo</div>
+      </div>
+    </div>
+
+    <div class="s-connector"><div class="s-connector-line"></div></div>
+    <div style="font-size:11px;color:rgba(255,255,255,.3);text-align:center;letter-spacing:.1em;text-transform:uppercase;position:relative;z-index:1;margin-bottom:16px">Powered by</div>
+
+    <div class="s-powered">
+      <div class="s-powered-item">
+        <div class="s-powered-name">Sidekick+</div>
+        <div class="s-powered-desc">Infraestructura AI</div>
+      </div>
+      <div class="s-powered-item">
+        <div class="s-powered-name">Amplifica Studio</div>
+        <div class="s-powered-desc">Equipo de ejecuci&oacute;n</div>
+      </div>
+      <div class="s-powered-item">
+        <div class="s-powered-name">Builders Universe</div>
+        <div class="s-powered-desc">Distribuci&oacute;n</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Competitive comparison -->
+  <div class="sec-tag" style="margin-top:36px">Comparaci&oacute;n Competitiva</div>
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:clamp(28px,3.5vw,42px);letter-spacing:.04em;line-height:.95;margin-bottom:10px">CMO LAB VS EL MERCADO<span style="color:var(--red)">.</span></div>
+  <div class="sec-sub">Lo que existe hoy y por qu&eacute; ninguno cubre el espacio de CMO Lab.</div>
+
+  <div class="comp-grid">
+    <div class="comp-card">
+      <div class="comp-accent" style="background:var(--teal)"></div>
+      <div class="comp-body">
+        <div class="comp-name">30X</div>
+        <div class="comp-desc">Educa ejecutivos C-level. Excelente brand. Pero no tiene profundidad vertical en marketing B2B. Generalista por dise&ntilde;o.</div>
+        <div class="comp-gap" style="background:rgba(13,148,136,.08);color:var(--teal)">Sin vertical B2B</div>
+      </div>
+    </div>
+    <div class="comp-card">
+      <div class="comp-accent" style="background:var(--blue)"></div>
+      <div class="comp-body">
+        <div class="comp-name">REFORGE</div>
+        <div class="comp-desc">El gold standard en growth &amp; marketing education. Pero solo en ingl&eacute;s, enfocado en USA, $2,000+ por programa.</div>
+        <div class="comp-gap" style="background:rgba(45,110,245,.08);color:var(--blue)">Ingl&eacute;s only &bull; No LATAM</div>
+      </div>
+    </div>
+    <div class="comp-card">
+      <div class="comp-accent" style="background:var(--yellow)"></div>
+      <div class="comp-body">
+        <div class="comp-name">PLATZI</div>
+        <div class="comp-desc">Cursos gen&eacute;ricos de &ldquo;marketing digital.&rdquo; No distingue B2B de B2C. Sin mentor&iacute;a directa. Volumen sobre profundidad.</div>
+        <div class="comp-gap" style="background:rgba(250,204,21,.1);color:#a68c00">Gen&eacute;rico &bull; Sin mentor&iacute;a</div>
+      </div>
+    </div>
+    <div class="comp-card">
+      <div class="comp-accent" style="background:var(--orange)"></div>
+      <div class="comp-body">
+        <div class="comp-name">AGENCIAS</div>
+        <div class="comp-desc">Ejecutan sin ense&ntilde;ar. Dependencia permanente. No transfieren conocimiento al equipo del cliente.</div>
+        <div class="comp-gap" style="background:rgba(232,83,26,.08);color:var(--orange)">Ejecutan, no ense&ntilde;an</div>
+      </div>
+    </div>
+    <div class="comp-card">
+      <div class="comp-accent" style="background:var(--purple)"></div>
+      <div class="comp-body">
+        <div class="comp-name">CONTRATAR CMO</div>
+        <div class="comp-desc">$10-15K/mes + equity. Imposible pre-Series A. Una persona, un punto de falla, sin sistematizaci&oacute;n.</div>
+        <div class="comp-gap" style="background:rgba(124,58,237,.08);color:var(--purple)">$120K+/a&ntilde;o &bull; Inaccesible</div>
+      </div>
+    </div>
+    <div class="comp-card" style="border-color:var(--red);border-width:2px">
+      <div class="comp-accent" style="background:var(--red)"></div>
+      <div class="comp-body">
+        <div class="comp-name" style="color:var(--red)">CMO LAB</div>
+        <div class="comp-desc">Marketing B2B en espa&ntilde;ol. Metodolog&iacute;a real + mentor&iacute;a directa + ecosistema. Desde $1 hasta $4,997. <strong>El &uacute;nico en su categor&iacute;a.</strong></div>
+        <div class="comp-gap" style="background:rgba(255,60,0,.08);color:var(--red)">Sin competencia directa</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WHY NOW -->
+<div class="sec" id="whynow">
+  <div class="sec-tag">Por qu&eacute; Ahora</div>
+  <div class="sec-h">5 RAZONES<span style="color:var(--red)">.</span></div>
+  <div class="sec-sub">Este tren sale en abril 2026 y no vuelve a pasar.</div>
+
+  <div class="eco-grid" style="grid-template-columns:repeat(3,1fr)">
+    <div class="eco-card">
+      <div class="eco-accent" style="background:var(--red)"></div>
+      <div class="eco-body">
+        <div class="eco-name">MERCADO LISTO</div>
+        <div class="eco-desc">$2.1B invertidos en startups LATAM en 2025. Ese dinero necesita convertirse en clientes. Los founders buscan c&oacute;mo hacer marketing B2B.</div>
+      </div>
+    </div>
+    <div class="eco-card">
+      <div class="eco-accent" style="background:var(--blue)"></div>
+      <div class="eco-body">
+        <div class="eco-name">AI CAMBI&Oacute; LAS REGLAS</div>
+        <div class="eco-desc">Con AI, una persona con metodolog&iacute;a puede producir el output de un equipo de 5. Tu modelo es viable AHORA, no en 3 a&ntilde;os.</div>
+      </div>
+    </div>
+    <div class="eco-card">
+      <div class="eco-accent" style="background:var(--green)"></div>
+      <div class="eco-body">
+        <div class="eco-name">INFRAESTRUCTURA LISTA</div>
+        <div class="eco-desc">Sidekick+, Amplifica Studio, equipo Builders, red de distribuci&oacute;n... todo ya est&aacute; construido. Solo faltas t&uacute;.</div>
+      </div>
+    </div>
+    <div class="eco-card">
+      <div class="eco-accent" style="background:var(--purple)"></div>
+      <div class="eco-body">
+        <div class="eco-name">VENTANA DE AUTORIDAD</div>
+        <div class="eco-desc">Hoy eres una de pocas voces en marketing B2B LATAM. En 2 a&ntilde;os, habr&aacute; 50 personas intentando. Quien llega primero, gana.</div>
+      </div>
+    </div>
+    <div class="eco-card">
+      <div class="eco-accent" style="background:var(--teal)"></div>
+      <div class="eco-body">
+        <div class="eco-name">DANIELA CALVANO YA EST&Aacute;</div>
+        <div class="eco-desc">La sinergia producto + marketing es rara y dif&iacute;cil de fabricar. Ustedes dos en el mismo ecosistema no se repite.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="sec" id="cta" style="border:none;padding-bottom:0">
+  <div class="cta">
+    <div class="cta-quote">&ldquo;T&uacute; ya sabes construir m&aacute;quinas de marketing. Nosotros te damos la m&aacute;quina para convertir <strong>ESE conocimiento</strong> en una empresa de <strong>$1M+/a&ntilde;o</strong> que te pertenece.&rdquo;</div>
+    <div class="cta-source">100x / Amplifica</div>
+    <div class="cta-divider"></div>
+    <div class="cta-ask">SIGUIENTE PASO<span style="color:var(--red)">.</span></div>
+    <div class="cta-ask-sub">Una llamada de 45 minutos. Sin compromiso. Sin presi&oacute;n. Te mostramos:</div>
+    <div style="height:24px"></div>
+    <div class="cta-steps">
+      <div class="cta-step">
+        <div class="cta-step-num">1</div>
+        <div class="cta-step-text">La plataforma funcionando</div>
+      </div>
+      <div class="cta-step">
+        <div class="cta-step-num">2</div>
+        <div class="cta-step-text">El equipo de Amplifica Studio</div>
+      </div>
+      <div class="cta-step">
+        <div class="cta-step-num">3</div>
+        <div class="cta-step-text">Estructura detallada de la empresa</div>
+      </div>
+      <div class="cta-step">
+        <div class="cta-step-num">4</div>
+        <div class="cta-step-text">El timeline de lanzamiento</div>
+      </div>
+    </div>
+    <div style="height:32px"></div>
+    <div class="cta-quote" style="font-size:clamp(16px,2vw,20px);margin-bottom:0"><strong>Porque la pregunta no es si CMO Lab va a existir.<br>La pregunta es si va a ser tuyo.</strong></div>
+  </div>
+</div>
+
+</div><!-- /wrap -->
+
+<footer>CMO Lab &mdash; Propuesta confidencial preparada por 100x / Amplifica &mdash; Abril 2026</footer>
+
+</body>
+</html>
